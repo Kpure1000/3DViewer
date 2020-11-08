@@ -18,7 +18,6 @@ int main() {
 
     //创建窗口
     GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -33,11 +32,9 @@ int main() {
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 800, 600); // 设置视口大小
 
-    void framebuffer_size_callback(GLFWwindow * window, int width, int height);
-
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback); // 窗口大小调整回调
 
     while (!glfwWindowShouldClose(window))
     {
