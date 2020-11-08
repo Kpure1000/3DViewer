@@ -1,0 +1,11 @@
+# file
+*.vcxproj
+*.filters
+*.user
+
+# direction
+*.vs
+*/Debug/
+*/Release/
+
+*/x64/
