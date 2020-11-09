@@ -74,7 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\ktsq\Desktop\OpenGL\3DViewer\3DViewer\Reference\include;$(IncludePath)</IncludePath>
+    <IncludePath>Reference\include;$(IncludePath)</IncludePath>
     <LibraryPath>Reference\libs\glfw\libs\debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,8 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\ktsq\Desktop\OpenGL\3DViewer\3DViewer\Reference\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\ktsq\Desktop\OpenGL\3DViewer\3DViewer\Reference\libs\glfw\libs\release;$(LibraryPath)</LibraryPath>
+    <IncludePath>Reference\include;$(IncludePath)</IncludePath>
+    <LibraryPath>Reference\libs\glfw\libs\release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
