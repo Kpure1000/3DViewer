@@ -63,14 +63,17 @@
     <ClCompile Include="RtxMath.cpp">
       <Filter>源文件\util</Filter>
     </ClCompile>
-    <ClCompile Include="test\ch1_shader_test.cpp">
-      <Filter>源文件\test</Filter>
-    </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>源文件\glad</Filter>
     </ClCompile>
     <ClCompile Include="test\ch1_texture.cpp">
       <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\ch1_shader.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_init.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,11 +101,14 @@
     <ClInclude Include="render\Shader.h">
       <Filter>头文件\render</Filter>
     </ClInclude>
-    <ClInclude Include="test\test_main.h">
-      <Filter>头文件\test</Filter>
-    </ClInclude>
     <ClInclude Include="test\ch1_test.h">
       <Filter>头文件\test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\test_total.h">
+      <Filter>头文件\test</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Image.h">
+      <Filter>头文件\render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

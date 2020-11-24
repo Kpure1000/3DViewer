@@ -148,7 +148,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RtxMath.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="test\ch1_shader_test.cpp" />
+    <ClCompile Include="stb_init.cpp" />
+    <ClCompile Include="test\ch1_shader.cpp" />
     <ClCompile Include="test\ch1_texture.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -158,9 +159,10 @@
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h" />
     <ClInclude Include="graph\VertexArray.h" />
+    <ClInclude Include="render\Image.h" />
     <ClInclude Include="render\Shader.h" />
     <ClInclude Include="test\ch1_test.h" />
-    <ClInclude Include="test\test_main.h" />
+    <ClInclude Include="test\test_total.h" />
     <ClInclude Include="util\Color.h" />
     <ClInclude Include="util\RtxMath.h" />
     <ClInclude Include="util\Vector.h" />

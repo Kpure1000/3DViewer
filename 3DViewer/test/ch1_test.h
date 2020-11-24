@@ -1,39 +1,23 @@
-#ifndef CH1_SHADER_TEST_H
-#define CH1_SHADER_TEST_H
+#ifndef CH1_TEST_H
+#define CH1_TEST_H
 
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
-#include<iostream>
-#include<fstream>
-#include<string>
-#include<sstream>
 
-#include"../render/Shader.h"
-#include"../util/Color.h"
-
-using namespace rtx;
-using namespace std;
+#pragma region Test Entrance
 
 /// <summary>
-/// test1: Triangle and Shader
+/// test1: glObject and Shader
 /// </summary>
 /// <returns>exit state</returns>
 int ch1_shader_main();
 
+/// <summary>
+/// test2: Texture
+/// </summary>
+/// <returns></returns>
 int ch1_texture_main();
 
-/// <summary>
-/// The callback after resized window
-/// </summary>
-/// <param name="window">Current window</param>
-/// <param name="width">New width of window</param>
-/// <param name="height">New height of window</param>
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+#pragma endregion
 
-/// <summary>
-/// The input event
-/// </summary>
-/// <param name="window">Current window</param>
-void processInput(GLFWwindow* window);
-
-#endif // !CH1_SHADER_TEST_H
+#endif // !CH1_TEST_H

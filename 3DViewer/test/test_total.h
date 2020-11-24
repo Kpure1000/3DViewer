@@ -1,5 +1,5 @@
-#ifndef TEST_MAIN_H
-#define TEST_MAIN_H
+#ifndef TEST_TOTAL_H
+#define TEST_TOTAL_H
 
 /*
 * Chapter1
@@ -12,4 +12,4 @@
 */
 #include"ch1_test.h"
 
-#endif // !TEST_MAIN_H
+#endif // !TEST_TOTAL_H

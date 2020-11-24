@@ -1,5 +1,22 @@
 #include"ch1_test.h"
 
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<sstream>
+
+#include"../render/Shader.h"
+#include"../util/Color.h"
+
+using namespace rtx;
+using namespace std;
+
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+void processInput(GLFWwindow* window);
+
+
 int ch1_shader_main() {
 
 #pragma region some initializations
@@ -35,19 +52,6 @@ int ch1_shader_main() {
 
 #pragma endregion
 
-    render::Shader shader("../data/shader/ch1_shader.vert",
-        "../data/shader/ch1_shader.frag");
-
-#pragma region create vao
-
-    //  create vertices array object
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    //  bind vao
-    glBindVertexArray(VAO);
-
-#pragma endregion
-
 #pragma region triangle initialization
 
     //  create triangle
@@ -67,16 +71,15 @@ int ch1_shader_main() {
     };
 
     int indices[] = {
-        0,2,4,
-        4,6,0
+        0,1,2,
+        2,3,0
     };
 
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    //  bind ebo
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    //  copy element indices data to memory
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //  create vertices array object
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    //  bind vao
+    glBindVertexArray(VAO);
 
     //  cerate vertices buffer object
     unsigned int VBO;
@@ -86,19 +89,29 @@ int ch1_shader_main() {
     //  copy vertices data to memory
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+    //  bind ebo
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    //  copy element indices data to memory
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+#pragma endregion
+
+#pragma region set vertex atrribution
+
     //  set the atrribution of vertices.position data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-        3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     //  apply the atrribution set before
     glEnableVertexAttribArray(0);
 
     //  set the atrribution of vertices.color data
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
-        3 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     //  apply the atrribution set before
     glEnableVertexAttribArray(1);
 
 #pragma endregion
+
 
 #pragma region some setting or source releasing before render
 
@@ -116,6 +129,9 @@ int ch1_shader_main() {
     //glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
 
 #pragma endregion
+
+    render::Shader shader("../data/shader/ch1_shader.vert",
+        "../data/shader/ch1_shader.frag");
 
 #pragma region render loop
 
@@ -168,11 +184,21 @@ int ch1_shader_main() {
 }
 
 
+/// <summary>
+/// The callback after resized window
+/// </summary>
+/// <param name="window">Current window</param>
+/// <param name="width">New width of window</param>
+/// <param name="height">New height of window</param>
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
 
+/// <summary>
+/// The input event
+/// </summary>
+/// <param name="window">Current window</param>
 void processInput(GLFWwindow* window)
 {
     //  press ESC to close window and exit
