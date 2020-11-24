@@ -74,16 +74,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\ktsq\Desktop\OpenGL\3DViewer\3DViewer\Reference\include;$(IncludePath)</IncludePath>
-    <LibraryPath>Reference\libs\glfw\libs\debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>Reference\include;$(IncludePath)</IncludePath>
+    <LibraryPath>Reference\libs\glfw\debuglib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\ktsq\Desktop\OpenGL\3DViewer\3DViewer\Reference\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\ktsq\Desktop\OpenGL\3DViewer\3DViewer\Reference\libs\glfw\libs\release;$(LibraryPath)</LibraryPath>
+    <IncludePath>Reference\include;$(IncludePath)</IncludePath>
+    <LibraryPath>Reference\libs\glfw\releaselib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,6 +146,26 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RtxMath.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="test\ch1_shader_test.cpp" />
+    <ClCompile Include="test\ch1_texture.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="VertexArray.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="graph\Vertex.h" />
+    <ClInclude Include="graph\VertexArray.h" />
+    <ClInclude Include="render\Shader.h" />
+    <ClInclude Include="test\ch1_test.h" />
+    <ClInclude Include="test\test_main.h" />
+    <ClInclude Include="util\Color.h" />
+    <ClInclude Include="util\RtxMath.h" />
+    <ClInclude Include="util\Vector.h" />
+    <ClInclude Include="util\Vector2.h" />
+    <ClInclude Include="util\Vector3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
