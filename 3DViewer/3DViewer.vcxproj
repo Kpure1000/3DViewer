@@ -75,11 +75,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>Reference\include;$(IncludePath)</IncludePath>
-<<<<<<< HEAD
-    <LibraryPath>Reference\libs\glfw\libs\debug;$(LibraryPath)</LibraryPath>
-=======
     <LibraryPath>Reference\libs\glfw\debuglib;$(LibraryPath)</LibraryPath>
->>>>>>> d22631a9a3777fef93f106fca6d3ca79b4bd5367
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -87,11 +83,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>Reference\include;$(IncludePath)</IncludePath>
-<<<<<<< HEAD
-    <LibraryPath>Reference\libs\glfw\libs\release;$(LibraryPath)</LibraryPath>
-=======
     <LibraryPath>Reference\libs\glfw\releaselib;$(LibraryPath)</LibraryPath>
->>>>>>> d22631a9a3777fef93f106fca6d3ca79b4bd5367
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
