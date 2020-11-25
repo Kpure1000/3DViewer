@@ -9,6 +9,7 @@
 #include"../render/Shader.h"
 #include"../render/Image.h"
 #include"../util/Color.h"
+#include"../render/Texture.h"
 
 using namespace rtx;
 using namespace std;
@@ -132,16 +133,10 @@ int ch1_texture_main() {
 
 #pragma region texture
     
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    
-    glBindTexture(GL_TEXTURE_2D, texture);
+    render::Texture t1("../data/texture/container.jpg");
+    t1.Use();
+    render::Texture t2("../data/texture/awesomeface.png");
+    t2.Use();
 
 #pragma endregion
 
@@ -165,10 +160,16 @@ int ch1_texture_main() {
     render::Shader shader("../data/shader/ch1_texture.vert",
         "../data/shader/ch1_texture.frag");
 
-    render::Image image1;
-    
-    image1.LoadFromFile("../data/texture/container.jpg");
-    
+    shader.Use();
+    shader.SetInt("texture1", 0);
+    shader.SetInt("texture2", 1);
+
+    //render::Image image1;
+    //image1.LoadFromFile("../data/texture/container.jpg");
+
+    //render::Image image2;
+    //image2.LoadFromFile("../data/texture/awesomeface.png");
+    //
 
 #pragma region render loop
 
@@ -190,21 +191,13 @@ int ch1_texture_main() {
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //  ready some values for shader
-        timeValue = glfwGetTime();
-        color.g() = sin(2.0f * timeValue) / 2.0f + 0.5f;
+        t2.Use();
+        t1.Use();
 
-        shader.SetColor("verColor", color);
-        //  use shader to vertices (refresh)
         shader.Use();
-
+        
         //  bind vao
         glBindVertexArray(VAO);
-
-        glBindTexture(GL_TEXTURE_2D, texture);
-        
-        image1.Use();
-
         //  draw vertices from memory        
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

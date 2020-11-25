@@ -7,7 +7,7 @@ namespace rtx
 	namespace render
 	{
 
-		Shader::Shader() :m_ID(0)
+		Shader::Shader() :m_ID(-1)
 		{
 		}
 
@@ -136,7 +136,7 @@ namespace rtx
 		void Shader::SetInt(const std::string& name,
 			const int& value) const
 		{
-			glUniform1f(GET_PROPERTY_ID(name), value);
+			glUniform1i(GET_PROPERTY_ID(name), value);
 		}
 
 		void Shader::SetFloat(const std::string& name,
@@ -166,6 +166,11 @@ namespace rtx
 		void Shader::SetColor(const std::string& name, const util::Color& color) const
 		{
 			SetVector4(name, color.RGBA());
+		}
+
+		void Shader::SetTexture(const std::string& name, const Texture& texture) const
+		{
+			glUniform1i(GET_PROPERTY_ID(name), texture.GetID()); //  ÷∂Ø…Ë÷√
 		}
 
 	}

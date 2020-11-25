@@ -9,6 +9,7 @@
 #include<iostream>
 
 #include"../util/Color.h"
+#include"Texture.h"
 
 namespace rtx
 {
@@ -46,6 +47,8 @@ namespace rtx
 			void SetVector4(const std::string& name, const glm::vec4& value)const;
 		
 			void SetColor(const std::string& name, const util::Color& color)const;
+
+			void SetTexture(const std::string& name, const Texture& texture)const;
 
 		private:
 

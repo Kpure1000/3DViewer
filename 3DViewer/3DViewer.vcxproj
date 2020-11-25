@@ -151,6 +151,7 @@
     <ClCompile Include="stb_init.cpp" />
     <ClCompile Include="test\ch1_shader.cpp" />
     <ClCompile Include="test\ch1_texture.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vertex.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="graph\VertexArray.h" />
     <ClInclude Include="render\Image.h" />
     <ClInclude Include="render\Shader.h" />
+    <ClInclude Include="render\Texture.h" />
     <ClInclude Include="test\ch1_test.h" />
     <ClInclude Include="test\test_total.h" />
     <ClInclude Include="util\Color.h" />

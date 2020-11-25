@@ -75,6 +75,9 @@
     <ClCompile Include="stb_init.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>源文件\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -108,6 +111,9 @@
       <Filter>头文件\test</Filter>
     </ClInclude>
     <ClInclude Include="render\Image.h">
+      <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Texture.h">
       <Filter>头文件\render</Filter>
     </ClInclude>
   </ItemGroup>
