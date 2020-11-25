@@ -13,13 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\graph">
+      <UniqueIdentifier>{b639c8e4-8409-4d8a-8b01-40abaccfc449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\util">
+      <UniqueIdentifier>{df99c886-52d2-4ddb-b7ca-6a0e79c9281d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\graph">
+      <UniqueIdentifier>{ae92b5d1-a2d6-4fda-84a3-ba8c8ca3fbb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\render">
+      <UniqueIdentifier>{66de0d59-1885-4576-b694-a438c373d92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\render">
+      <UniqueIdentifier>{02e0dc7c-50f7-456c-bbad-e192804bde85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\util">
+      <UniqueIdentifier>{fef112f8-36b3-4111-8a52-ab41f0ed3b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\test">
+      <UniqueIdentifier>{5bd1a9d7-7e90-429a-805d-d269cb10a61d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\test">
+      <UniqueIdentifier>{40bbfcab-4dd5-459a-8a3c-2ac3c35fe537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\glad">
+      <UniqueIdentifier>{42145029-7021-46eb-9da0-269925b30ca1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>源文件\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>源文件\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>源文件\render</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
+    <ClCompile Include="RtxMath.cpp">
+      <Filter>源文件\util</Filter>
+    </ClCompile>
     <ClCompile Include="glad.c">
+      <Filter>源文件\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="test\ch1_texture.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="test\ch1_shader.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_init.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="graph\Vertex.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Vector3.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Color.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\RtxMath.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Vector2.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Vector.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\VertexArray.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Shader.h">
+      <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="test\ch1_test.h">
+      <Filter>头文件\test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\test_total.h">
+      <Filter>头文件\test</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Image.h">
+      <Filter>头文件\render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
