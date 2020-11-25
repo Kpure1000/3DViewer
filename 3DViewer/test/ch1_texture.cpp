@@ -133,10 +133,29 @@ int ch1_texture_main() {
 
 #pragma region texture
     
-    render::Texture t1("../data/texture/container.jpg");
-    t1.Use();
-    render::Texture t2("../data/texture/awesomeface.png");
-    t2.Use();
+    /*unsigned int texture1;
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    render::Image image1;
+    image1.LoadFromFile("../data/texture/container.jpg");
+    image1.Use();
+
+    unsigned int texture2;
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    render::Image image2;
+    image2.LoadFromFile("../data/texture/awesomeface.png");
+    image2.Use();*/
 
 #pragma endregion
 
@@ -160,16 +179,13 @@ int ch1_texture_main() {
     render::Shader shader("../data/shader/ch1_texture.vert",
         "../data/shader/ch1_texture.frag");
 
+    render::Texture t1, t2;
+    t1.LoadFromFile("../data/texture/container.jpg");
+    t2.LoadFromFile("../data/texture/awesomeface.png");
+
     shader.Use();
-    shader.SetInt("texture1", 0);
-    shader.SetInt("texture2", 1);
-
-    //render::Image image1;
-    //image1.LoadFromFile("../data/texture/container.jpg");
-
-    //render::Image image2;
-    //image2.LoadFromFile("../data/texture/awesomeface.png");
-    //
+    shader.SetSampler2D("texture1", t1);
+    shader.SetSampler2D("texture2", t2);
 
 #pragma region render loop
 
@@ -184,18 +200,20 @@ int ch1_texture_main() {
     //  if window has not been closed yet
     while (!glfwWindowShouldClose(window))
     {
-        //  deal with input
+        //  input dealing
         test_2_processInput(window);
 
-        //  do redner
+        //  redner setting
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        t2.Use();
+        //  texture render update
         t1.Use();
+        t2.Use();
 
+        //  shader update
         shader.Use();
-        
+
         //  bind vao
         glBindVertexArray(VAO);
         //  draw vertices from memory        

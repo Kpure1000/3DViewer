@@ -48,7 +48,7 @@ namespace rtx
 		
 			void SetColor(const std::string& name, const util::Color& color)const;
 
-			void SetTexture(const std::string& name, const Texture& texture)const;
+			void SetSampler2D(const std::string& name, const Texture& texture)const;
 
 		private:
 

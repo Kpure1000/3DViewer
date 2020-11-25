@@ -168,9 +168,9 @@ namespace rtx
 			SetVector4(name, color.RGBA());
 		}
 
-		void Shader::SetTexture(const std::string& name, const Texture& texture) const
+		void Shader::SetSampler2D(const std::string& name, const Texture& texture) const
 		{
-			glUniform1i(GET_PROPERTY_ID(name), texture.GetID()); // 手动设置
+			glUniform1i(GET_PROPERTY_ID(name), texture.GetIndex()); // 手动设置
 		}
 
 	}

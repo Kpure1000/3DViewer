@@ -7,6 +7,7 @@
 #include<fstream>
 #include<sstream>
 #include<iostream>
+#include<map>
 
 #include"Image.h"
 
@@ -20,19 +21,17 @@ namespace rtx
 
 			Texture();
 
-			Texture(const std::string& path);
-
 			~Texture();
 
 			void LoadFromFile(const std::string& path);
 
 			void LoadFromMemory(int w, int h, int ch, unsigned char* data);
 
-			void Use()const
+			void Use()const;
+
+			int GetIndex()const
 			{
-				glActiveTexture(m_ID);
-				glBindTexture(GL_TEXTURE_2D, m_ID);
-				image.Use();
+				return texture_indices[m_ID] - GL_TEXTURE0;
 			}
 
 			unsigned int GetID()const
@@ -45,6 +44,15 @@ namespace rtx
 			unsigned int m_ID;
 
 			Image image;
+
+			/// <summary>
+			/// <ID,GL_TEXTUREn>
+			/// </summary>
+			static std::map<unsigned int, int>texture_indices;
+
+			static int currentTextureIndex;
+			
+			const static int MaxTextureIndices;
 
 		};
 

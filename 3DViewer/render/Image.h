@@ -12,7 +12,10 @@ namespace rtx
 		{
 		public:
 
-			Image() :width(0), height(0), channel(0), data(nullptr) {}
+			Image()
+				:width(0), height(0), channel(0), data(nullptr),
+				loadMode(Load_Mode::NONE)
+			{}
 
 			void LoadFromMemory(const int& w, const int& h, const int& ch, unsigned char* data)
 			{
@@ -21,6 +24,7 @@ namespace rtx
 				this->height = h;
 				this->channel = ch;
 				this->data = data;
+				CheckBuffer();
 			}
 
 			void LoadFromFile(const char* path)
@@ -28,6 +32,7 @@ namespace rtx
 				loadMode = Load_Mode::LOAD_FILE;
 				stbi_set_flip_vertically_on_load(true);
 				data = stbi_load(path, &width, &height, &channel, 0);
+				CheckBuffer();
 			}
 
 			void LoadFromFile(const char* path, bool isFlip)
@@ -35,11 +40,12 @@ namespace rtx
 				loadMode = Load_Mode::LOAD_FILE;
 				stbi_set_flip_vertically_on_load(isFlip);
 				data = stbi_load(path, &width, &height, &channel, 0);
+				CheckBuffer();
 			}
 
 			void Use()const
 			{
-				if (data != nullptr)
+				if (data != nullptr && loadMode != Load_Mode::NONE)
 				{
 					if (channel == 3)
 					{
@@ -58,14 +64,7 @@ namespace rtx
 				}
 				else
 				{
-					if (loadMode == Load_Mode::LOAD_FILE)
-					{
-						std::cerr << "Load Image Error: from file.\n";
-					}
-					else
-					{
-						std::cerr << "Load Image Error: from other source.\n";
-					}
+					std::cerr << "Image Buffer is Empty!\n";
 				}
 			}
 
@@ -76,6 +75,25 @@ namespace rtx
 					stbi_image_free(data);
 					data = nullptr;
 				}
+			}
+
+		private:
+
+			bool CheckBuffer()const
+			{
+				if (data == nullptr)
+				{
+					if (loadMode == Load_Mode::LOAD_FILE)
+					{
+						std::cerr << "Load Image Error: from file.\n";
+					}
+					else
+					{
+						std::cerr << "Load Image Error: from other source.\n";
+					}
+					return false;
+				}
+				return true;
 			}
 
 			int width, height, channel;
