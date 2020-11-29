@@ -1,19 +1,20 @@
 #version 330 core  
 
 /*in*/
-in vec3 ourColor;
-in vec2 texCoord;
+in vec3 _ourColor;
+in vec2 _texCoord;
 
 /*out*/
-out vec4 FragColor; 
+out vec4 _fragColor; 
 
 /*uniform*/
-uniform sampler2D texture1;
-uniform sampler2D texture2;
+uniform sampler2D _texture1;
+uniform sampler2D _texture2;
 
+uniform float _rate;
 
 /*main*/
 void main()  
 {
-    FragColor = mix(texture(texture1, texCoord), texture(texture2, texCoord), 0.2);
+    _fragColor = mix(texture(_texture1, _texCoord), texture(_texture2, _texCoord), _rate);
 }

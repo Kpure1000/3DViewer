@@ -6,13 +6,13 @@ layout(location = 1) in vec3 aCol;
 layout(location = 2) in vec2 aTexCoord;
 
 /*out*/
-out vec3 ourColor;
-out vec2 texCoord;
+out vec3 _ourColor;
+out vec2 _texCoord;
 
 /*main*/
 void main()
 {  
     gl_Position = vec4(aPos, 1.0); 
-    ourColor = aCol;
-    texCoord = aTexCoord;
+    _ourColor = aCol;
+    _texCoord = aTexCoord;
 }

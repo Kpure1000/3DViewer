@@ -78,6 +78,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>源文件\render</Filter>
     </ClCompile>
+    <ClCompile Include="test\raytracing.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="render\Texture.h">
       <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="test\raytracing.h">
+      <Filter>头文件\test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

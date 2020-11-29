@@ -1,4 +1,4 @@
-#include"ch1_test.h"
+#include"raytracing.h"
 
 #include<iostream>
 #include<fstream>
@@ -14,51 +14,52 @@
 using namespace rtx;
 using namespace std;
 
-void test_2_processInput(GLFWwindow* window);
+void raytracing_processInput(GLFWwindow* window);
 
-int ch1_texture_main() {
+int raytracing()
+{
 
 #pragma region some initializations
 
-	glfwInit(); // 初始化glfw
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwInit(); // 初始化glfw
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 #pragma endregion
 
 #pragma region create window
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cerr << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cerr << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
-	glViewport(0, 0, 800, 600); // 设置视口大小
+    glViewport(0, 0, 800, 600); // 设置视口大小
 
-	 //  window resize call back
-	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
-		{
-			glViewport(0, 0, width, height);
-		});
+     //  window resize call back
+    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
+        {
+            glViewport(0, 0, width, height);
+        });
 
-	//  mouse scroll event call back
-	glfwSetScrollCallback(window, [](GLFWwindow* win, double offsetX, double offsetY)
-		{
-			// TODO
-			//printf("Offset: (%lf, %lf)\n", offsetX, offsetY);
-		});
+    //  mouse scroll event call back
+    glfwSetScrollCallback(window, [](GLFWwindow* win, double offsetX, double offsetY)
+        {
+            // TODO
+            //printf("Offset: (%lf, %lf)\n", offsetX, offsetY);
+        });
 
 #pragma endregion
 
@@ -88,7 +89,7 @@ int ch1_texture_main() {
         0,1,2,
         2,3,0
     };
-    
+
     //  create vertices array object
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -173,7 +174,7 @@ int ch1_texture_main() {
     while (!glfwWindowShouldClose(window))
     {
         //  input dealing
-        test_2_processInput(window);
+        raytracing_processInput(window);
 
         //  redner setting
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
@@ -186,7 +187,7 @@ int ch1_texture_main() {
         //  shader update
         shader.Use();
 
-        shader.SetFloat("_rate", 0.5f + 0.5f * sin(4*glfwGetTime()));
+        shader.SetFloat("_rate", 0.5f + 0.5f * sin(4 * glfwGetTime()));
 
         //  bind vao
         glBindVertexArray(VAO);
@@ -210,14 +211,10 @@ int ch1_texture_main() {
 
 #pragma endregion
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
-/// <summary>
-/// The input event
-/// </summary>
-/// <param name="window">Current window</param>
-void test_2_processInput(GLFWwindow* window)
+void raytracing_processInput(GLFWwindow* window)
 {
     //  press ESC to close window and exit
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)

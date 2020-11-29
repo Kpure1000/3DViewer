@@ -23,26 +23,48 @@ namespace rtx
 
 			~Texture();
 
+			/// <summary>
+			/// Load Data From File by stbi
+			/// </summary>
+			/// <param name="path"></param>
 			void LoadFromFile(const std::string& path);
 
+			/// <summary>
+			/// Load Data From Memory
+			/// </summary>
+			/// <param name="w"></param>
+			/// <param name="h"></param>
+			/// <param name="ch"></param>
+			/// <param name="data"></param>
 			void LoadFromMemory(int w, int h, int ch, unsigned char* data);
 
+			/// <summary>
+			/// Bind or Active the Texture
+			/// </summary>
 			void Use()const;
 
-			int GetIndex()const
-			{
-				return texture_indices[m_ID] - GL_TEXTURE0;
-			}
+			/// <summary>
+			/// Get index of texture in GL
+			/// </summary>
+			/// <returns></returns>
+			int GetIndex()const;
 
-			unsigned int GetID()const
-			{
-				return m_ID;
-			}
+			/// <summary>
+			/// Get id of texture
+			/// </summary>
+			/// <returns></returns>
+			unsigned int GetID()const;
 
 		private:
 
+			/// <summary>
+			/// Texture id
+			/// </summary>
 			unsigned int m_ID;
 
+			/// <summary>
+			/// Data
+			/// </summary>
 			Image image;
 
 			/// <summary>
@@ -50,8 +72,14 @@ namespace rtx
 			/// </summary>
 			static std::map<unsigned int, int>texture_indices;
 
+			/// <summary>
+			/// the highest index in GL
+			/// </summary>
 			static int currentTextureIndex;
 			
+			/// <summary>
+			/// Max texture numbers in GL
+			/// </summary>
 			const static int MaxTextureIndices;
 
 		};

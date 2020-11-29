@@ -42,6 +42,16 @@ namespace rtx
 			}
 		}
 
+		int Texture::GetIndex()const
+		{
+			return texture_indices[m_ID] - GL_TEXTURE0;
+		}
+
+		unsigned int Texture::GetID()const
+		{
+			return m_ID;
+		}
+
 		void Texture::LoadFromFile(const std::string& path)
 		{
 			image.LoadFromFile(path.c_str());

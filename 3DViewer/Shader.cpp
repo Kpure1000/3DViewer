@@ -1,6 +1,9 @@
 #include"render/Shader.h"
 
+#ifndef GET_PROPERTY_ID(NAME)
 #define GET_PROPERTY_ID(NAME) glGetUniformLocation(m_ID, (NAME).c_str())
+#endif // !GET_PROPERTY_ID(NAME)
+
 
 namespace rtx
 {
