@@ -31,7 +31,10 @@ int raytracing()
 
 #pragma region create window
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    int win_width = 800;
+    int win_height = 600;
+
+    GLFWwindow* window = glfwCreateWindow(win_width, win_height, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cerr << "Failed to create GLFW window" << std::endl;
@@ -46,7 +49,7 @@ int raytracing()
         return -1;
     }
 
-    glViewport(0, 0, 800, 600); // 设置视口大小
+    glViewport(0, 0, win_width, win_height); // 设置视口大小
 
      //  window resize call back
     glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
@@ -149,16 +152,11 @@ int raytracing()
 
 #pragma endregion
 
-    render::Shader shader("../data/shader/ch1_texture.vert",
-        "../data/shader/ch1_texture.frag");
-
-    render::Texture t1, t2;
-    t1.LoadFromFile("../data/texture/container.jpg");
-    t2.LoadFromFile("../data/texture/awesomeface.png");
+    render::Shader shader("../data/shader/raytracing.vert",
+        "../data/shader/raytracing.frag");
 
     shader.Use();
-    shader.SetSampler2D("_texture1", t1);
-    shader.SetSampler2D("_texture2", t2);
+    shader.SetVector2("_screen_size", glm::vec2(win_width, win_height));
 
 #pragma region render loop
 
@@ -170,6 +168,9 @@ int raytracing()
     time_t startTime = clock();
     time_t curTime = startTime;
     int i = 0;
+    float randSeed[4];
+    util::RayMath::Srand48((unsigned int)time(NULL));
+
     //  if window has not been closed yet
     while (!glfwWindowShouldClose(window))
     {
@@ -180,15 +181,17 @@ int raytracing()
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        //  texture render update
-        t1.Use();
-        t2.Use();
-
         //  shader update
         shader.Use();
-
-        shader.SetFloat("_rate", 0.5f + 0.5f * sin(4 * glfwGetTime()));
-
+        
+        glfwGetWindowSize(window, &win_width, &win_height);
+        shader.SetVector2("_screen_size", glm::vec2(win_width, win_height));
+        for (size_t i = 0; i < 4; i++)
+        {
+            randSeed[i] = util::RayMath::Drand48();
+        }
+        shader.SetArray("_rdSeed", 4, randSeed);
+        
         //  bind vao
         glBindVertexArray(VAO);
         //  draw vertices from memory        

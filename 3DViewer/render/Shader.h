@@ -50,6 +50,8 @@ namespace rtx
 
 			void SetSampler2D(const std::string& name, const Texture& texture)const;
 
+			void SetArray(const std::string& name, const int& size, const float* data)const;
+
 		private:
 
 			/// <summary>

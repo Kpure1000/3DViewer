@@ -82,6 +82,8 @@ namespace rtx
 			/// </summary>
 			const static int MaxTextureIndices;
 
+
+
 		};
 
 	}

@@ -176,5 +176,10 @@ namespace rtx
 			glUniform1i(GET_PROPERTY_ID(name), texture.GetIndex()); //  ÷∂Ø…Ë÷√
 		}
 
+		void Shader::SetArray(const std::string& name,const int& size, const float* data)const
+		{
+			glUniform1fv(GET_PROPERTY_ID(name), size, data);
+		}
+
 	}
 }
