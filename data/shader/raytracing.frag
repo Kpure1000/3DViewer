@@ -95,8 +95,8 @@ bool Sphere_Hit(Sphere sp, Ray ray,
 }
 
 /***************/
-/*HitList: second, some hitable!*/
-
+/*Metarial*/
+vec3 Scatter_Metal(vec3)
 /***************/
 /**********************************/
 
@@ -105,7 +105,7 @@ vec3 Irradiance(Ray ray,Sphere sp)
     HitRecord rec;
     if(Sphere_Hit(sp, ray, 0.001, 1000000, rec))
     {
-        return 0.5*vec3(rec.normal+vec3(1,1,1));
+        return 0.5*vec3(rec.normal + vec3(1,1,1));
     }
     else
     {
@@ -117,9 +117,8 @@ vec3 Irradiance(Ray ray,Sphere sp)
 
 // vec3 IrradianceList(Ray ray, )
 
-vec2 uv;
 /*unit color*/
-void NormalColor(out vec3 Color)
+void NormalColor(inout vec3 Color)
 {
     Color.x = min(1.0, max(0.0, Color.x));
     Color.y = min(1.0, max(0.0, Color.y));
@@ -135,15 +134,17 @@ void main()
     vec3 vertical = vec3(0.0,ver,0.0);
     vec3 origin = vec3(0.0,0.0,0.0);
 
-    Sphere sphere1 = Sphere_Con(vec3(0,0,-1.0),0.5);
+    Sphere sphere1 = Sphere_Con(vec3(0,0,-1.5),0.5);
     Sphere sphere2 = Sphere_Con(vec3(0,-1000.0,-1.0),1000.0);
 
+
+    vec2 uv;
+    uv.x = (gl_FragCoord.x) / _screen_size.x;
+    uv.y = (gl_FragCoord.y) / _screen_size.y;
+
+    Ray ray = Ray_Con(origin, lt + uv.x * horizontal + uv.y * vertical - origin);
+
     vec3 color;
-
-    uv.x = (gl_FragCoord.x + Rand()) / _screen_size.x;
-    uv.y = (gl_FragCoord.y + Rand()) / _screen_size.y;
-
-    Ray ray = Ray_Con(origin, lt + uv.x * horizontal + uv.y * vertical);
     color = Irradiance(ray,sphere1);
     
     NormalColor(color);
