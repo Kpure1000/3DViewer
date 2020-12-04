@@ -29,7 +29,7 @@ namespace rtx
 				return m_ID;
 			}
 
-			inline void Use()const;
+			void Use()const;
 
 			void SetBool(const std::string& name, const bool& value)const;
 

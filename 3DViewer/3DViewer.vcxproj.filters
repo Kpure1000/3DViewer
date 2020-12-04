@@ -81,6 +81,9 @@
     <ClCompile Include="test\raytracing.cpp">
       <Filter>源文件\test</Filter>
     </ClCompile>
+    <ClCompile Include="test\ch1_transform.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">

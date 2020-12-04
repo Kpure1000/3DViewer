@@ -18,6 +18,12 @@ int ch1_shader_main();
 /// <returns></returns>
 int ch1_texture_main();
 
+/// <summary>
+/// test3: Transform
+/// </summary>
+/// <returns></returns>
+int ch1_transform_main();
+
 #pragma endregion
 
 #endif // !CH1_TEST_H
