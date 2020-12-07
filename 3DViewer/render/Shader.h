@@ -24,10 +24,7 @@ namespace rtx
 
 			~Shader();
 
-			inline int GetID()const
-			{
-				return m_ID;
-			}
+			int GetID()const;
 
 			void Use()const;
 

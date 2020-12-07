@@ -129,6 +129,11 @@ namespace rtx
 			glDeleteProgram(m_ID);
 		}
 
+		int Shader::GetID() const
+		{
+			return m_ID;
+		}
+
 		void Shader::Use() const
 		{
 			glUseProgram(m_ID);

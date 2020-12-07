@@ -24,6 +24,12 @@ int ch1_texture_main();
 /// <returns></returns>
 int ch1_transform_main();
 
+/// <summary>
+/// test4: Axis
+/// </summary>
+/// <returns></returns>
+int ch1_axis_main();
+
 #pragma endregion
 
 #endif // !CH1_TEST_H

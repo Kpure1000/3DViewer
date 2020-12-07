@@ -14,9 +14,9 @@
 using namespace rtx;
 using namespace std;
 
-void test_3_processInput(GLFWwindow* window);
+void test_4_processInput(GLFWwindow* window);
 
-int ch1_transform_main() {
+int ch1_axis_main() {
 
 #pragma region some initializations
 
@@ -59,36 +59,76 @@ int ch1_transform_main() {
     glfwSetScrollCallback(window, [](GLFWwindow* win, double offsetX, double offsetY)
         {
             // TODO
-            //printf("Offset: (%lf, %lf)\n", offsetX, offsetY);
+            
         });
 
 #pragma endregion
 
 #pragma region triangle initialization
 
-    //  create triangle
-    float vertices[] = {
-        //  triangle down
-        -0.5f,-0.5f,0.0f, //  left-bottom
-        0.5f,0.5f,0.5f,
-        0.0f,0.0f,
+	//  create triangle
+	float vertices[] = {
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-        -0.5f,0.5f,0.0f, //  left-top
-        1.0f,0.0f,0.0f,
-        0.0f,1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
 
-        0.5f,0.5f,0.0f, //  right-top
-        0.0f,1.0f,0.0f,
-        1.0f,1.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-        0.5f,-0.5f,0.0f, //  right-bottom
-        0.0f,0.0f,1.0f,
-        1.0f,0.0f
-    };
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 
-    int indices[] = {
-        0,1,2,
-        2,3,0
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
+
+	int indices[] = {
+		0,1,2, // front
+		2,3,0,
+
+        4,7,6,
+        6,5,4,
+
+        0,4,5,
+        5,1,0,
+
+        3,2,6,
+        6,7,3,
+
+        1,5,6,
+        6,2,1,
+
+        0,3,7,
+        7,4,0
     };
 
     //  create vertices array object
@@ -117,19 +157,14 @@ int ch1_transform_main() {
 #pragma region set vertex atrribution
 
     //  set the atrribution of vertices.position data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     //  apply the atrribution set before
     glEnableVertexAttribArray(0);
 
     //  set the atrribution of vertices.color data
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     //  apply the atrribution set before
     glEnableVertexAttribArray(1);
-
-    //  set the atrribution of vertices.color data
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    //  apply the atrribution set before
-    glEnableVertexAttribArray(2);
 
 #pragma endregion
 
@@ -148,10 +183,12 @@ int ch1_transform_main() {
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
     //glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
 
+    glEnable(GL_DEPTH_TEST);
+
 #pragma endregion
 
-    render::Shader shader("../data/shader/ch1_transform.vert",
-        "../data/shader/ch1_transform.frag");
+    render::Shader shader("../data/shader/ch1_axis.vert",
+        "../data/shader/ch1_axis.frag");
 
     render::Texture t1, t2;
     t1.LoadFromFile("../data/texture/container.jpg");
@@ -173,35 +210,48 @@ int ch1_transform_main() {
     int i = 0;
 
     //  注意,如果使用的是glm-0.9.9及以上版本,变换前矩阵需要初始化为单位矩阵
-    glm::mat4 transMat = glm::mat4(1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    float fov_angle = 45.0f;
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(fov_angle), (float)width / height, 0.1f, 100.0f);
 
     //  if window has not been closed yet
     while (!glfwWindowShouldClose(window))
     {
         //  input dealing
-        test_3_processInput(window);
+        test_4_processInput(window);
 
         //  redner setting
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //  texture render update
         t1.Use();
         t2.Use();
 
-        transMat = glm::mat4(1.0f);
-        transMat = glm::rotate(transMat, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-
         //  shader update
         shader.Use();
 
         shader.SetFloat("_rate", 0.5f + 0.5f * sin(4 * glfwGetTime()));
-        shader.SetMatrix4("_transform", transMat);
+        fov_angle = 90 * (0.65 + 0.5 * sin(1 * glfwGetTime()));
+        projection = glm::perspective(glm::radians(fov_angle), (float)width / height, 0.1f, 100.0f);
+        model = glm::mat4(0.1f);
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        shader.SetMatrix4("_model", model);
+        shader.SetMatrix4("_view", view);
+        shader.SetMatrix4("_projection", projection);
 
         //  bind vao
         glBindVertexArray(VAO);
+
         //  draw vertices from memory        
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //  binary buffer swaping
         glfwSwapBuffers(window);
@@ -227,7 +277,7 @@ int ch1_transform_main() {
 /// The input event
 /// </summary>
 /// <param name="window">Current window</param>
-void test_3_processInput(GLFWwindow* window)
+void test_4_processInput(GLFWwindow* window)
 {
     //  press ESC to close window and exit
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
