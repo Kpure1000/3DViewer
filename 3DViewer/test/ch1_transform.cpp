@@ -67,19 +67,19 @@ int ch1_transform_main() {
     //  create triangle
     float vertices[] = {
         //  triangle down
-        -1.0f,-1.0f,0.0f, //  left-bottom
+        -0.5f,-0.5f,0.0f, //  left-bottom
         0.5f,0.5f,0.5f,
         0.0f,0.0f,
 
-        -1.0f,1.0f,0.0f, //  left-top
+        -0.5f,0.5f,0.0f, //  left-top
         1.0f,0.0f,0.0f,
         0.0f,1.0f,
 
-        1.0f,1.0f,0.0f, //  right-top
+        0.5f,0.5f,0.0f, //  right-top
         0.0f,1.0f,0.0f,
         1.0f,1.0f,
 
-        1.0f,-1.0f,0.0f, //  right-bottom
+        0.5f,-0.5f,0.0f, //  right-bottom
         0.0f,0.0f,1.0f,
         1.0f,0.0f
     };
@@ -148,8 +148,8 @@ int ch1_transform_main() {
 
 #pragma endregion
 
-    render::Shader shader("../data/shader/ch1_texture.vert",
-        "../data/shader/ch1_texture.frag");
+    render::Shader shader("../data/shader/ch1_transform.vert",
+        "../data/shader/ch1_transform.frag");
 
     render::Texture t1, t2;
     t1.LoadFromFile("../data/texture/container.jpg");
@@ -169,6 +169,10 @@ int ch1_transform_main() {
     time_t startTime = clock();
     time_t curTime = startTime;
     int i = 0;
+
+    //  注意,如果使用的是glm-0.9.9及以上版本,变换前矩阵需要初始化为单位矩阵
+    glm::mat4 transMat = glm::mat4(1.0f);
+
     //  if window has not been closed yet
     while (!glfwWindowShouldClose(window))
     {
@@ -183,10 +187,14 @@ int ch1_transform_main() {
         t1.Use();
         t2.Use();
 
+        transMat = glm::mat4(1.0f);
+        transMat = glm::rotate(transMat, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+
         //  shader update
         shader.Use();
 
         shader.SetFloat("_rate", 0.5f + 0.5f * sin(4 * glfwGetTime()));
+        shader.SetMatrix4("_transform", transMat);
 
         //  bind vao
         glBindVertexArray(VAO);

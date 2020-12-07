@@ -175,6 +175,11 @@ namespace rtx
 			SetVector4(name, color.RGBA());
 		}
 
+		void Shader::SetMatrix4(const std::string& name, const glm::mat4 mat) const
+		{
+			glUniformMatrix4fv(GET_PROPERTY_ID(name), 1, GL_FALSE, glm::value_ptr(mat));
+		}
+
 		void Shader::SetSampler2D(const std::string& name, const Texture& texture) const
 		{
 			glUniform1i(GET_PROPERTY_ID(name), texture.GetIndex()); //  ÷∂Ø…Ë÷√

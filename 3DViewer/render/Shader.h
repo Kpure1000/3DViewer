@@ -45,6 +45,8 @@ namespace rtx
 		
 			void SetColor(const std::string& name, const util::Color& color)const;
 
+			void SetMatrix4(const std::string& name, const glm::mat4 mat)const;
+
 			void SetSampler2D(const std::string& name, const Texture& texture)const;
 
 			void SetArray(const std::string& name, const int& size, const float* data)const;
