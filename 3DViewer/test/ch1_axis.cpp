@@ -30,7 +30,7 @@ int ch1_axis_main() {
 
 #pragma region create window
 
-    int width = 600, height = 600;
+    int width = 2560, height = 1440;
 
     GLFWwindow* window = glfwCreateWindow(width, height, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
@@ -40,7 +40,7 @@ int ch1_axis_main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
-
+    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cerr << "Failed to initialize GLAD" << std::endl;
@@ -216,20 +216,31 @@ int ch1_axis_main() {
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-    float fov_angle = 45.0f;
+    float FoV = 45.0f;
 
-    glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(fov_angle), (float)width / height, 0.1f, 100.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+	projection = glm::perspective(glm::radians(FoV), (float)width / height, 0.1f, 100.0f);
+	glm::vec3 cubePositions[] = {
+        glm::vec3(0.0f,  0.0f,  0.0f),
+        glm::vec3(2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3(2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3(1.3f, -2.0f, -2.5f),
+        glm::vec3(1.5f,  2.0f, -2.5f),
+        glm::vec3(1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+	//  if window has not been closed yet
+	while (!glfwWindowShouldClose(window))
+	{
+		//  input dealing
+		test_4_processInput(window);
 
-    //  if window has not been closed yet
-    while (!glfwWindowShouldClose(window))
-    {
-        //  input dealing
-        test_4_processInput(window);
-
-        //  redner setting
-        glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//  redner setting
+		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //  texture render update
         t1.Use();
@@ -238,11 +249,10 @@ int ch1_axis_main() {
         //  shader update
         shader.Use();
 
-        shader.SetFloat("_rate", 0.5f + 0.5f * sin(4 * glfwGetTime()));
-        fov_angle = 90 * (0.65 + 0.5 * sin(1 * glfwGetTime()));
-        projection = glm::perspective(glm::radians(fov_angle), (float)width / height, 0.1f, 100.0f);
-        model = glm::mat4(0.1f);
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        shader.SetFloat("_rate", 0.5f + 0.5f * sin(6 * glfwGetTime()));
+        FoV = 90 * (0.65 + 0.5 * sin(2 * glfwGetTime()));
+        projection = glm::perspective(glm::radians(FoV), (float)width / height, 0.1f, 100.0f);
+       
         shader.SetMatrix4("_model", model);
         shader.SetMatrix4("_view", view);
         shader.SetMatrix4("_projection", projection);
@@ -250,8 +260,17 @@ int ch1_axis_main() {
         //  bind vao
         glBindVertexArray(VAO);
 
-        //  draw vertices from memory        
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        for (int i = 0; i < 10; i++)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            model = glm::rotate(model, (float)glfwGetTime() * glm::radians(90.0f) * 4,
+                glm::vec3(0.5f, 1.0f, 0.0f));
+            shader.SetMatrix4("_model", model);
+            //  draw vertices from memory        
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+
 
         //  binary buffer swaping
         glfwSwapBuffers(window);

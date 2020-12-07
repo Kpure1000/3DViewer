@@ -30,6 +30,11 @@ int ch1_transform_main();
 /// <returns></returns>
 int ch1_axis_main();
 
+/// <summary>
+/// test5: Camera
+/// </summary>
+/// <returns></returns>
+int ch1_camera_main();
 #pragma endregion
 
 #endif // !CH1_TEST_H

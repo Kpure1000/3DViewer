@@ -40,6 +40,9 @@
     <Filter Include="源文件\glad">
       <UniqueIdentifier>{42145029-7021-46eb-9da0-269925b30ca1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\system">
+      <UniqueIdentifier>{634f0c18-d7af-4c11-87f1-aee599febde5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -87,6 +90,15 @@
     <ClCompile Include="test\ch1_axis.cpp">
       <Filter>源文件\test</Filter>
     </ClCompile>
+    <ClCompile Include="test\ch1_camera.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>源文件\render</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -127,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="test\raytracing.h">
       <Filter>头文件\test</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Camera.h">
+      <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="system\Time.h">
+      <Filter>头文件\system</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
