@@ -8,6 +8,12 @@ out vec4 _frag_out;
 uniform vec2 _screen_size;
 uniform float _rdSeed[4];
 
+/*Camera Data*/
+uniform vec3 ca_lookFrom;
+uniform vec3 ca_left_buttom;
+uniform vec3 ca_horizontal;
+uniform vec3 ca_vertical;
+
 /**********************************/
 /*random*/
 int rdCount=0;
@@ -96,26 +102,32 @@ bool Sphere_Hit(Sphere sp, Ray ray,
 
 /***************/
 /*Metarial*/
-vec3 Scatter_Metal(vec3)
+
 /***************/
 /**********************************/
 
-vec3 Irradiance(Ray ray,Sphere sp)
+vec3 Irradiance(Ray ray, Sphere sp)
 {
     HitRecord rec;
-    if(Sphere_Hit(sp, ray, 0.001, 1000000, rec))
+    if(Sphere_Hit(sp, ray, 0.001, 10000, rec))
     {
         return 0.5*vec3(rec.normal + vec3(1,1,1));
     }
     else
     {
-        vec3 nor = normalize(ray.direction);
+        vec3 nor = ray.direction;
         float t = 0.5 + 0.5*nor.y;
         return (1-t)*vec3(1.0,1.0,1.0)+t*vec3(0.5,0.7,1.0);
     }
 }
-
-// vec3 IrradianceList(Ray ray, )
+/**********************************/
+/*Camera*/
+Ray CreateRayFromCamera(vec2 uv)
+{
+    Ray newRay = Ray_Con(ca_lookFrom,
+     ca_left_buttom + uv.x * ca_horizontal + uv.y * ca_vertical - ca_lookFrom);
+    return newRay;
+}
 
 /*unit color*/
 void NormalColor(inout vec3 Color)
@@ -132,7 +144,6 @@ void main()
     float ver = hor * _screen_size.y / _screen_size.x;
     vec3 horizontal = vec3(hor,0.0,0.0);
     vec3 vertical = vec3(0.0,ver,0.0);
-    vec3 origin = vec3(0.0,0.0,0.0);
 
     Sphere sphere1 = Sphere_Con(vec3(0,0,-1.5),0.5);
     Sphere sphere2 = Sphere_Con(vec3(0,-1000.0,-1.0),1000.0);
@@ -142,19 +153,14 @@ void main()
     uv.x = (gl_FragCoord.x) / _screen_size.x;
     uv.y = (gl_FragCoord.y) / _screen_size.y;
 
-    Ray ray = Ray_Con(origin, lt + uv.x * horizontal + uv.y * vertical - origin);
+    Ray ray = Ray_Con(ca_lookFrom,
+     ca_left_buttom + uv.x * horizontal + uv.y * vertical - ca_lookFrom);
 
     vec3 color;
     color = Irradiance(ray,sphere1);
     
     NormalColor(color);
 
-    // color.x=sqrt(color.x);
-    // color.y=sqrt(color.y);
-    // color.z=sqrt(color.z);
-
     _frag_out = vec4(color,1);
 
-    // Test
-    // _frag_out = vec4(uv.x,uv.y,0.2,1.0);
 }

@@ -41,7 +41,7 @@ int ch1_camera_main() {
 
 #pragma region create window
 
-	int width = 1920, height = 1080;
+	int width = 800, height = 600;
 
 	GLFWwindow* window = glfwCreateWindow(width, height, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
