@@ -10,8 +10,12 @@
 #include"../render/Image.h"
 #include"../util/Color.h"
 #include"../render/Texture.h"
-#include"../render/Camera.h"
+#include"../render/FPSCamera.h"
 #include"../system/Time.h"
+
+#include"../render/Window.h"
+#include"../event/Mouse.h"
+
 
 using namespace rtx;
 using namespace std;

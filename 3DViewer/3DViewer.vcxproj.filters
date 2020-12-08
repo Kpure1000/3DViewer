@@ -43,6 +43,12 @@
     <Filter Include="头文件\system">
       <UniqueIdentifier>{634f0c18-d7af-4c11-87f1-aee599febde5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\event">
+      <UniqueIdentifier>{8fcd4d7e-5d6e-4920-a8a1-3105a70feb00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\event">
+      <UniqueIdentifier>{ff5a9711-471a-4da5-9f28-555f5b57473b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,6 +105,12 @@
     <ClCompile Include="Time.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="test\ch2_color.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -145,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="system\Time.h">
       <Filter>头文件\system</Filter>
+    </ClInclude>
+    <ClInclude Include="test\ch2_test.h">
+      <Filter>头文件\test</Filter>
+    </ClInclude>
+    <ClInclude Include="render\FPSCamera.h">
+      <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="event\Mouse.h">
+      <Filter>头文件\event</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Window.h">
+      <Filter>头文件\render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

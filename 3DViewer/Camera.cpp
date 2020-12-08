@@ -4,51 +4,22 @@ namespace rtx
 {
 	namespace render
 	{
-		Camera::Camera(glm::vec3 LookFrom, glm::vec3 LookAt)
-		{
-			origin = LookFrom;
-			target = LookAt;
-			direction = glm::normalize(origin- target);
-
-			cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-			glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, direction));
-			//cameraUp = glm::normalize(glm::cross(-direction, cameraRight));
-			view = glm::lookAt(origin, target, cameraUp);
-		}
-
-		Camera::Camera(glm::vec3 LookFrom, glm::vec3 LookAt,
-			float FoV, float Aspect)
-		{
-			origin = LookFrom;
-			target = LookAt;
-			direction = glm::normalize(origin- target);
-
-			cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-			glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, direction));
-			//cameraUp = glm::normalize(glm::cross(-direction, cameraRight));
-			view = glm::lookAt(origin, target, cameraUp);
-
-			foV = FoV;
-			aspect = Aspect;
-			near = 0.01f; far = 100.0f;
-			projection = glm::perspective(glm::radians(foV), aspect, 0.01f, 100.0f);
-		}
-
-		Camera::Camera(glm::vec3 LookFrom, glm::vec3 LookAt,
+		Camera::Camera(glm::vec3 LookFrom, glm::vec3 LookAt, glm::vec3 CameraUp,
 			float FoV, float Aspect, float Near, float Far)
 		{
 			origin = LookFrom;
 			target = LookAt;
-			direction = glm::normalize(origin- target);
+			cameraUp = CameraUp;
+			foV = FoV;
+			aspect = Aspect;
+			near = Near;
+			far = Far;
+			direction = glm::normalize(origin - target);
 
-			cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 			glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, direction));
 			//cameraUp = glm::normalize(glm::cross(-direction, cameraRight));
 			view = glm::lookAt(origin, target, cameraUp);
 
-			foV = FoV;
-			aspect = Aspect;
-			near = Near; far = Far;
 			projection = glm::perspective(glm::radians(foV), aspect, near, far);
 		}
 

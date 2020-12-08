@@ -147,6 +147,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="RtxMath.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_init.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="test\ch1_shader.cpp" />
     <ClCompile Include="test\ch1_texture.cpp" />
     <ClCompile Include="test\ch1_transform.cpp" />
+    <ClCompile Include="test\ch2_color.cpp" />
     <ClCompile Include="test\raytracing.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -164,14 +166,18 @@
     <ClCompile Include="VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="event\Mouse.h" />
     <ClInclude Include="graph\Vertex.h" />
     <ClInclude Include="graph\VertexArray.h" />
     <ClInclude Include="render\Camera.h" />
+    <ClInclude Include="render\FPSCamera.h" />
     <ClInclude Include="render\Image.h" />
     <ClInclude Include="render\Shader.h" />
     <ClInclude Include="render\Texture.h" />
+    <ClInclude Include="render\Window.h" />
     <ClInclude Include="system\Time.h" />
     <ClInclude Include="test\ch1_test.h" />
+    <ClInclude Include="test\ch2_test.h" />
     <ClInclude Include="test\raytracing.h" />
     <ClInclude Include="test\test_total.h" />
     <ClInclude Include="util\Color.h" />

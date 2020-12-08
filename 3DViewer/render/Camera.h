@@ -16,12 +16,7 @@ namespace rtx
 
 			Camera() {}
 
-			Camera(glm::vec3 LookFrom, glm::vec3 LookAt);
-
-			Camera(glm::vec3 LookFrom, glm::vec3 LookAt, 
-				float FoV, float Aspect);
-
-			Camera(glm::vec3 LookFrom, glm::vec3 LookAt,
+			Camera(glm::vec3 LookFrom, glm::vec3 LookAt, glm::vec3 CameraUp,
 				float FoV, float Aspect, float Near, float Far);
 
 			glm::vec3 GetOrigin()const;
