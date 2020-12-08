@@ -1,4 +1,5 @@
 #ifndef TIME_H
+#define TIME_H
 #include<ctime>
 
 namespace rtx
@@ -17,8 +18,6 @@ namespace rtx
 			static float deltaTime();
 			
 			static void TimeStart();
-
-			static void FrameStart();
 
 			static void FrameDisplay();
 

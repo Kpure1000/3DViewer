@@ -5,8 +5,9 @@
 #include<GLFW/glfw3.h>
 
 #include"../util/RtxMath.h"
-
+#include"../util/Color.h"
 #include"../event/Mouse.h"
+#include"../system/Time.h"
 
 namespace rtx
 {
@@ -16,41 +17,72 @@ namespace rtx
 		{
 		public:
 
-			Window():m_window(nullptr) {}
-
-			Window(glm::vec2 Size, std::string Title)
-				: m_size(Size), m_title(Title), 
-				m_window(glfwCreateWindow(Size.x, Size.y, Title.c_str(), NULL, NULL))
+			enum class ClearMode
 			{
-				glfwInit(); // 初始化glfw
-				glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
-				glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-				glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-				//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+				ColorMode = GL_COLOR_BUFFER_BIT,
+				DepthMode = GL_DEPTH_BUFFER_BIT
+			};
 
-				if (m_window == NULL)
-				{
-					std::cerr << "Failed to create GLFW window" << std::endl;
-					glfwTerminate();
-				}
-				glfwMakeContextCurrent(m_window);
+			Window() :m_window(nullptr), m_size({ 0.0f,0.0f }),
+				m_title("Render Window"), isOpened(false) {}
 
-				if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-				{
-					std::cerr << "Failed to initialize GLAD" << std::endl;
-				}
+			Window(glm::vec2 Size, std::string Title);
 
-				glViewport(0, 0, Size.x, Size.y); // 设置视口大小
+			GLFWwindow* GetWindow()const { return m_window; }
 
-				//以下是回调的设置
-				
-				//glfwSetWindowUserPointer(m_window,&event::Mouse)
+			void Clear(util::Color color)
+			{
+				if (!isOpened)return;
 
+				glClearColor(color[0], color[1], color[2], color[3]);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			}
+
+			void Clear(util::Color color, Window::ClearMode clearBit)
+			{
+				if (!isOpened)return;
+
+				glClearColor(color[0], color[1], color[2], color[3]);
+				glClear((GLbitfield)clearBit);
+			}
+
+			void Display()
+			{
+				if (!isOpened)return;
+				//  binary buffer swaping
+				glfwSwapBuffers(m_window);
+				event::Mouse::ResetMouseState();
+
+				//  deal events
+				glfwPollEvents();
+				system::Time::FrameDisplay();
+			}
+
+			bool isOpen()
+			{
+				return isOpened = !glfwWindowShouldClose(m_window);
+			}
+
+			void Close()
+			{
+				glfwSetWindowShouldClose(m_window, true);
+				isOpened = false;
+			}
+
+			void SetCursorEnable(bool Enable)
+			{
+				if (!Enable)
+					glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				else
+					glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			}
 
 		private:
 
-			friend class event::Mouse;
+			void SetMousePosCallBack();
+
+			void SetMouseWheelCallBack();
 
 			GLFWwindow* m_window;
 
@@ -58,7 +90,7 @@ namespace rtx
 
 			std::string m_title;
 
-			
+			bool isOpened;
 
 		};
 	}

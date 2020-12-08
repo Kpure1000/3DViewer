@@ -6,13 +6,17 @@
 
 #include"../util/RtxMath.h"
 
+
 namespace rtx
 {
-
-	class render::Window;
+	namespace render
+	{
+		class Window;
+	}
 
 	namespace event
 	{
+
 		class Mouse
 		{
 		public:
@@ -21,7 +25,7 @@ namespace rtx
 			{
 				Left,
 				Right,
-				Middle,     
+				Middle,
 				XButton1,   // The first extra mouse button
 				XButton2,   // The second extra mouse button
 
@@ -34,29 +38,58 @@ namespace rtx
 				HorizontalWheel
 			};
 
-			glm::vec2 GetPosition(render::Window window)const
+			typedef struct MousePositionData
+			{
+				MousePositionData(glm::vec2 Position) :position(Position) {}
+				glm::vec2 position;
+			};
+
+			typedef struct MouseScrollData
+			{
+				MouseScrollData(glm::vec2 Scroll) :scroll(Scroll) {}
+				glm::vec2 scroll;
+			};
+
+			static glm::vec2 GetPosition(rtx::render::Window const& window)
 			{
 				return m_position;
 			}
 
-			glm::vec2 GetScrollOffset(render::Window window)const
+			static bool isMouseMoved()
+			{
+				return m_isMoved;
+			}
+
+			static glm::vec2 GetScrollOffset(rtx::render::Window const& window)
 			{
 				return m_scroll;
 			}
-			
+
+			static bool isWheelScrolled()
+			{
+				return m_isScrolled;
+			}
+
+			static void SetPosition(rtx::render::Window const& window, glm::vec2 const& pos);
+
+			static bool isButtonPressed(rtx::render::Window const& window, Mouse::Button button);
+
 		private:
+
+			static void ResetMouseState()
+			{
+				m_scroll = glm::vec2(0.0f);
+				m_isMoved = false;
+				m_isScrolled = false;
+			}
 
 			friend class render::Window;
 
 			static glm::vec2 m_position;
+			static bool m_isMoved;
 
 			static glm::vec2 m_scroll;
-
-			static bool isMoving;
-
-			static bool isEntered;
-
-
+			static bool m_isScrolled;
 		};
 	}
 }

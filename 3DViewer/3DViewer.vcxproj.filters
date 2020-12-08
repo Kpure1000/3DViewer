@@ -111,6 +111,9 @@
     <ClCompile Include="Mouse.cpp">
       <Filter>源文件\event</Filter>
     </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>源文件\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">

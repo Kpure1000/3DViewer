@@ -12,7 +12,7 @@ namespace rtx
 
 		float Time::deltaTime()
 		{
-			return static_cast<float>(frameStart_time) / 1000.0f;
+			return static_cast<float>(delta_time) / 1000.0f;
 		}
 
 		void Time::TimeStart()
@@ -20,14 +20,10 @@ namespace rtx
 			programStart_time = clock();
 		}
 
-		void Time::FrameStart()
-		{
-			frameStart_time = clock();
-		}
-
 		void Time::FrameDisplay()
 		{
 			delta_time = clock() - frameStart_time;
+			frameStart_time = clock();
 		}
 
 		clock_t Time::programStart_time = 0;

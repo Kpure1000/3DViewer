@@ -20,69 +20,15 @@
 using namespace rtx;
 using namespace std;
 
-void test_5_processInput(GLFWwindow* window, render::Camera& camera);
-void test_5_mouse_callback(GLFWwindow* window, double xpos, double ypos);
-
-float mouseX, mouseY;
-float pitch, yaw;
-bool isMouseEntered = false;
-bool isInputFirst = true;
-glm::vec3 newMouseTarget;
-bool isMoved = false;
-float cameraFov;
+void test_5_processInput(GLFWwindow* window);
 
 int ch1_camera_main() {
-
-#pragma region some initializations
-
-	glfwInit(); // 初始化glfw
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-#pragma endregion
 
 #pragma region create window
 
 	int width = 800, height = 600;
 
-	GLFWwindow* window = glfwCreateWindow(width, height, "LearnOpenGL", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cerr << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(window);
-
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cerr << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
-
-	glViewport(0, 0, width, height); // 设置视口大小
-
-	 //  window resize call back
-	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
-		{
-			glViewport(0, 0, width, height);
-		});
-
-	glfwSetCursorPosCallback(window, test_5_mouse_callback);
-
-	//  mouse scroll event call back
-	glfwSetScrollCallback(window, [](GLFWwindow* win, double offsetX, double offsetY)->void
-		{
-			isMoved = true;
-			if (cameraFov >= 20.0f && cameraFov <= 90.0f)
-				cameraFov -= offsetY;
-			if (cameraFov <= 20.0f)
-				cameraFov = 20.0f;
-			if (cameraFov >= 90.0f)
-				cameraFov = 90.0f;
-		});
+	render::Window App(glm::vec2(width, height), "LearnOpenGL");
 
 #pragma endregion
 
@@ -180,8 +126,6 @@ int ch1_camera_main() {
 
 	glEnable(GL_DEPTH_TEST);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 #pragma endregion
 
 	render::Shader shader("../data/shader/ch1_axis.vert",
@@ -195,13 +139,8 @@ int ch1_camera_main() {
 	shader.SetSampler2D("_texture1", t1);
 	shader.SetSampler2D("_texture2", t2);
 
-	render::Camera camera(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0), 45.0f, (float)width / height);
-
-	pitch = asin(camera.GetDirection().y / camera.GetDirection().length());
-	yaw = -acos(camera.GetDirection().z / camera.GetDirection().length() *
-		camera.GetDirection().y / camera.GetDirection().length()) * 180 / Pi;
-
-	cameraFov = camera.GetFoV();
+	render::FPSCamera fpsCamera(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0),
+		45.0f, (float)width / height, 0.01f, 100.0f);
 
 #pragma region render loop
 
@@ -233,16 +172,16 @@ int ch1_camera_main() {
 
 	system::Time::TimeStart();
 
+	App.SetCursorEnable(false);
+
 	//  if window has not been closed yet
-	while (!glfwWindowShouldClose(window))
+	while (App.isOpen())
 	{
-		system::Time::FrameStart();
 		//  input dealing
-		test_5_processInput(window, camera);
+		test_5_processInput(App.GetWindow());
 
 		//  redner setting
-		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		App.Clear(util::Color(0.1f, 0.2f, 0.3f, 1.0f));
 
 		//  texture render update
 		t1.Use();
@@ -253,14 +192,10 @@ int ch1_camera_main() {
 
 		shader.SetFloat("_rate", 0.5f + 0.5f * sin(6 * glfwGetTime()));
 
-		/*float radius = 10.0f;
-		float camX = sin(glfwGetTime()) * radius;
-		float camZ = cos(glfwGetTime()) * radius;
-		camera.SetOrigin(glm::vec3(camX, 0.0, camZ));
-		camera.SetFoV(45.0f);*/
+		fpsCamera.Update(App);
 
-		shader.SetMatrix4("_view", camera.GetView());
-		shader.SetMatrix4("_projection", camera.GetProjection());
+		shader.SetMatrix4("_view", fpsCamera.GetCamera().GetView());
+		shader.SetMatrix4("_projection", fpsCamera.GetCamera().GetProjection());
 
 		//  bind vao
 		glBindVertexArray(VAO);
@@ -276,12 +211,8 @@ int ch1_camera_main() {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 
-		//  binary buffer swaping
-		glfwSwapBuffers(window);
-		//  deal events
-		glfwPollEvents();
+		App.Display();
 
-		system::Time::FrameDisplay();
 	}
 
 #pragma endregion
@@ -301,82 +232,17 @@ int ch1_camera_main() {
 /// The input event
 /// </summary>
 /// <param name="window">Current window</param>
-void test_5_processInput(GLFWwindow* window, render::Camera& camera)
+void test_5_processInput(GLFWwindow* window)
 {
 	//  press ESC to close window and exit
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	glm::vec3 cameraOrigin = camera.GetOrigin();
-	glm::vec3 cameraUp = camera.GetCameraUp();
-	float cameraSpeed = system::Time::deltaTime() * 0.01f; // adjust accordingly
-	if (isInputFirst)
+	
+	/*if (isInputFirst)
 	{
 		newMouseTarget = -camera.GetDirection();
 		isInputFirst = false;
-	}
+	}*/
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-		cameraOrigin += cameraSpeed * newMouseTarget;
-		isMoved = true;
-	}
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-	{
-		cameraOrigin -= cameraSpeed * newMouseTarget;
-		isMoved = true;
-	}
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-	{
-		cameraOrigin -= glm::normalize(
-			glm::cross(newMouseTarget, cameraUp)
-		) * cameraSpeed;
-		isMoved = true;
-	}
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-	{
-		cameraOrigin += glm::normalize(
-			glm::cross(newMouseTarget, cameraUp)
-		) * cameraSpeed;
-		isMoved = true;
-	}
-	if (isMoved)
-	{
-		camera.SetFoV(cameraFov);
-		camera.SetOrigin(cameraOrigin);
-		camera.SetTarget(cameraOrigin + newMouseTarget);
-		camera.SetCameraUp(cameraUp);
-		isMoved = false;
-	}
-}
-
-void test_5_mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (!isMouseEntered)
-	{
-		mouseX = xpos;
-		mouseY = ypos;
-		isMouseEntered = true;
-	}
-	float xoffset = xpos - mouseX;
-	float yoffset = mouseY - ypos; // 注意这里是相反的，因为y坐标是从底部往顶部依次增大的
-	mouseX = xpos;
-	mouseY = ypos;
-
-	float sensitivity = 0.05f;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
-
-	yaw += xoffset;
-	pitch += yoffset;
-
-	if (pitch > 89.9f)
-		pitch = 89.9f;
-	else if (pitch < -89.9f)
-		pitch = -89.9f;
-
-	newMouseTarget.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-	newMouseTarget.y = sin(glm::radians(pitch));
-	newMouseTarget.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-
-	isMoved = true;
+	
 }
