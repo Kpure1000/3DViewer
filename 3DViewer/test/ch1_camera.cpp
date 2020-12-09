@@ -20,7 +20,7 @@
 using namespace rtx;
 using namespace std;
 
-void test_5_processInput(GLFWwindow* window);
+void test_5_processInput(render::Window window);
 
 int ch1_camera_main() {
 
@@ -128,8 +128,8 @@ int ch1_camera_main() {
 
 #pragma endregion
 
-	render::Shader shader("../data/shader/ch1_axis.vert",
-		"../data/shader/ch1_axis.frag");
+	render::Shader shader("../data/shader/ch1_camera.vert",
+		"../data/shader/ch1_camera.frag");
 
 	render::Texture t1, t2;
 	t1.LoadFromFile("../data/texture/container.jpg");
@@ -178,7 +178,7 @@ int ch1_camera_main() {
 	while (App.isOpen())
 	{
 		//  input dealing
-		test_5_processInput(App.GetWindow());
+		test_5_processInput(App);
 
 		//  redner setting
 		App.Clear(util::Color(0.1f, 0.2f, 0.3f, 1.0f));
@@ -232,11 +232,11 @@ int ch1_camera_main() {
 /// The input event
 /// </summary>
 /// <param name="window">Current window</param>
-void test_5_processInput(GLFWwindow* window)
+void test_5_processInput(render::Window window)
 {
 	//  press ESC to close window and exit
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window.GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window.GetWindow(), true);
 	
 	/*if (isInputFirst)
 	{

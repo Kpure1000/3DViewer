@@ -20,5 +20,12 @@ namespace rtx
 		{
 			return glfwGetMouseButton(window.GetWindow(), (int)button);
 		}
+
+		void Mouse::ResetMouseState()
+		{
+			m_scroll = glm::vec2(0.0f);
+			m_isMoved = false;
+			m_isScrolled = false;
+		}
 	}
 }

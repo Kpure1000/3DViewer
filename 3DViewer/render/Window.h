@@ -59,7 +59,7 @@ namespace rtx
 				system::Time::FrameDisplay();
 			}
 
-			bool isOpen()
+			inline bool isOpen()
 			{
 				return isOpened = !glfwWindowShouldClose(m_window);
 			}

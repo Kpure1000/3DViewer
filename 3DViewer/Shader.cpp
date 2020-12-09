@@ -63,11 +63,8 @@ namespace rtx
 			if (!success)
 			{
 				glGetShaderInfoLog(vShader, 512, NULL, infoLog);
-				std::cerr << "SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << "\n";
-			}
-			else
-			{
-				std::cout << "SHADER: compile vertex shader successed! \n";
+				std::cerr << "\n>>>>>>>>>>>>\nSHADER::VERTEX::COMPILATION_FAILED, in File: " 
+					<< vertexShaderPath << ". Error Info: \n" << infoLog << ">>>>>>>>>>>>\n";
 			}
 
 #pragma endregion
@@ -87,11 +84,8 @@ namespace rtx
 			if (!success)
 			{
 				glGetShaderInfoLog(fShader, 512, NULL, finfoLog);
-				std::cerr << "SHADER::FRAGMENT::COMPILATION_FAILED\n" << finfoLog << "\n";
-			}
-			else
-			{
-				std::cout << "SHADER: compile fragment shader successed! \n";
+				std::cerr << "\n>>>>>>>>>>>>\nSHADER::FRAGMENT::COMPILATION_FAILED, in File: "
+					<< fragmentShaderPath << ". Error Info: \n" << finfoLog << ">>>>>>>>>>>>\n";
 			}
 
 #pragma endregion
@@ -109,11 +103,8 @@ namespace rtx
 			glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
 			if (!success) {
 				glGetProgramInfoLog(m_ID, 512, NULL, pinfoLog);
-				std::cerr << "SHADER::PROGRAM::LINK_FAILED\n" << pinfoLog << "\n";
-			}
-			else
-			{
-				std::cout << "SHADER: load shader program successed! \n";
+				std::cerr << "\n>>>>>>>>>>>>\nSHADER::PROGRAM::LINK_FAILED, Error Info:\n"
+					<< pinfoLog << ">>>>>>>>>>>>\n";
 			}
 
 			//  release shaders
@@ -175,11 +166,16 @@ namespace rtx
 			glUniform4f(GET_PROPERTY_ID(name), value.x, value.y, value.z, value.w);
 		}
 
-		void Shader::SetColor(const std::string& name, const util::Color& color) const
+		void Shader::SetRGBA(const std::string& name, const util::Color& color) const
 		{
 			SetVector4(name, color.RGBA());
 		}
 
+		void Shader::SetRGB(const std::string& name, const util::Color& color) const
+		{
+			SetVector3(name, color.RGB());
+
+		}
 		void Shader::SetMatrix4(const std::string& name, const glm::mat4 mat) const
 		{
 			glUniformMatrix4fv(GET_PROPERTY_ID(name), 1, GL_FALSE, glm::value_ptr(mat));

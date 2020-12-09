@@ -58,6 +58,11 @@ namespace rtx
 				return rgba;
 			}
 
+			glm::vec3 RGB()const
+			{
+				return glm::vec3(rgba.r, rgba.g, rgba.b);
+			}
+
 			float r()const { return rgba.r; }
 			float g()const { return rgba.g; }
 			float b()const { return rgba.b; }

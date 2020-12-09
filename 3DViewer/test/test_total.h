@@ -11,6 +11,7 @@
 * 5. Transform
 */
 #include"ch1_test.h"
+#include"ch2_test.h"
 #include"raytracing.h"
 
 #endif // !TEST_TOTAL_H

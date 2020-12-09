@@ -152,7 +152,7 @@ int ch1_shader_main() {
         timeValue = glfwGetTime();
         color.g() = sin(2.0f * timeValue) / 2.0f + 0.5f;
 
-        shader.SetColor("verColor", color);
+        shader.SetRGBA("verColor", color);
 
         //  use shader to vertices (refresh)
         shader.Use();

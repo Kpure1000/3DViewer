@@ -39,8 +39,10 @@ namespace rtx
 			void SetVector3(const std::string& name, const glm::vec3& value)const;
 
 			void SetVector4(const std::string& name, const glm::vec4& value)const;
-		
-			void SetColor(const std::string& name, const util::Color& color)const;
+
+			void SetRGBA(const std::string& name, const util::Color& color)const;
+
+			void SetRGB(const std::string& name, const util::Color& color)const;
 
 			void SetMatrix4(const std::string& name, const glm::mat4 mat)const;
 
