@@ -28,6 +28,11 @@ namespace rtx
 
 			Window(glm::vec2 Size, std::string Title);
 
+			~Window()
+			{
+				//glfwTerminate();
+			}
+
 			GLFWwindow* GetWindow()const { return m_window; }
 
 			void Clear(util::Color color)
@@ -79,10 +84,6 @@ namespace rtx
 			}
 
 		private:
-
-			void SetMousePosCallBack();
-
-			void SetMouseWheelCallBack();
 
 			GLFWwindow* m_window;
 

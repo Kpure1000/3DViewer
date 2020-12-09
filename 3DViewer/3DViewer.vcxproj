@@ -156,6 +156,7 @@
     <ClCompile Include="test\ch1_shader.cpp" />
     <ClCompile Include="test\ch1_texture.cpp" />
     <ClCompile Include="test\ch1_transform.cpp" />
+    <ClCompile Include="test\ch2_basiclight.cpp" />
     <ClCompile Include="test\ch2_color.cpp" />
     <ClCompile Include="test\raytracing.cpp" />
     <ClCompile Include="Texture.cpp" />

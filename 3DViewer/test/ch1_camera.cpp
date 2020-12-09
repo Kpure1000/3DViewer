@@ -140,7 +140,7 @@ int ch1_camera_main() {
 	shader.SetSampler2D("_texture2", t2);
 
 	render::FPSCamera fpsCamera(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0),
-		45.0f, (float)width / height, 0.01f, 100.0f);
+		45.0f, (float)width / height, 0.01f, 100.0f, 10.0f);
 
 #pragma region render loop
 

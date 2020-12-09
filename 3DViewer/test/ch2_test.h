@@ -8,6 +8,8 @@
 
 int ch2_color_main();
 
+int ch2_basiclight_main();
+
 #pragma endregion
 
 #endif // !CH2_TEST_H

@@ -145,7 +145,7 @@ int ch2_color_main() {
 	lightShader.Use();
 
 	render::FPSCamera fpsCamera(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0),
-		45.0f, (float)width / height, 0.01f, 100.0f);
+		45.0f, (float)width / height, 0.01f, 100.0f,10.0f);
 
 #pragma region render loop
 
@@ -234,13 +234,6 @@ void test_ch2_1_processInput(render::Window window)
 {
 	//  press ESC to close window and exit
 	if (glfwGetKey(window.GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window.GetWindow(), true);
-
-	/*if (isInputFirst)
-	{
-		newMouseTarget = -camera.GetDirection();
-		isInputFirst = false;
-	}*/
-
+		window.Close();
 
 }

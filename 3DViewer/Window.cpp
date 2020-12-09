@@ -53,6 +53,9 @@ namespace rtx
 					event::Mouse::m_scroll.x = (float)x;
 					event::Mouse::m_scroll.y = (float)y;
 				});
+
+			system::Time::TimeStart();
+
 		}
 
 	}

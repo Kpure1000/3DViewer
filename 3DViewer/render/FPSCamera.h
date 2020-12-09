@@ -13,28 +13,36 @@ namespace rtx
 		{
 		public:
 
-			FPSCamera(glm::vec3 LookFrom, glm::vec3 LookAt, 
-				float FoV, float Aspect, float Near, float Far)
-				: isMouseMoved(false), isMouseEntered(false), yaw(0.0f), pitch(0.0f),
+			FPSCamera(glm::vec3 LookFrom, glm::vec3 LookAt,
+				float FoV, float Aspect, float Near, float Far, float CameraSpeed)
+				: isMouseMoved(false), isMouseEntered(false),
+				yaw(0.0f), pitch(0.0f),
+				cameraFov(45),
+				cameraSpeed(CameraSpeed),
 				camera(LookFrom, LookAt, glm::vec3(0.0f, 1.0f, 0.0f), FoV, Aspect, Near, Far)
 			{
 				pitch = asin(camera.GetDirection().y / camera.GetDirection().length());
 				yaw = -acos(camera.GetDirection().z / camera.GetDirection().length() *
 					camera.GetDirection().y / camera.GetDirection().length()) * 180 / Pi;
-
-				cameraFov = camera.GetFoV();
+				cameraDirection.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+				cameraDirection.y = sin(glm::radians(pitch));
+				cameraDirection.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+				cameraDirection = glm::normalize(cameraDirection);
 			}
 
-			Camera GetCamera() const{ return camera; }
+			Camera GetCamera() const { return camera; }
 
 			Camera& GetCamera() { return camera; }
 
 			void Update(Window const& window)
 			{
 				isMouseMoved = false;
+				cameraOrigin = camera.GetOrigin();
+				cameraUp = camera.GetCameraUp();
+				realSpeed = system::Time::deltaTime() * cameraSpeed; // adjust accordingly
 				KeyContoller(window);
-				WheelController(window);
 				MouseController(window);
+				WheelController(window);
 				if (isMouseMoved)
 				{
 					camera.SetFoV(cameraFov);
@@ -46,6 +54,34 @@ namespace rtx
 			}
 
 		private:
+
+			void KeyContoller(Window const& window)
+			{
+				if (glfwGetKey(window.GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
+				{
+					cameraOrigin += realSpeed * cameraDirection;
+					isMouseMoved = true;
+				}
+				if (glfwGetKey(window.GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
+				{
+					cameraOrigin -= realSpeed * cameraDirection;
+					isMouseMoved = true;
+				}
+				if (glfwGetKey(window.GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
+				{
+					cameraOrigin -= glm::normalize(
+						glm::cross(cameraDirection, cameraUp)
+					) * realSpeed;
+					isMouseMoved = true;
+				}
+				if (glfwGetKey(window.GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
+				{
+					cameraOrigin += glm::normalize(
+						glm::cross(cameraDirection, cameraUp)
+					) * realSpeed;
+					isMouseMoved = true;
+				}
+			}
 
 			void MouseController(Window const& window)
 			{
@@ -60,7 +96,7 @@ namespace rtx
 				float yoffset = lastPos.y - mousePos.y; // 注意这里是相反的，因为y坐标是从底部往顶部依次增大的
 				lastPos = mousePos;
 
-				float sensitivity = 0.05f;
+				float sensitivity = std::min(0.05f, system::Time::deltaTime() * cameraSpeed);
 				xoffset *= sensitivity;
 				yoffset *= sensitivity;
 
@@ -75,13 +111,12 @@ namespace rtx
 				cameraDirection.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
 				cameraDirection.y = sin(glm::radians(pitch));
 				cameraDirection.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-
+				cameraDirection = glm::normalize(cameraDirection);
 				isMouseMoved = true;
 			}
 
 			void WheelController(Window const& window)
 			{
-				
 				if (!event::Mouse::isWheelScrolled())return;
 
 				if (cameraFov >= 20.0f && cameraFov <= 90.0f)
@@ -92,37 +127,6 @@ namespace rtx
 					cameraFov = 90.0f;
 
 				isMouseMoved = true;
-			}
-
-			void KeyContoller(Window const& window)
-			{
-				cameraOrigin = camera.GetOrigin();
-				cameraUp = camera.GetCameraUp();
-				cameraSpeed = system::Time::deltaTime() * 10.0f; // adjust accordingly
-				if (glfwGetKey(window.GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
-				{
-					cameraOrigin += cameraSpeed * cameraDirection;
-					isMouseMoved = true;
-				}
-				if (glfwGetKey(window.GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
-				{
-					cameraOrigin -= cameraSpeed * cameraDirection;
-					isMouseMoved = true;
-				}
-				if (glfwGetKey(window.GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
-				{
-					cameraOrigin -= glm::normalize(
-						glm::cross(cameraDirection, cameraUp)
-					) * cameraSpeed;
-					isMouseMoved = true;
-				}
-				if (glfwGetKey(window.GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
-				{
-					cameraOrigin += glm::normalize(
-						glm::cross(cameraDirection, cameraUp)
-					) * cameraSpeed;
-					isMouseMoved = true;
-				}
 			}
 
 			Camera camera;
@@ -138,8 +142,13 @@ namespace rtx
 			glm::vec3 cameraDirection;
 			glm::vec3 cameraOrigin;
 			glm::vec3 cameraUp;
+
+			float realSpeed;
+
 			float cameraSpeed;
+
 			bool isMouseMoved;
+
 			bool isMouseEntered;
 
 			float cameraFov;
