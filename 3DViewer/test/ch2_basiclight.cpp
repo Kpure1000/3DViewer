@@ -141,7 +141,7 @@ int ch2_basiclight_main() {
 	//  注意,如果使用的是glm-0.9.9及以上版本,变换前矩阵需要初始化为单位矩阵
 	glm::mat4 model = glm::mat4(1.0f);
 
-	glm::vec3 lightPosition(0.5, 1.0f, -1.0f);
+	glm::vec3 lightPosition(1.2f, 1.0f, 2.0f);
 
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPosition);
@@ -154,18 +154,18 @@ int ch2_basiclight_main() {
 		"../data/shader/ch2_basiclight_light.frag");
 
 	shader.Use();
-	shader.SetRGB("_objectColor", util::Color(1.0f, 0.5f, 0.2f));
-	shader.SetRGB("_lightColor", util::Color(1.0f, 1.0f, 1.0f));
-	shader.SetVector3("_lightPos", lightPosition);
+	shader.SetRGB("objectColor", util::Color(1.0f, 0.5f, 0.2f));
+	shader.SetRGB("lightColor", util::Color(1.0f, 1.0f, 1.0f));
+	shader.SetVector3("lightPos", lightPosition);
 
-	shader.SetFloat("_ambientStrength", ambientStrength);
+	/*shader.SetFloat("_ambientStrength", ambientStrength);
 	shader.SetFloat("_specularStrength", specularStrength);
-	shader.SetInt("_gloss", gloss);
+	shader.SetInt("_gloss", gloss);*/
 
 	lightShader.Use();
 
 	render::FPSCamera fpsCamera(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0),
-		45.0f, (float)width / height, 0.01f, 100.0f, 10.0f);
+		45.0f, (float)width / height, 0.01f, 100.0f, 6.0f);
 
 #pragma region render loop
 
@@ -186,26 +186,25 @@ int ch2_basiclight_main() {
 
 		//  shader update
 		shader.Use();
-		shader.SetFloat("_ambientStrength", ambientStrength);
+		/*shader.SetFloat("_ambientStrength", ambientStrength);
 		shader.SetFloat("_specularStrength", specularStrength);
-		shader.SetInt("_gloss", gloss);
+		shader.SetInt("_gloss", gloss);*/
 
-		shader.SetMatrix4("_view", fpsCamera.GetCamera().GetView());
-		shader.SetMatrix4("_projection", fpsCamera.GetCamera().GetProjection());
+		shader.SetMatrix4("view", fpsCamera.GetCamera().GetView());
+		shader.SetMatrix4("projection", fpsCamera.GetCamera().GetProjection());
 		model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, 0.0f,
 			glm::vec3(0.5f, 1.0f, 0.0f));
-		shader.SetMatrix4("_model", model);
-		shader.SetVector3("_ViewPos", fpsCamera.GetCamera().GetOrigin());
+		shader.SetMatrix4("model", model);
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		lightShader.Use();
-		lightShader.SetMatrix4("_view", fpsCamera.GetCamera().GetView());
-		lightShader.SetMatrix4("_projection", fpsCamera.GetCamera().GetProjection());
+		lightShader.SetMatrix4("view", fpsCamera.GetCamera().GetView());
+		lightShader.SetMatrix4("projection", fpsCamera.GetCamera().GetProjection());
 		lightModel = glm::rotate(lightModel, (float)glm::radians(0.3f), glm::vec3(0.5f, 1.0f, 0.0f));
-		lightShader.SetMatrix4("_model", lightModel);
+		lightShader.SetMatrix4("model", lightModel);
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -241,8 +240,10 @@ void test_ch2_2_processInput(render::Window window)
 	if (event::Mouse::isWheelScrolled())
 	{
 		float yoffset = event::Mouse::GetScrollOffset(window).y * system::Time::deltaTime() * 30.0f;
+		float isHit = false;
 		if (glfwGetKey(window.GetWindow(), GLFW_KEY_1) == GLFW_PRESS)
 		{
+			isHit = true;
 			if (yoffset < 0)
 				ambientStrength = max(0.001f, ambientStrength * 0.8f);
 			else if (yoffset > 0)
@@ -250,6 +251,7 @@ void test_ch2_2_processInput(render::Window window)
 		}
 		if (glfwGetKey(window.GetWindow(), GLFW_KEY_2) == GLFW_PRESS)
 		{
+			isHit = true;
 			if (yoffset < 0)
 				specularStrength = max(0.001f, specularStrength * 0.8f);
 			else if (yoffset > 0)
@@ -257,10 +259,15 @@ void test_ch2_2_processInput(render::Window window)
 		}
 		if (glfwGetKey(window.GetWindow(), GLFW_KEY_3) == GLFW_PRESS)
 		{
+			isHit = true;
 			if (yoffset < 0)
 				gloss = max(2, gloss / 2);
 			else if (yoffset > 0)
 				gloss = min(256, gloss * 2);
+		}
+		if (isHit)
+		{
+			printf("\ram: %.3f, sp: %.3f, gl: %d        ", ambientStrength, specularStrength, gloss);
 		}
 	}
 
