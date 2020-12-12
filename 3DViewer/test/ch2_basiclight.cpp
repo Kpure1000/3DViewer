@@ -158,9 +158,9 @@ int ch2_basiclight_main() {
 	shader.SetRGB("lightColor", util::Color(1.0f, 1.0f, 1.0f));
 	shader.SetVector3("lightPos", lightPosition);
 
-	/*shader.SetFloat("_ambientStrength", ambientStrength);
+	shader.SetFloat("_ambientStrength", ambientStrength);
 	shader.SetFloat("_specularStrength", specularStrength);
-	shader.SetInt("_gloss", gloss);*/
+	shader.SetInt("_gloss", gloss);
 
 	lightShader.Use();
 
@@ -186,9 +186,9 @@ int ch2_basiclight_main() {
 
 		//  shader update
 		shader.Use();
-		/*shader.SetFloat("_ambientStrength", ambientStrength);
+		shader.SetFloat("_ambientStrength", ambientStrength);
 		shader.SetFloat("_specularStrength", specularStrength);
-		shader.SetInt("_gloss", gloss);*/
+		shader.SetInt("_gloss", gloss);
 
 		shader.SetMatrix4("view", fpsCamera.GetCamera().GetView());
 		shader.SetMatrix4("projection", fpsCamera.GetCamera().GetProjection());
