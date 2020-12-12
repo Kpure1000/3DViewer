@@ -23,9 +23,9 @@ namespace rtx
 
 			enum class Button
 			{
-				Left,
-				Right,
-				Middle,
+				Left = GLFW_MOUSE_BUTTON_LEFT,
+				Right = GLFW_MOUSE_BUTTON_RIGHT,
+				Middle = GLFW_MOUSE_BUTTON_MIDDLE,
 				XButton1,   // The first extra mouse button
 				XButton2,   // The second extra mouse button
 

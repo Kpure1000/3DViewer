@@ -15,7 +15,7 @@ namespace rtx
 
 			FPSCamera(glm::vec3 LookFrom, glm::vec3 LookAt,
 				float FoV, float Aspect, float Near, float Far, float CameraSpeed)
-				: isMouseMoved(false), isMouseEntered(false),
+				: isMouseMoved(false),
 				yaw(0.0f), pitch(0.0f),
 				cameraFov(45),
 				cameraSpeed(CameraSpeed),
@@ -28,11 +28,12 @@ namespace rtx
 				cameraDirection.y = sin(glm::radians(pitch));
 				cameraDirection.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
 				cameraDirection = glm::normalize(cameraDirection);
+
 			}
 
-			Camera GetCamera() const { return camera; }
+			inline Camera GetCamera() const { return camera; }
 
-			Camera& GetCamera() { return camera; }
+			inline Camera& GetCamera() { return camera; }
 
 			void Update(Window const& window)
 			{
@@ -85,15 +86,14 @@ namespace rtx
 
 			void MouseController(Window const& window)
 			{
-				if (!event::Mouse::isMouseMoved())return;
 				glm::vec2 mousePos = rtx::event::Mouse::GetPosition(window);
-				if (!isMouseEntered)
+				if (!event::Mouse::isMouseMoved() || !event::Mouse::isButtonPressed(window, event::Mouse::Button::Middle))
 				{
 					lastPos = mousePos;
-					isMouseEntered = true;
+					return;
 				}
 				float xoffset = mousePos.x - lastPos.x;
-				float yoffset = lastPos.y - mousePos.y; // 注意这里是相反的，因为y坐标是从底部往顶部依次增大的
+				float yoffset = lastPos.y - mousePos.y;
 				lastPos = mousePos;
 
 				float sensitivity = std::min(0.05f, system::Time::deltaTime() * cameraSpeed);
@@ -148,8 +148,6 @@ namespace rtx
 			float cameraSpeed;
 
 			bool isMouseMoved;
-
-			bool isMouseEntered;
 
 			float cameraFov;
 

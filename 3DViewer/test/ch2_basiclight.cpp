@@ -165,11 +165,11 @@ int ch2_basiclight_main() {
 	lightShader.Use();
 
 	render::FPSCamera fpsCamera(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0),
-		45.0f, (float)width / height, 0.01f, 100.0f, 6.0f);
+		45.0f, (float)width / height, 0.01f, 100.0f, 8.0f);
 
 #pragma region render loop
 
-	App.SetCursorEnable(false);
+	//App.SetCursorEnable(false);
 
 	//  if window has not been closed yet
 	while (App.isOpen())

@@ -24,7 +24,8 @@ namespace rtx
 			};
 
 			Window() :m_window(nullptr), m_size({ 0.0f,0.0f }),
-				m_title("Render Window"), isOpened(false) {}
+				m_title("Render Window"), isOpened(false)
+			{}
 
 			Window(glm::vec2 Size, std::string Title);
 
@@ -33,9 +34,9 @@ namespace rtx
 				//glfwTerminate();
 			}
 
-			GLFWwindow* GetWindow()const { return m_window; }
+			inline GLFWwindow* GetWindow()const { return m_window; }
 
-			void Clear(util::Color color)
+			inline void Clear(util::Color color)
 			{
 				if (!isOpened)return;
 
@@ -44,7 +45,7 @@ namespace rtx
 
 			}
 
-			void Clear(util::Color color, Window::ClearMode clearBit)
+			inline void Clear(util::Color color, Window::ClearMode clearBit)
 			{
 				if (!isOpened)return;
 
@@ -69,13 +70,25 @@ namespace rtx
 				return isOpened = !glfwWindowShouldClose(m_window);
 			}
 
-			void Close()
+			inline bool isOpen()const
+			{
+				return !glfwWindowShouldClose(m_window);
+			}
+
+			inline void Close()
 			{
 				glfwSetWindowShouldClose(m_window, true);
 				isOpened = false;
 			}
 
-			void SetCursorEnable(bool Enable)
+			inline void Close()const
+			{
+				glfwSetWindowShouldClose(m_window, true);
+			}
+
+			inline bool isFocus()const { return isFocused; }
+
+			inline void SetCursorEnable(bool Enable)
 			{
 				if (!Enable)
 					glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -92,6 +105,9 @@ namespace rtx
 			std::string m_title;
 
 			bool isOpened;
+
+			//  TODO: this cannot be static
+			static bool isFocused;
 
 		};
 	}
