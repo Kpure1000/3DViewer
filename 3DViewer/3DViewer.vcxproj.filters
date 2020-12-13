@@ -49,6 +49,12 @@
     <Filter Include="源文件\event">
       <UniqueIdentifier>{ff5a9711-471a-4da5-9f28-555f5b57473b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\imgui">
+      <UniqueIdentifier>{09de8e4f-fd62-4fbb-ba23-544f909bcdde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\imgui">
+      <UniqueIdentifier>{82154f88-184f-4cd4-a6c0-70411684e0f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -117,6 +123,24 @@
     <ClCompile Include="test\ch2_basiclight.cpp">
       <Filter>源文件\test</Filter>
     </ClCompile>
+    <ClCompile Include="test\ch2_material.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>源文件\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>源文件\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>源文件\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>源文件\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>源文件\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -175,6 +199,27 @@
     </ClInclude>
     <ClInclude Include="render\Window.h">
       <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\Mesh.h">
+      <Filter>头文件\graph</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

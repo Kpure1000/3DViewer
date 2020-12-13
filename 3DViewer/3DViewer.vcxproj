@@ -146,6 +146,11 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="RtxMath.cpp" />
@@ -158,6 +163,7 @@
     <ClCompile Include="test\ch1_transform.cpp" />
     <ClCompile Include="test\ch2_basiclight.cpp" />
     <ClCompile Include="test\ch2_color.cpp" />
+    <ClCompile Include="test\ch2_material.cpp" />
     <ClCompile Include="test\raytracing.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -169,8 +175,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="event\Mouse.h" />
+    <ClInclude Include="graph\Mesh.h" />
     <ClInclude Include="graph\Vertex.h" />
     <ClInclude Include="graph\VertexArray.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="render\Camera.h" />
     <ClInclude Include="render\FPSCamera.h" />
     <ClInclude Include="render\Image.h" />
