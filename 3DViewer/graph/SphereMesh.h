@@ -13,10 +13,9 @@ namespace rtx
 		public:
 
 			SphereMesh()
-				:radius(1.0f)
+				:radius(1.0f), lerpNum(100)
 			{
-				int n = 1000;
-				int latitu = pow(n, 0.5), longitu = pow(n, 0.5);
+				int latitu = lerpNum, longitu = lerpNum;
 
 				float rz1, rz2, rxy1, rxy2;
 				Vertex va, vb, vc, vd;
@@ -96,6 +95,8 @@ namespace rtx
 			}
 
 			float radius;
+
+			int lerpNum;
 
 		};
 	}

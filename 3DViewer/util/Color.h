@@ -24,11 +24,23 @@ namespace rtx
 			Color(glm::vec3 color, float a) :rgba(color, a) {}
 
 			Color(unsigned long color)
-				:rgba((color >> 8 & 0xff) / TO_RGB,
-					(color >> 4 & 0xff) / TO_RGB,
-					(color >> 2 & 0xff) / TO_RGB,
-					(color & 0xff) / TO_RGB)
-			{}
+			{
+				if (color > 0xffffff)
+				{
+					rgba.a = color & 0xff;
+					rgba.b = ((color >> 8) & 0xff);
+					rgba.g = ((color >> 16) & 0xff);
+					rgba.r = ((color >> 24) & 0xff);
+				}
+				else
+				{
+					rgba.a = 1.0f;
+					rgba.b = ((color) & 0xff);
+					rgba.g = ((color >> 8) & 0xff);
+					rgba.r = ((color >> 16) & 0xff);
+				}
+				rgba /= TO_RGB;
+			}
 
 			float& operator[](const int& index)
 			{

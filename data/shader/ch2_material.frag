@@ -4,15 +4,17 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec3 LightPos;
 
+out vec4 FragColor;
+/*********************/
 struct Material {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
-    float shininess;
+    int shininess;
 }; 
-
 uniform Material _material;
 
+/*********************/
 struct Light {
     vec3 position;
 
@@ -20,11 +22,12 @@ struct Light {
     vec3 diffuse;
     vec3 specular;
 };
+uniform Light _light;
 
-Light _light;
-
+/*********************/
 uniform vec3 lightColor;
 
+/*********************/
 void main()
 {
     // 环境光
@@ -32,12 +35,12 @@ void main()
 
     // 漫反射 
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - FragPos);
+    vec3 lightDir = normalize(LightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = _light.diffuse * (diff * _material.diffuse);
 
     // 镜面光
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 viewDir = normalize(-FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), _material.shininess);
     vec3 specular = _light.specular * (spec * _material.specular);  
