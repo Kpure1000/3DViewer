@@ -10,60 +10,101 @@ namespace rtx
 
 	namespace render
 	{
+
+		/// <summary>
+		/// Transform: 
+		/// All drawable object shoud have included a transform 
+		/// </summary>
 		class Transform
 		{
 		public:
 
-			Transform(glm::mat4& ModelMatrix)
-				: m_position(glm::vec3(0.0f)), m_rotation(glm::vec3(0.0f)), m_scale(glm::vec3(1.0f)),
-				m_trans(glm::mat4(1.0f))
+			/// <summary>
+			/// Trasform
+			/// </summary>
+			Transform()
+				: m_position(glm::vec3(0.0f, 0.0f, 0.0f)),
+				m_rotation(glm::vec3(0.0f, 0.0f, 0.0f)), m_angle(0.0f),
+				m_scale(glm::vec3(1.0f, 1.0f, 1.0f)),
+				m_trans(glm::mat4(1.0f)),
+				isUpdated(false)
 			{}
 
-			inline glm::vec3 GetPosition()
+			inline glm::vec3 GetPosition()const
 			{
 				return m_position;
 			}
 
-			inline glm::vec3 GetRotateion()
+			inline glm::vec3 GetRotateion()const
 			{
 				return m_rotation;
 			}
 
-			inline glm::vec3 GetScale()
+			inline glm::vec3 GetScale()const
 			{
 				return m_scale;
 			}
 
-			inline void SetPosition(const glm::vec3& position)
+			glm::mat4 GetTransMat();
+
+			/// <summary>
+			/// Set position
+			/// </summary>
+			/// <param name="position"></param>
+			inline Transform& SetPosition(const glm::vec3& position)
 			{
+				isUpdated = true;
 				m_position = position;
-				//  TODO 矩阵计算
+				return *this;
 			}
 
-			inline void SetRotateion(const glm::vec3& rotation)
+			/// <summary>
+			/// Set rotation
+			/// </summary>
+			/// <param name="rotation"></param>
+			inline Transform& SetRotation(const glm::vec3& rotation, const float& angle)
 			{
+				isUpdated = true;
 				m_rotation = rotation;
-				//  TODO 矩阵计算
+				m_angle = angle;
+				return *this;
 			}
 
-			inline void SetSclae(const glm::vec3& scale)
+			/// <summary>
+			/// Set scale
+			/// </summary>
+			/// <param name="scale"></param>
+			inline Transform& SetScale(const glm::vec3& scale)
 			{
+				isUpdated = true;
 				m_scale = scale;
-				//  TODO 矩阵计算
+				return *this;
 			}
 
-			void RotateArround(const glm::vec3& target, const float& speed);
+			Transform& Rotate(const glm::vec3& rotation, const float& angle);
+
+			/// <summary>
+			/// Rotate arround a target position
+			/// </summary>
+			/// <param name="target">Target position</param>
+			/// <param name="up">Up axis of rotate</param>
+			/// <param name="speed">Line speed</param>
+			Transform& RotateArround(const glm::vec3& target,
+				const glm::vec3& up, float& angle, const float& speed);
 
 		private:
 
 			glm::vec3 m_position;
 
-			//  TODO: 以后可能要改成四元数
+			//  TODO: Might replace by quaternion
 			glm::vec3 m_rotation;
+			float m_angle;
 
 			glm::vec3 m_scale;
 
 			glm::mat4 m_trans;
+
+			bool isUpdated;
 
 		};
 	}

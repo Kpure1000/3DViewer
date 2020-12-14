@@ -26,7 +26,7 @@ int ch2_color_main() {
 
 #pragma region create window
 
-	int width = 800, height = 600;
+	int width = 800, height = 700;
 
 	render::Window App(glm::vec2(width, height), "ch2_color", render::Window::ClearMode::DepthMode);
 

@@ -38,17 +38,17 @@ int ch2_material_main()
 #pragma endregion
 
 	SphereMesh sphere;
+	sphere.GetTransform()
+		.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f))
+		.SetRotation(glm::vec3(0.5f, 1.0f, 0.0f), 0.0f)
+		.SetScale(glm::vec3(1.0f));
+
+	glm::vec3 lightPosition(2.0f, 0.0f, 2.0f);
 
 	SphereMesh lightSphere;
-
-	//  注意,如果使用的是glm-0.9.9及以上版本,变换前矩阵需要初始化为单位矩阵
-	glm::mat4 model = glm::mat4(1.0f);
-
-	glm::vec3 lightPosition(1.2f, 1.0f, 2.0f);
-
-	glm::mat4 lightModel = glm::mat4(1.0f);
-	lightModel = glm::translate(lightModel, lightPosition);
-	lightModel = glm::scale(lightModel, glm::vec3(0.3f));
+	lightSphere.GetTransform()
+		.SetPosition(lightPosition)
+		.SetScale(glm::vec3(1.0f));
 
 	render::Shader shader("../data/shader/ch2_material.vert",
 		"../data/shader/ch2_material.frag");
@@ -65,7 +65,8 @@ int ch2_material_main()
 	shader.SetVector3("_material.specular", util::Color(0xffffff).RGB());
 	shader.SetInt("_material.shininess", 32);
 
-	shader.SetVector3("_light.position", lightPosition);
+	//shader.SetVector3("_light.position", lightPosition);
+	shader.SetVector3("lightPos", lightSphere.GetTransform().GetPosition());
 	shader.SetVector3("_light.ambient", util::Color(0x0f0f0f).RGB());
 	shader.SetVector3("_light.diffuse", util::Color(0x444444).RGB());
 	shader.SetVector3("_light.specular", util::Color(0x777474).RGB());
@@ -79,6 +80,9 @@ int ch2_material_main()
 #pragma region render loop
 
 	App.DrawReady();
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
+
+	float arround_angle_tmp = 0.0f;
 
 	//  if window has not been closed yet
 	while (App.isOpen())
@@ -91,24 +95,26 @@ int ch2_material_main()
 
 		fpsCamera.Update(App);
 
+		sphere.GetTransform().Rotate(glm::vec3(0.5f, 1.0f, 0.0f),
+			45.0f * system::Time::deltaTime());
+
+		lightSphere.GetTransform().RotateArround(sphere.GetTransform().GetPosition(),
+			glm::vec3(0.0f, 1.0f, 0.0f), arround_angle_tmp, 55.0f);
+
 #pragma region Draw
 
 		//  shader update
 		shader.Use();
 		shader.SetMatrix4("view", fpsCamera.GetCamera().GetView());
 		shader.SetMatrix4("projection", fpsCamera.GetCamera().GetProjection());
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, 0.0f,
-			glm::vec3(0.5f, 1.0f, 0.0f));
-		shader.SetMatrix4("model", model);
+		shader.SetMatrix4("model", sphere.GetTransform().GetTransMat());
+		shader.SetVector3("lightPos", lightSphere.GetTransform().GetPosition());
 		App.Draw(sphere);
 
 		lightShader.Use();
 		lightShader.SetMatrix4("view", fpsCamera.GetCamera().GetView());
 		lightShader.SetMatrix4("projection", fpsCamera.GetCamera().GetProjection());
-		lightModel = glm::rotate(lightModel, (float)glm::radians(0.3f), glm::vec3(0.5f, 1.0f, 0.0f));
-		lightShader.SetMatrix4("model", lightModel);
+		lightShader.SetMatrix4("model", lightSphere.GetTransform().GetTransMat());
 		App.Draw(lightSphere);
 
 #pragma endregion

@@ -59,6 +59,11 @@ namespace rtx
 				{
 					glEnable(GL_DEPTH_TEST);
 				}
+
+				//  set draw mode
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //  draw fill face
+				//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
+				//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
 			}
 
 			void Clear(util::Color color)

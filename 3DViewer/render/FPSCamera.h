@@ -87,7 +87,7 @@ namespace rtx
 			void MouseController(Window const& window)
 			{
 				glm::vec2 mousePos = rtx::event::Mouse::GetPosition(window);
-				if (!event::Mouse::isMouseMoved() || !event::Mouse::isButtonPressed(window, event::Mouse::Button::Middle))
+				if (!event::Mouse::isMouseMoved() || !event::Mouse::isButtonPressed(window, event::Mouse::Button::Right))
 				{
 					lastPos = mousePos;
 					return;

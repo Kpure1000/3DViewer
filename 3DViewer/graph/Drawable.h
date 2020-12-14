@@ -6,6 +6,8 @@
 namespace rtx
 {
 
+	using render::Transform;
+
 	namespace graph
 	{
 
@@ -18,21 +20,26 @@ namespace rtx
 
 			Drawable() : m_isActived(true) {}
 
-			Transform& GetTransform()
+			inline Transform& GetTransform()
 			{
 				return m_trans;
 			}
 
-			Transform GetTransform()const
+			inline Transform GetTransform()const
 			{
 				return m_trans;
 			}
 
-			void SetActive(bool active) { m_isActived = active; }
+			inline void SetActive(bool active) { m_isActived = active; }
 
-			bool isActive()const { return m_isActived; }
+			inline bool isActive()const { return m_isActived; }
 
 		protected:
+
+			inline glm::mat4 GetTransMat()
+			{
+				return m_trans.GetTransMat();
+			}
 
 			bool m_isActived;
 
