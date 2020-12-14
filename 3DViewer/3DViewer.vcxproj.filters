@@ -141,6 +141,12 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>源文件\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>源文件\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderStates.cpp">
+      <Filter>源文件\graph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -219,6 +225,21 @@
       <Filter>头文件\imgui</Filter>
     </ClInclude>
     <ClInclude Include="graph\Mesh.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\Drawable.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\RenderStates.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\RenderTarget.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\CubeMesh.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\SphereMesh.h">
       <Filter>头文件\graph</Filter>
     </ClInclude>
   </ItemGroup>

@@ -153,6 +153,8 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="RenderStates.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="RtxMath.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_init.cpp" />
@@ -175,7 +177,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="event\Mouse.h" />
+    <ClInclude Include="graph\CubeMesh.h" />
+    <ClInclude Include="graph\Drawable.h" />
     <ClInclude Include="graph\Mesh.h" />
+    <ClInclude Include="graph\RenderStates.h" />
+    <ClInclude Include="graph\RenderTarget.h" />
+    <ClInclude Include="graph\SphereMesh.h" />
     <ClInclude Include="graph\Vertex.h" />
     <ClInclude Include="graph\VertexArray.h" />
     <ClInclude Include="imgui\imconfig.h" />
