@@ -32,7 +32,7 @@ int ch2_basiclight_main() {
 
 	int width = 800, height = 600;
 
-	render::Window App(glm::vec2(width, height), "ch2_color");
+	render::Window App(glm::vec2(width, height), "ch2_color", render::Window::ClearMode::DepthMode);
 
 #pragma endregion
 
@@ -212,6 +212,8 @@ int ch2_basiclight_main() {
 
 		App.Display();
 
+		printf("\rdeltaTime: %.3f        ", system::Time::deltaTime());
+
 	}
 
 #pragma endregion
@@ -265,10 +267,10 @@ void test_ch2_2_processInput(render::Window window)
 			else if (yoffset > 0)
 				gloss = min(256, gloss * 2);
 		}
-		if (isHit)
+		/*if (isHit)
 		{
 			printf("\ram: %.3f, sp: %.3f, gl: %d        ", ambientStrength, specularStrength, gloss);
-		}
+		}*/
 	}
 
 }

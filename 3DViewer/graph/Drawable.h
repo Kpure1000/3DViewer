@@ -13,6 +13,18 @@ namespace rtx
 		class Drawable
 		{
 
+		public:
+
+			Drawable() : m_isActived(true) {}
+
+			void SetActive(bool active) { m_isActived = active; }
+
+			bool isActive()const { return m_isActived; }
+		
+		protected:
+		
+			bool m_isActived;
+		
 		private:
 
 			friend class RenderTarget;

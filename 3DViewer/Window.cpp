@@ -9,8 +9,8 @@ namespace rtx
 
 		bool Window::isFocused = false;
 
-		Window::Window(glm::vec2 Size, std::string Title)
-			: m_size(Size), m_title(Title)
+		Window::Window(glm::vec2 Size, std::string Title, Window::ClearMode ClearBit)
+			: m_size(Size), m_title(Title), m_clearBit(ClearBit)
 		{
 			glfwInit(); // ≥ı ºªØglfw
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
@@ -66,6 +66,8 @@ namespace rtx
 			system::Time::TimeStart();
 
 		}
+
+
 
 	}
 }

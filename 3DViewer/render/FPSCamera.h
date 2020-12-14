@@ -96,7 +96,7 @@ namespace rtx
 				float yoffset = lastPos.y - mousePos.y;
 				lastPos = mousePos;
 
-				float sensitivity = std::min(0.05f, system::Time::deltaTime() * cameraSpeed);
+				float sensitivity = std::min(0.1f, system::Time::deltaTime() * cameraSpeed * 10.0f);
 				xoffset *= sensitivity;
 				yoffset *= sensitivity;
 

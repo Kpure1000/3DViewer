@@ -13,12 +13,13 @@ namespace rtx
 		public:
 
 			SphereMesh()
+				:radius(1.0f)
 			{
-				int n = 64;
+				int n = 1000;
 				int latitu = pow(n, 0.5), longitu = pow(n, 0.5);
 
 				float rz1, rz2, rxy1, rxy2;
-				float va, vb, vc, vd;
+				Vertex va, vb, vc, vd;
 				glm::vec3 normal;
 				for (size_t i = 0; i < longitu; i++)
 				{
@@ -28,22 +29,73 @@ namespace rtx
 						rz2 = (Pi * (j + 1) / latitu);
 						rxy1 = 2 * Pi * i / longitu;
 						rxy2 = 2 * Pi * (i + 1) / longitu;
-						va = { (double)R * sin(rz1) * cos(rxy1),(double)R * sin(rz1) * sin(rxy1),(double)R * cos(rz1) };
-						vb = { (double)R * sin(rz2) * cos(rxy1),(double)R * sin(rz2) * sin(rxy1),(double)R * cos(rz2) };
-						vc = { (double)R * sin(rz2) * cos(rxy2),(double)R * sin(rz2) * sin(rxy2),(double)R * cos(rz2) };
-						vd = { (double)R * sin(rz1) * cos(rxy2),(double)R * sin(rz1) * sin(rxy2),(double)R * cos(rz1) };
-						normal = Cross(vd - vb, va - vc).Normalize();
-						
-						glVertex3f(va.fX, va.fY, va.fZ);
-						
-						glVertex3f(vb.fX, vb.fY, vb.fZ);
-						
-						glVertex3f(vc.fX, vc.fY, vc.fZ);
-						
-						glVertex3f(vd.fX, vd.fY, vd.fZ);
+						va.position = { radius * sin(rz1) * cos(rxy1),radius * sin(rz1) * sin(rxy1),radius * cos(rz1) };
+						vb.position = { radius * sin(rz2) * cos(rxy1),radius * sin(rz2) * sin(rxy1),radius * cos(rz2) };
+						vc.position = { radius * sin(rz2) * cos(rxy2),radius * sin(rz2) * sin(rxy2),radius * cos(rz2) };
+						vd.position = { radius * sin(rz1) * cos(rxy2),radius * sin(rz1) * sin(rxy2),radius * cos(rz1) };
+
+						normal = glm::normalize(glm::cross(vd.position - vb.position, va.position - vc.position));
+						va.normal = vb.normal = vc.normal = vd.normal = normal;
+
+						vertices.push_back(va);
+						vertices.push_back(vb);
+						vertices.push_back(vd);
+						vertices.push_back(vb);
+						vertices.push_back(vc);
+						vertices.push_back(vd);
+
 					}
 				}
+
+				MeshInit();
+
 			}
+
+			~SphereMesh()
+			{
+				glDeleteVertexArrays(1, &VAO);
+				glDeleteBuffers(1, &VBO);
+			}
+
+		private:
+
+			virtual void MeshInit()
+			{
+				glGenVertexArrays(1, &VAO);
+				glGenBuffers(1, &VBO);
+
+				glBindVertexArray(VAO);
+				glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+				glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+				//  position
+				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+				glEnableVertexAttribArray(0);
+				verticesOffset += 3;
+				//  normal
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+				glEnableVertexAttribArray(1);
+				verticesOffset += 3;
+				//  texcoords
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+				glEnableVertexAttribArray(2);
+				verticesOffset += 2;
+				//  color
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+				glEnableVertexAttribArray(3);
+				verticesOffset += 3;
+
+				//glBindVertexArray(0);
+			}
+
+			virtual void Draw(RenderTarget target)const
+			{
+				if (m_isActived)
+					target.Draw(vertices, verticesOffset, VAO);
+			}
+
+			float radius;
 
 		};
 	}

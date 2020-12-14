@@ -8,12 +8,17 @@
 #include"../util/Color.h"
 #include"../event/Mouse.h"
 #include"../system/Time.h"
+#include"../graph/RenderTarget.h"
+
+using namespace rtx::util;
+using rtx::event::Mouse;
+using rtx::graph::RenderTarget;
 
 namespace rtx
 {
 	namespace render
 	{
-		class Window
+		class Window : public RenderTarget
 		{
 		public:
 
@@ -27,7 +32,7 @@ namespace rtx
 				m_title("Render Window"), isOpened(false)
 			{}
 
-			Window(glm::vec2 Size, std::string Title);
+			Window(glm::vec2 Size, std::string Title, Window::ClearMode ClearBit);
 
 			~Window()
 			{
@@ -36,21 +41,38 @@ namespace rtx
 
 			inline GLFWwindow* GetWindow()const { return m_window; }
 
-			inline void Clear(util::Color color)
+			void DrawReady()
 			{
-				if (!isOpened)return;
+				//  release bind of vbo
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				//  release bind of vao
+				glBindVertexArray(0);
+				//  release bind of ebo
+				//  <ATTENTION!!!> DO NOT RELEASE EBO BEFORE VAO 
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-				glClearColor(color[0], color[1], color[2], color[3]);
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+				//  set draw mode
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //  draw fill face
+				//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
+				//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
+				if (m_clearBit == ClearMode::DepthMode)
+				{
+					glEnable(GL_DEPTH_TEST);
+				}
 			}
 
-			inline void Clear(util::Color color, Window::ClearMode clearBit)
+			void Clear(util::Color color)
 			{
 				if (!isOpened)return;
-
 				glClearColor(color[0], color[1], color[2], color[3]);
-				glClear((GLbitfield)clearBit);
+				if (m_clearBit == ClearMode::ColorMode)
+				{
+					glClear(GL_COLOR_BUFFER_BIT);
+				}
+				else if (m_clearBit == ClearMode::DepthMode)
+				{
+					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				}
 			}
 
 			void Display()
@@ -99,6 +121,8 @@ namespace rtx
 		private:
 
 			GLFWwindow* m_window;
+
+			ClearMode m_clearBit;
 
 			glm::vec2 m_size;
 

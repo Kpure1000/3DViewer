@@ -9,6 +9,6 @@ int main()
 	//return ch1_axis_main();
 	//return ch1_camera_main();
 	//return ch2_color_main();
-	return ch2_basiclight_main();
-	//return ch2_material_main();
+	//return ch2_basiclight_main();
+	return ch2_material_main();
 }
