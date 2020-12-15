@@ -201,7 +201,6 @@ int ch1_axis_main() {
 #pragma region render loop
 
     util::Color color;
-    float timeValue;
 
     bool isImage1 = true;
 
@@ -249,8 +248,8 @@ int ch1_axis_main() {
         //  shader update
         shader.Use();
 
-        shader.SetFloat("_rate", 0.5f + 0.5f * sin(6 * glfwGetTime()));
-        FoV = 90 * (0.65 + 0.5 * sin(2 * glfwGetTime()));
+        shader.SetFloat("_rate", 0.5f + 0.5f * static_cast<float>(sin(6 * glfwGetTime())));
+        FoV = 90.0f * (0.65f + 0.5f * static_cast<float>(sin(2 * glfwGetTime())));
         projection = glm::perspective(glm::radians(FoV), (float)width / height, 0.1f, 100.0f);
        
         shader.SetMatrix4("_model", model);

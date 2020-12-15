@@ -24,7 +24,7 @@ namespace rtx
 			/// </summary>
 			Transform()
 				: m_position(glm::vec3(0.0f, 0.0f, 0.0f)),
-				m_rotation(glm::vec3(0.0f, 0.0f, 0.0f)), m_angle(0.0f),
+				m_rotation(glm::vec3(0.0f, 0.0f, 1.0f)), m_angle(0.0f),
 				m_scale(glm::vec3(1.0f, 1.0f, 1.0f)),
 				m_trans(glm::mat4(1.0f)),
 				isUpdated(false)
@@ -81,6 +81,11 @@ namespace rtx
 				
 			}
 
+			/// <summary>
+			/// Rotate
+			/// </summary>
+			/// <param name="rotation">Axis</param>
+			/// <param name="angle">Angle</param>
 			void Rotate(const glm::vec3& rotation, const float& angle);
 
 			/// <summary>
@@ -88,7 +93,7 @@ namespace rtx
 			/// </summary>
 			/// <param name="target">Target position</param>
 			/// <param name="up">Up axis of rotate</param>
-			/// <param name="speed">Line speed</param>
+			/// <param name="speed">Angle speed</param>
 			void RotateArround(const glm::vec3& target,
 				const glm::vec3& up, const float& speed);
 

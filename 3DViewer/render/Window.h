@@ -28,6 +28,13 @@ namespace rtx
 				DepthMode = GL_DEPTH_BUFFER_BIT
 			};
 
+			enum class DrawMode
+			{
+				Fill = GL_FILL,
+				Line = GL_LINE,
+				Point = GL_POINT
+			};
+
 			Window() :m_window(nullptr), m_size({ 0.0f,0.0f }),
 				m_title("Render Window"), isOpened(false)
 			{}
@@ -41,7 +48,7 @@ namespace rtx
 
 			inline GLFWwindow* GetWindow()const { return m_window; }
 
-			void DrawReady()
+			void DrawStart(DrawMode drawMode)
 			{
 				//  release bind of vbo
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -59,11 +66,15 @@ namespace rtx
 				{
 					glEnable(GL_DEPTH_TEST);
 				}
-
+				m_drawMode = drawMode;
 				//  set draw mode
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //  draw fill face
-				//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
-				//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
+				glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)m_drawMode);
+			}
+
+			void SetDrawMode(const DrawMode& drawMode)
+			{
+				m_drawMode = drawMode;
+				glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)m_drawMode);
 			}
 
 			void Clear(util::Color color)
@@ -128,6 +139,8 @@ namespace rtx
 			GLFWwindow* m_window;
 
 			ClearMode m_clearBit;
+
+			DrawMode m_drawMode;
 
 			glm::vec2 m_size;
 

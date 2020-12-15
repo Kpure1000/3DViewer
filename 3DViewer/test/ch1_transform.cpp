@@ -164,7 +164,6 @@ int ch1_transform_main() {
 #pragma region render loop
 
     util::Color color;
-    float timeValue;
 
     bool isImage1 = true;
 
@@ -195,7 +194,7 @@ int ch1_transform_main() {
         //  shader update
         shader.Use();
 
-        shader.SetFloat("_rate", 0.5f + 0.5f * sin(4 * glfwGetTime()));
+        shader.SetFloat("_rate", 0.5f + 0.5f * static_cast<float>(sin(4 * glfwGetTime())));
         shader.SetMatrix4("_transform", transMat);
 
         //  bind vao

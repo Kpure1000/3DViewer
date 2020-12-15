@@ -9,12 +9,36 @@ namespace rtx
 		{
 			origin = LookFrom;
 			target = LookAt;
+			direction = glm::normalize(origin - target);
+
 			cameraUp = CameraUp;
 			foV = FoV;
 			aspect = Aspect;
 			near = Near;
 			far = Far;
+
+			glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, direction));
+			//cameraUp = glm::normalize(glm::cross(-direction, cameraRight));
+			view = glm::lookAt(origin, target, cameraUp);
+
+			projection = glm::perspective(glm::radians(foV), aspect, near, far);
+		}
+
+		Camera::Camera(glm::vec3 LookFrom, glm::vec3 LookAt, glm::vec3 CameraUp,
+			float FoV, float Aspect, float Near, float Far, bool isTranCa)
+		{
+			origin = LookFrom;
+			target = LookAt;
 			direction = glm::normalize(origin - target);
+
+			cameraUp = CameraUp;
+			foV = FoV;
+			aspect = Aspect;
+			near = Near;
+			far = Far;
+
+			m_trans.SetPosition(LookFrom);
+			m_trans.SetRotation(direction, 0.0f);
 
 			glm::vec3 cameraRight = glm::normalize(glm::cross(cameraUp, direction));
 			//cameraUp = glm::normalize(glm::cross(-direction, cameraRight));

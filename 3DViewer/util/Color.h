@@ -27,17 +27,17 @@ namespace rtx
 			{
 				if (color > 0xffffff)
 				{
-					rgba.a = color & 0xff;
-					rgba.b = ((color >> 8) & 0xff);
-					rgba.g = ((color >> 16) & 0xff);
-					rgba.r = ((color >> 24) & 0xff);
+					rgba.a = static_cast<float>(color & 0xff);
+					rgba.b = static_cast<float>((color >> 8) & 0xff);
+					rgba.g = static_cast<float>((color >> 16) & 0xff);
+					rgba.r = static_cast<float>((color >> 24) & 0xff);
 				}
 				else
 				{
 					rgba.a = 1.0f;
-					rgba.b = ((color) & 0xff);
-					rgba.g = ((color >> 8) & 0xff);
-					rgba.r = ((color >> 16) & 0xff);
+					rgba.b = static_cast<float>((color) & 0xff);
+					rgba.g = static_cast<float>((color >> 8) & 0xff);
+					rgba.r = static_cast<float>((color >> 16) & 0xff);
 				}
 				rgba /= TO_RGB;
 			}

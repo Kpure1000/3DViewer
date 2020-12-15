@@ -40,7 +40,7 @@ namespace rtx
 			static inline double Drand48()
 			{
 				seed = (RAND_A * seed + RAND_C) & 0xffffffffffffLL;
-				unsigned int x = seed >> 16;
+				unsigned int x = static_cast<unsigned int>(seed >> 16);
 				return  ((double)x / (double)RAND_M);
 			}
 

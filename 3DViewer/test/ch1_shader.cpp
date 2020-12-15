@@ -149,7 +149,7 @@ int ch1_shader_main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         //  ready some values for shader
-        timeValue = glfwGetTime();
+        timeValue = static_cast<float>(glfwGetTime());
         color.g() = sin(2.0f * timeValue) / 2.0f + 0.5f;
 
         shader.SetRGBA("verColor", color);

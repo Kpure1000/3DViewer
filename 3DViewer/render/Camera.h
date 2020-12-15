@@ -6,6 +6,8 @@
 
 #include"../util/RtxMath.h"
 
+#include"Transform.h"
+
 namespace rtx
 {
 	namespace render
@@ -16,8 +18,33 @@ namespace rtx
 
 			Camera() {}
 
+			/// <summary>
+			/// Create a camera
+			/// </summary>
+			/// <param name="LookFrom">Origin position</param>
+			/// <param name="LookAt">Look at</param>
+			/// <param name="CameraUp">Up direction</param>
+			/// <param name="FoV">Fov</param>
+			/// <param name="Aspect">Aspect</param>
+			/// <param name="Near">Near distance</param>
+			/// <param name="Far">Far distance</param>
 			Camera(glm::vec3 LookFrom, glm::vec3 LookAt, glm::vec3 CameraUp,
 				float FoV, float Aspect, float Near, float Far);
+
+			/// <summary>
+			/// Create a camera
+			/// </summary>
+			/// <param name="LookFrom">Origin position</param>
+			/// <param name="LookAt">Look at</param>
+			/// <param name="CameraUp">Up direction</param>
+			/// <param name="FoV">Fov</param>
+			/// <param name="Aspect">Aspect</param>
+			/// <param name="Near">Near distance</param>
+			/// <param name="Far">Far distance</param>
+			/// <param name="isTranCa">??</param>
+			[[deprecated("This constructor will be deleted")]]
+			Camera(glm::vec3 LookFrom, glm::vec3 LookAt, glm::vec3 CameraUp,
+				float FoV, float Aspect, float Near, float Far, bool isTranCa);
 
 			glm::vec3 GetOrigin()const;
 
@@ -44,6 +71,8 @@ namespace rtx
 			void SetAspect(float Aspect);
 
 		private:
+
+			Transform m_trans;
 
 			glm::vec3 origin;
 

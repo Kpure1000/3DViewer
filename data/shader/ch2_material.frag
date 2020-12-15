@@ -16,16 +16,12 @@ uniform Material _material;
 
 /*********************/
 struct Light {
-    vec3 position;
-
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
 };
 uniform Light _light;
 
-/*********************/
-uniform vec3 lightColor;
 
 /*********************/
 void main()

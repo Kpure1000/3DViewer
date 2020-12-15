@@ -22,7 +22,6 @@ namespace rtx
 			isUpdated = true;
 			m_rotation = rotation;
 			m_angle += angle;
-			
 		}
 
 		void Transform::RotateArround(const glm::vec3& target,
@@ -32,16 +31,13 @@ namespace rtx
 
 			glm::mat4 trans = glm::mat4(1.0f);
 			trans = glm::translate(trans, target);
-			trans = glm::rotate(trans, (float)glm::radians(speed) * system::Time::deltaTime(), up);
+			trans = glm::rotate(trans, (float)glm::radians(speed), up);
 			trans = glm::translate(trans, m_position - target);
 			trans = glm::scale(trans, m_scale);
 
 			m_position = (glm::vec3)(trans * glm::vec4(glm::vec3(0.0f), 1.0f));
 			m_rotation = up;
 			m_angle += system::Time::deltaTime() * speed;
-
-
-			
 		}
 
 

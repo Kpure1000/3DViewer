@@ -161,7 +161,6 @@ int raytracing()
 #pragma region render loop
 
     util::Color color;
-    float timeValue;
 
     bool isImage1 = true;
 
@@ -187,7 +186,7 @@ int raytracing()
 		glfwGetWindowSize(window, &win_width, &win_height);
 		shader.SetVector2("_screen_size", glm::vec2(win_width, win_height));
 		for (size_t i = 0; i < 4; i++)
-			randSeed[i] = util::RayMath::Drand48();
+			randSeed[i] = static_cast<float>(util::RayMath::Drand48());
 		shader.SetArray("_rdSeed", 4, randSeed);
 		float horizontal_ca = 4.0f;
 		shader.SetVector3("ca_lookFrom", glm::vec3(0.0f, 0.0f, 2.0f));

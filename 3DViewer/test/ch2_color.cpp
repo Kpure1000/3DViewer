@@ -150,7 +150,6 @@ int ch2_color_main() {
 #pragma region render loop
 
 	util::Color color;
-	float timeValue;
 
 	bool isImage1 = true;
 
@@ -186,7 +185,7 @@ int ch2_color_main() {
 
 		//  shader update
 		shader.Use();
-		shader.SetFloat("_rate", 0.5f + 0.5f * sin(6 * glfwGetTime()));
+		shader.SetFloat("_rate", 0.5f + 0.5f * static_cast<float>(sin(6 * glfwGetTime())));
 		shader.SetMatrix4("_view", fpsCamera.GetCamera().GetView());
 		shader.SetMatrix4("_projection", fpsCamera.GetCamera().GetProjection());
 		model = glm::mat4(1.0f);

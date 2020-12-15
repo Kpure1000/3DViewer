@@ -145,7 +145,6 @@ int ch1_camera_main() {
 #pragma region render loop
 
 	util::Color color;
-	float timeValue;
 
 	bool isImage1 = true;
 
@@ -190,7 +189,7 @@ int ch1_camera_main() {
 		//  shader update
 		shader.Use();
 
-		shader.SetFloat("_rate", 0.5f + 0.5f * sin(6 * glfwGetTime()));
+		shader.SetFloat("_rate", 0.5f + 0.5f * static_cast<float>(sin(6 * glfwGetTime())));
 
 		fpsCamera.Update(App);
 

@@ -49,30 +49,25 @@ int ch2_material_main()
 		"../data/shader/ch2_material_light.frag");
 
 	shader.Use();
-	shader.SetRGB("objectColor", util::Color(1.0f, 0.5f, 0.2f));
-	shader.SetRGB("lightColor", util::Color(1.0f, 1.0f, 1.0f));
-	shader.SetVector3("lightPos", lightPosition);
-	shader.SetVector3("_material.ambient", util::Color(0xffffff).RGB());
-	shader.SetVector3("_material.diffuse", util::Color(0x349cff).RGB());
-	shader.SetVector3("_material.specular", util::Color(0xffffff).RGB());
+	shader.SetRGB("_material.ambient", util::Color(0xffffff));
+	shader.SetRGB("_material.diffuse", util::Color(0x349cff));
+	shader.SetRGB("_material.specular", util::Color(0xffffff));
 	shader.SetInt("_material.shininess", 32);
 
-	//shader.SetVector3("_light.position", lightPosition);
-	shader.SetVector3("lightPos", lightSphere.GetTransform().GetPosition());
-	shader.SetVector3("_light.ambient", util::Color(0x0f0f0f).RGB());
-	shader.SetVector3("_light.diffuse", util::Color(0x444444).RGB());
-	shader.SetVector3("_light.specular", util::Color(0x777474).RGB());
+	shader.SetVector3("_lightPos", lightSphere.GetTransform().GetPosition());
+	shader.SetRGB("_light.ambient", util::Color(0x0f0f0f));
+	shader.SetRGB("_light.diffuse", util::Color(0x444444));
+	shader.SetRGB("_light.specular", util::Color(0x777474));
 
 	lightShader.Use();
-	lightShader.SetRGB("_LightColor", util::Color(0xFFFF66));
+	lightShader.SetRGB("_lightColor", util::Color(0xFFFF66));
 
 	render::FPSCamera fpsCamera(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0),
 		45.0f, (float)width / height, 0.01f, 100.0f, 5.0f);
 
 #pragma region render loop
 
-	App.DrawReady();
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
+	App.DrawStart(Window::DrawMode::Fill);
 
 	float arround_angle_tmp = 0.0f;
 
@@ -93,22 +88,22 @@ int ch2_material_main()
 			45.0f * system::Time::deltaTime());
 
 		sphere.GetTransform().RotateArround(lightSphere.GetTransform().GetPosition(),
-			up, 55.0f);
+			up, 55.0f * system::Time::deltaTime());
 
 #pragma region Draw
 
 		//  shader update
 		shader.Use();
-		shader.SetMatrix4("view", fpsCamera.GetCamera().GetView());
-		shader.SetMatrix4("projection", fpsCamera.GetCamera().GetProjection());
-		shader.SetMatrix4("model", sphere.GetTransform().GetTransMat());
-		shader.SetVector3("lightPos", lightSphere.GetTransform().GetPosition());
+		shader.SetMatrix4("_view", fpsCamera.GetCamera().GetView());
+		shader.SetMatrix4("_projection", fpsCamera.GetCamera().GetProjection());
+		shader.SetMatrix4("_model", sphere.GetTransform().GetTransMat());
+		shader.SetVector3("_lightPos", lightSphere.GetTransform().GetPosition());
 		App.Draw(sphere);
 
 		lightShader.Use();
-		lightShader.SetMatrix4("view", fpsCamera.GetCamera().GetView());
-		lightShader.SetMatrix4("projection", fpsCamera.GetCamera().GetProjection());
-		lightShader.SetMatrix4("model", lightSphere.GetTransform().GetTransMat());
+		lightShader.SetMatrix4("_view", fpsCamera.GetCamera().GetView());
+		lightShader.SetMatrix4("_projection", fpsCamera.GetCamera().GetProjection());
+		lightShader.SetMatrix4("_model", lightSphere.GetTransform().GetTransMat());
 		App.Draw(lightSphere);
 
 #pragma endregion

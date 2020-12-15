@@ -6,7 +6,9 @@
 
 #pragma region Test Entrance
 
+#define _CH2_TEST_2 
 #define _CH2_TEST_3 
+#define _CH2_TEST_4 
 
 #ifdef _CH2_TEST_1
 int ch2_color_main();
@@ -21,7 +23,7 @@ int ch2_material_main();
 #endif // _CH2_TEST_3
 
 #ifdef _CH2_TEST_4
-
+int ch2_lightMap_main();
 #endif // _CH2_TEST_4
 
 #pragma endregion

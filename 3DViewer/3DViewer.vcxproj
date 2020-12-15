@@ -103,6 +103,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +136,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,6 +169,7 @@
     <ClCompile Include="test\ch1_transform.cpp" />
     <ClCompile Include="test\ch2_basiclight.cpp" />
     <ClCompile Include="test\ch2_color.cpp" />
+    <ClCompile Include="test\ch2_lightMap.cpp" />
     <ClCompile Include="test\ch2_material.cpp" />
     <ClCompile Include="test\raytracing.cpp" />
     <ClCompile Include="Texture.cpp" />

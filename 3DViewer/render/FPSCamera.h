@@ -20,7 +20,7 @@ namespace rtx
 				cameraFov(45),
 				cameraSpeed(CameraSpeed),
 				camera(LookFrom, LookAt, glm::vec3(0.0f, 1.0f, 0.0f), FoV, Aspect, Near, Far)
-			{
+			{				
 				pitch = asin(camera.GetDirection().y / camera.GetDirection().length());
 				yaw = -acos(camera.GetDirection().z / camera.GetDirection().length() *
 					camera.GetDirection().y / camera.GetDirection().length()) * 180 / Pi;
