@@ -248,5 +248,20 @@
     <ClInclude Include="render\Transform.h">
       <Filter>头文件\render</Filter>
     </ClInclude>
+    <ClInclude Include="render\Render.h">
+      <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Util.h">
+      <Filter>头文件\util</Filter>
+    </ClInclude>
+    <ClInclude Include="system\System.h">
+      <Filter>头文件\system</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\Graph.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="event\Event.h">
+      <Filter>头文件\event</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

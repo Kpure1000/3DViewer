@@ -1,5 +1,5 @@
 #ifndef VERTEXARRAY_H
-#include"graph/Vertex.h"
+#include"Vertex.h"
 
 #include<vector>
 

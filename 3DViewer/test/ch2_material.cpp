@@ -6,17 +6,11 @@
 #include<sstream>
 #include<thread>
 
-#include"../render/Shader.h"
-#include"../render/Image.h"
-#include"../util/Color.h"
-#include"../render/Texture.h"
-#include"../render/FPSCamera.h"
-#include"../system/Time.h"
-
-#include"../render/Window.h"
-#include"../event/Mouse.h"
-#include"../graph/CubeMesh.h"
-#include"../graph/SphereMesh.h"
+#include"../util/Util.h"
+#include"../render/Render.h"
+#include"../graph/Graph.h"
+#include"../event/Event.h"
+#include"../system/System.h"
 
 using namespace rtx;
 using namespace std;

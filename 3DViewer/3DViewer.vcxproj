@@ -177,9 +177,11 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="event\Event.h" />
     <ClInclude Include="event\Mouse.h" />
     <ClInclude Include="graph\CubeMesh.h" />
     <ClInclude Include="graph\Drawable.h" />
+    <ClInclude Include="graph\Graph.h" />
     <ClInclude Include="graph\Mesh.h" />
     <ClInclude Include="graph\RenderStates.h" />
     <ClInclude Include="graph\RenderTarget.h" />
@@ -195,10 +197,12 @@
     <ClInclude Include="render\Camera.h" />
     <ClInclude Include="render\FPSCamera.h" />
     <ClInclude Include="render\Image.h" />
+    <ClInclude Include="render\Render.h" />
     <ClInclude Include="render\Shader.h" />
     <ClInclude Include="render\Texture.h" />
     <ClInclude Include="render\Transform.h" />
     <ClInclude Include="render\Window.h" />
+    <ClInclude Include="system\System.h" />
     <ClInclude Include="system\Time.h" />
     <ClInclude Include="test\ch1_test.h" />
     <ClInclude Include="test\ch2_test.h" />
@@ -206,6 +210,7 @@
     <ClInclude Include="test\test_total.h" />
     <ClInclude Include="util\Color.h" />
     <ClInclude Include="util\RtxMath.h" />
+    <ClInclude Include="util\Util.h" />
     <ClInclude Include="util\Vector.h" />
     <ClInclude Include="util\Vector2.h" />
     <ClInclude Include="util\Vector3.h" />
