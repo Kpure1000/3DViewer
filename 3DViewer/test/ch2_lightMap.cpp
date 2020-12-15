@@ -34,6 +34,8 @@ int ch2_lightMap_main()
 	render::Shader ojbShader("../data/shader/ch2_lightMap.vert",
 		"../data/shader/ch2_lightMap.frag");
 
+
+
 	return 0;
 }
 

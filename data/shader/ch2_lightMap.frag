@@ -3,6 +3,7 @@
 in vec3 FragPos;
 in vec3 Normal;
 in vec3 LightPos;
+in vec2 TexCoords;
 
 out vec4 FragColor;
 /*********************/
@@ -21,7 +22,6 @@ struct Light {
 };
 uniform Light _light;
 
-
 /*********************/
 void main()
 {
@@ -32,7 +32,7 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(LightPos - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = _light.diffuse * (diff * _material.diffuse);
+    vec3 diffuse = _light.diffuse * diff * texture(_material.diffuse,);
 
     // 镜面光
     vec3 viewDir = normalize(-FragPos);
