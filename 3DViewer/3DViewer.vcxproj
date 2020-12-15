@@ -155,7 +155,6 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
-    <ClCompile Include="render\Transform.h" />
     <ClCompile Include="RtxMath.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_init.cpp" />
@@ -198,6 +197,7 @@
     <ClInclude Include="render\Image.h" />
     <ClInclude Include="render\Shader.h" />
     <ClInclude Include="render\Texture.h" />
+    <ClInclude Include="render\Transform.h" />
     <ClInclude Include="render\Window.h" />
     <ClInclude Include="system\Time.h" />
     <ClInclude Include="test\ch1_test.h" />

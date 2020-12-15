@@ -147,9 +147,6 @@
     <ClCompile Include="RenderStates.cpp">
       <Filter>源文件\graph</Filter>
     </ClCompile>
-    <ClCompile Include="render\Transform.h">
-      <Filter>头文件\render</Filter>
-    </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>源文件\render</Filter>
     </ClCompile>
@@ -247,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="graph\SphereMesh.h">
       <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Transform.h">
+      <Filter>头文件\render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

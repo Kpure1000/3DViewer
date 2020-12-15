@@ -38,17 +38,15 @@ int ch2_material_main()
 #pragma endregion
 
 	SphereMesh sphere;
-	sphere.GetTransform()
-		.SetPosition(glm::vec3(0.0f, 0.0f, 0.0f))
-		.SetRotation(glm::vec3(0.5f, 1.0f, 0.0f), 0.0f)
-		.SetScale(glm::vec3(1.0f));
+	sphere.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	sphere.GetTransform().SetRotation(glm::vec3(0.5f, 1.0f, 0.0f), 0.0f);
+	sphere.GetTransform().SetScale(glm::vec3(1.0f));
 
-	glm::vec3 lightPosition(2.0f, 0.0f, 2.0f);
+	glm::vec3 lightPosition(5.0f, 0.0f, 5.0f);
 
 	SphereMesh lightSphere;
-	lightSphere.GetTransform()
-		.SetPosition(lightPosition)
-		.SetScale(glm::vec3(1.0f));
+	lightSphere.GetTransform().SetPosition(lightPosition);
+	lightSphere.GetTransform().SetScale(glm::vec3(2.0f));
 
 	render::Shader shader("../data/shader/ch2_material.vert",
 		"../data/shader/ch2_material.frag");
@@ -84,6 +82,8 @@ int ch2_material_main()
 
 	float arround_angle_tmp = 0.0f;
 
+	glm::vec3 up = glm::cross(glm::vec3(1.0f, 1.0f, 1.0f), lightSphere.GetTransform().GetPosition() - sphere.GetTransform().GetPosition());
+
 	//  if window has not been closed yet
 	while (App.isOpen())
 	{
@@ -95,11 +95,11 @@ int ch2_material_main()
 
 		fpsCamera.Update(App);
 
-		sphere.GetTransform().Rotate(glm::vec3(0.5f, 1.0f, 0.0f),
+		lightSphere.GetTransform().Rotate(glm::vec3(0.5f, 1.0f, 0.0f),
 			45.0f * system::Time::deltaTime());
 
-		lightSphere.GetTransform().RotateArround(sphere.GetTransform().GetPosition(),
-			glm::vec3(0.0f, 1.0f, 0.0f), arround_angle_tmp, 55.0f);
+		sphere.GetTransform().RotateArround(lightSphere.GetTransform().GetPosition(),
+			up, 55.0f);
 
 #pragma region Draw
 

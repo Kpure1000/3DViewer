@@ -51,37 +51,37 @@ namespace rtx
 			/// Set position
 			/// </summary>
 			/// <param name="position"></param>
-			inline Transform& SetPosition(const glm::vec3& position)
+			inline void SetPosition(const glm::vec3& position)
 			{
 				isUpdated = true;
 				m_position = position;
-				return *this;
+				
 			}
 
 			/// <summary>
 			/// Set rotation
 			/// </summary>
 			/// <param name="rotation"></param>
-			inline Transform& SetRotation(const glm::vec3& rotation, const float& angle)
+			inline void SetRotation(const glm::vec3& rotation, const float& angle)
 			{
 				isUpdated = true;
 				m_rotation = rotation;
 				m_angle = angle;
-				return *this;
+				
 			}
 
 			/// <summary>
 			/// Set scale
 			/// </summary>
 			/// <param name="scale"></param>
-			inline Transform& SetScale(const glm::vec3& scale)
+			inline void SetScale(const glm::vec3& scale)
 			{
 				isUpdated = true;
 				m_scale = scale;
-				return *this;
+				
 			}
 
-			Transform& Rotate(const glm::vec3& rotation, const float& angle);
+			void Rotate(const glm::vec3& rotation, const float& angle);
 
 			/// <summary>
 			/// Rotate arround a target position
@@ -89,8 +89,8 @@ namespace rtx
 			/// <param name="target">Target position</param>
 			/// <param name="up">Up axis of rotate</param>
 			/// <param name="speed">Line speed</param>
-			Transform& RotateArround(const glm::vec3& target,
-				const glm::vec3& up, float& angle, const float& speed);
+			void RotateArround(const glm::vec3& target,
+				const glm::vec3& up, const float& speed);
 
 		private:
 
