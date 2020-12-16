@@ -185,8 +185,8 @@ int ch1_transform_main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         //  texture render update
-        t1.Use();
-        t2.Use();
+        t1.Bind();
+        t2.Bind();
 
         transMat = glm::mat4(1.0f);
         transMat = glm::rotate(transMat, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));

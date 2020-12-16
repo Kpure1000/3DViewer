@@ -9,7 +9,7 @@ namespace rtx
 			drawable.Draw(*this);
 		}
 
-		void RenderTarget::Draw(vector<Vertex> vertices, int vertexSize, unsigned int vao)const
+		void RenderTarget::Draw(vector<Vertex> vertices, unsigned int vao)const
 		{
 			glBindVertexArray(vao);
 			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices.size()));

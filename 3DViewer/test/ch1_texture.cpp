@@ -179,8 +179,8 @@ int ch1_texture_main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         //  texture render update
-        t1.Use();
-        t2.Use();
+        t1.Bind();
+        t2.Bind();
 
         //  shader update
         shader.Use();

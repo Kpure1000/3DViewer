@@ -32,7 +32,22 @@ namespace rtx
 			//  TODO: need to release bind?
 		}
 
-		void Texture::Use()const
+		void Texture::LoadFromFile(const std::string& path)
+		{
+			image.LoadFromFile(path.c_str());
+		}
+
+		void Texture::LoadFromMemory(int w, int h, int ch, unsigned char* data)
+		{
+			image.LoadFromMemory(w, h, ch, data);
+		}
+
+		void Texture::LoadFromImage(const Image& image)
+		{
+			this->image = image;
+		}
+
+		void Texture::Bind()const
 		{
 			if (texture_indices.find(m_ID) != texture_indices.end())
 			{
@@ -52,14 +67,5 @@ namespace rtx
 			return m_ID;
 		}
 
-		void Texture::LoadFromFile(const std::string& path)
-		{
-			image.LoadFromFile(path.c_str());
-		}
-
-		void Texture::LoadFromMemory(int w, int h, int ch, unsigned char* data)
-		{
-			image.LoadFromMemory(w, h, ch, data);
-		}
 	}
 }

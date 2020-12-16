@@ -1,10 +1,5 @@
 #include"render/Shader.h"
 
-#ifndef GET_PROPERTY_ID(NAME)
-#define GET_PROPERTY_ID(NAME) glGetUniformLocation(m_ID, (NAME).c_str())
-#endif // !GET_PROPERTY_ID(NAME)
-
-
 namespace rtx
 {
 	namespace render
@@ -139,31 +134,31 @@ namespace rtx
 		void Shader::SetInt(const std::string& name,
 			const int& value) const
 		{
-			glUniform1i(GET_PROPERTY_ID(name), value);
+			glUniform1i(GetPropertyID(name), value);
 		}
 
 		void Shader::SetFloat(const std::string& name,
 			const float& value) const
 		{
-			glUniform1f(GET_PROPERTY_ID(name), value);
+			glUniform1f(GetPropertyID(name), value);
 		}
 
 		void Shader::SetVector2(const std::string& name,
 			const glm::vec2& value) const
 		{
-			glUniform2f(GET_PROPERTY_ID(name), value.x, value.y);
+			glUniform2f(GetPropertyID(name), value.x, value.y);
 		}
 
 		void Shader::SetVector3(const std::string& name,
 			const glm::vec3& value) const
 		{
-			glUniform3f(GET_PROPERTY_ID(name), value.x, value.y, value.z);
+			glUniform3f(GetPropertyID(name), value.x, value.y, value.z);
 		}
 
 		void Shader::SetVector4(const std::string& name,
 			const glm::vec4& value)const
 		{
-			glUniform4f(GET_PROPERTY_ID(name), value.x, value.y, value.z, value.w);
+			glUniform4f(GetPropertyID(name), value.x, value.y, value.z, value.w);
 		}
 
 		void Shader::SetRGBA(const std::string& name, const util::Color& color) const
@@ -178,17 +173,17 @@ namespace rtx
 		}
 		void Shader::SetMatrix4(const std::string& name, const glm::mat4 mat) const
 		{
-			glUniformMatrix4fv(GET_PROPERTY_ID(name), 1, GL_FALSE, glm::value_ptr(mat));
+			glUniformMatrix4fv(GetPropertyID(name), 1, GL_FALSE, glm::value_ptr(mat));
 		}
 
 		void Shader::SetSampler2D(const std::string& name, const Texture& texture) const
 		{
-			glUniform1i(GET_PROPERTY_ID(name), texture.GetIndex()); // 手动设置
+			glUniform1i(GetPropertyID(name), texture.GetIndex()); // 手动设置
 		}
 
 		void Shader::SetArray(const std::string& name,const int& size, const float* data)const
 		{
-			glUniform1fv(GET_PROPERTY_ID(name), size, data);
+			glUniform1fv(GetPropertyID(name), size, data);
 		}
 
 	}

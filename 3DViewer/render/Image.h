@@ -2,6 +2,11 @@
 #define IMAGE_H
 
 #include<stb/stb_image.h>
+#include<stb/stb_image_write.h>
+#include<vector>
+#include<functional>
+using std::vector;
+using std::function;
 
 namespace rtx
 {
@@ -13,48 +18,88 @@ namespace rtx
 		public:
 
 			Image()
-				:width(0), height(0), channel(0), data(nullptr),
-				loadMode(Load_Mode::NONE)
+				:width(0), height(0), channel(0),
+				loadMode(LoadMode::NONE)
 			{}
 
+			/// <summary>
+			/// Load image from memory
+			/// </summary>
+			/// <param name="w">Width</param>
+			/// <param name="h">Heigt</param>
+			/// <param name="ch">Channel</param>
+			/// <param name="data">Image data</param>
 			void LoadFromMemory(const int& w, const int& h, const int& ch, unsigned char* data)
 			{
-				loadMode = Load_Mode::LOAD_MEMORY;
+				loadMode = LoadMode::LOAD_MEMORY;
 				this->width = w;
 				this->height = h;
 				this->channel = ch;
-				this->data = data;
-				CheckBuffer();
+
+				imageData.reserve((size_t)w * (size_t)h * (size_t)ch);
+				imageData.assign(data, data + (size_t)w * (size_t)h * (size_t)ch);
+				CheckBuffer(imageData.size());
 			}
 
-			void LoadFromFile(const char* path)
+			/// <summary>
+			/// Load image from a vector
+			/// </summary>
+			/// <param name="w">Width</param>
+			/// <param name="h">Heigt</param>
+			/// <param name="ch">Channel</param>
+			/// <param name="data">Image data(in vector)</param>
+			void LoadFromMemory(const int& w, const int& h, const int& ch, const vector<unsigned char>& data)
 			{
-				loadMode = Load_Mode::LOAD_FILE;
-				stbi_set_flip_vertically_on_load(true);
-				data = stbi_load(path, &width, &height, &channel, 0);
-				CheckBuffer();
+				loadMode = LoadMode::LOAD_MEMORY;
+				this->width = w;
+				this->height = h;
+				this->channel = ch;
+				imageData = data;
+				CheckBuffer(imageData.size());
 			}
 
-			void LoadFromFile(const char* path, bool isFlip)
+			/// <summary>
+			/// Load image from file and set weather flip y-axis or not
+			/// </summary>
+			/// <param name="path"></param>
+			/// <param name="isFlip"></param>
+			void LoadFromFile(const std::string& path, bool isFlip)
 			{
-				loadMode = Load_Mode::LOAD_FILE;
+				loadMode = LoadMode::LOAD_FILE;
 				stbi_set_flip_vertically_on_load(isFlip);
-				data = stbi_load(path, &width, &height, &channel, 0);
-				CheckBuffer();
+
+				auto data = stbi_load(path.c_str(), &width, &height, &channel, 0);
+				imageData.reserve((size_t)width * (size_t)height * (size_t)channel);
+				imageData.assign(data, data + (size_t)width * (size_t)height * (size_t)channel);
+				stbi_image_free(data);
+				CheckBuffer(imageData.size());
 			}
 
+			/// <summary>
+			/// Load image from file
+			/// </summary>
+			/// <param name="path"></param>
+			void LoadFromFile(const std::string& path)
+			{
+				LoadFromFile(path, true);
+			}
+
+			/// <summary>
+			/// Bind current data to Texture Image Cache, 
+			/// and generate a 2D mipmap
+			/// </summary>
 			void Use()const
 			{
-				if (data != nullptr && loadMode != Load_Mode::NONE)
+				if (imageData.size() != 0 && loadMode != LoadMode::NONE)
 				{
 					if (channel == 3)
 					{
-						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData.data());
 						glGenerateMipmap(GL_TEXTURE_2D);
 					}
 					else if (channel == 4)
 					{
-						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData.data());
 						glGenerateMipmap(GL_TEXTURE_2D);
 					}
 					else
@@ -68,22 +113,39 @@ namespace rtx
 				}
 			}
 
-			~Image()
+			/// <summary>
+			/// Deal image data with imageDealCallBack
+			/// </summary>
+			/// <param name="imageDealCallBack">The dealing method defined by user</param>
+			void DealImage(function<void(int, int, int, vector<unsigned char>&)>imageDealCallBack)
 			{
-				if (loadMode == Load_Mode::LOAD_FILE && data != nullptr)
+				imageDealCallBack(width, height, channel, imageData);
+			}
+
+			/// <summary>
+			/// Save current data to PNG
+			/// </summary>
+			/// <param name="path">File path</param>
+			void SaveData(const std::string& path)
+			{
+				if (stbi_write_png(path.c_str(), width, height, channel, imageData.data(), 0) == 0)
 				{
-					stbi_image_free(data);
-					data = nullptr;
+					std::cerr << "Save image data error: " << path << std::endl;
 				}
 			}
 
 		private:
 
-			bool CheckBuffer()const
+			/// <summary>
+			/// Check weather image data with data size
+			/// </summary>
+			/// <param name="size">Size of data vector</param>
+			/// <returns>Size is not zero</returns>
+			bool CheckBuffer(size_t size)const
 			{
-				if (data == nullptr)
+				if (size == 0)
 				{
-					if (loadMode == Load_Mode::LOAD_FILE)
+					if (loadMode == LoadMode::LOAD_FILE)
 					{
 						std::cerr << "Load Image Error: from file.\n";
 					}
@@ -97,16 +159,21 @@ namespace rtx
 			}
 
 			int width, height, channel;
-			unsigned char* data;
 
-			enum class Load_Mode
+			vector<unsigned char> imageData;
+
+			/// <summary>
+			/// Load from where
+			/// </summary>
+			enum class LoadMode
 			{
 				NONE,
 				LOAD_MEMORY,
-				LOAD_FILE
+				LOAD_FILE,
+				LOAD_IMAGE
 			};
 
-			Load_Mode loadMode;
+			LoadMode loadMode;
 		};
 
 	}

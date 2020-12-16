@@ -183,8 +183,8 @@ int ch1_camera_main() {
 		App.Clear(util::Color(0.1f, 0.2f, 0.3f, 1.0f));
 
 		//  texture render update
-		t1.Use();
-		t2.Use();
+		t1.Bind();
+		t2.Bind();
 
 		//  shader update
 		shader.Use();

@@ -39,9 +39,15 @@ namespace rtx
 			void LoadFromMemory(int w, int h, int ch, unsigned char* data);
 
 			/// <summary>
-			/// Bind or Active the Texture
+			/// Load data from image
 			/// </summary>
-			void Use()const;
+			/// <param name="image"></param>
+			void LoadFromImage(const Image& image);
+
+			/// <summary>
+			/// Bind current texture
+			/// </summary>
+			void Bind()const;
 
 			/// <summary>
 			/// Get index of texture in GL

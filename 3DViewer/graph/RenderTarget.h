@@ -20,7 +20,7 @@ namespace rtx
 
 			void Draw(const Drawable& drawable)const;
 
-			void Draw(vector<Vertex> vertices, int vertexSize, unsigned int vao)const;
+			void Draw(vector<Vertex> vertices, unsigned int vao)const;
 
 		};
 	}

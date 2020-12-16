@@ -85,13 +85,13 @@ namespace rtx
 				glEnableVertexAttribArray(3);
 				verticesOffset += 3;
 
-				//glBindVertexArray(0);
+				glBindVertexArray(0);
 			}
 
 			virtual void Draw(RenderTarget target)const
 			{
 				if (m_isActived)
-					target.Draw(vertices, verticesOffset, VAO);
+					target.Draw(vertices, VAO);
 			}
 
 			float radius;

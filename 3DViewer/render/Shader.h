@@ -28,6 +28,8 @@ namespace rtx
 
 			void Use()const;
 
+		public: //  set value in shader
+
 			void SetBool(const std::string& name, const bool& value)const;
 
 			void SetInt(const std::string& name, const int& value)const;
@@ -51,6 +53,16 @@ namespace rtx
 			void SetArray(const std::string& name, const int& size, const float* data)const;
 
 		private:
+
+			/// <summary>
+			/// Get property ID by shaderID and property name
+			/// </summary>
+			/// <param name="name"></param>
+			/// <returns></returns>
+			int GetPropertyID(const std::string& name)const
+			{
+				return glGetUniformLocation(m_ID, (name).c_str());
+			}
 
 			/// <summary>
 			/// id of shader program
