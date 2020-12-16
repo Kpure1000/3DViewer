@@ -9,8 +9,9 @@ namespace rtx
 
 		bool Window::isFocused = false;
 
-		Window::Window(glm::vec2 Size, std::string Title, Window::ClearMode ClearBit)
-			: m_size(Size), m_title(Title), m_clearBit(ClearBit)
+		Window::Window(glm::vec2 Size, std::string Title, Window::ClearMode ClearBit, bool isFullScreen)
+			: m_size(Size), m_title(Title), m_clearBit(ClearBit),
+			m_drawMode(DrawMode::Fill), m_pVideoMode()
 		{
 			glfwInit(); // 初始化glfw
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
@@ -18,7 +19,26 @@ namespace rtx
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 			//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-			m_window = glfwCreateWindow((int)Size.x, (int)Size.y, Title.c_str(), NULL, NULL);
+			int monitorCount;
+			auto monitor = glfwGetMonitors(&monitorCount);
+			if (monitorCount > 0)
+			{
+				m_pVideoMode = *glfwGetVideoMode(monitor[0]);
+				m_monitors.reserve(monitorCount);
+				m_monitors.assign(monitor, monitor + monitorCount);
+			}
+
+			if (isFullScreen)
+			{
+				m_size.x = (float)m_pVideoMode.width;
+				m_size.y = (float)m_pVideoMode.height;
+				m_window = glfwCreateWindow(m_pVideoMode.width, m_pVideoMode.height, Title.c_str(),
+					m_monitors[0], NULL);
+			}
+			else
+			{
+				m_window = glfwCreateWindow((int)m_size.x,(int)m_size.y, Title.c_str(), NULL, NULL);
+			}
 
 			if (m_window == NULL)
 			{
@@ -32,7 +52,7 @@ namespace rtx
 				std::cerr << "Failed to initialize GLAD" << std::endl;
 			}
 
-			glViewport(0, 0, (int)Size.x, (int)Size.y); // 设置视口大小
+			glViewport(0, 0, (int)m_size.x, (int)m_size.y); // 设置视口大小
 
 			// CallBack Setting:
 
@@ -67,7 +87,62 @@ namespace rtx
 
 		}
 
+		void Window::DrawStart(DrawMode drawMode)
+		{
+			//  release bind of vbo
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			//  release bind of vao
+			glBindVertexArray(0);
+			//  release bind of ebo
+			//  <ATTENTION!!!> DO NOT RELEASE EBO BEFORE VAO 
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+			//  set draw mode
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //  draw fill face
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
+			if (m_clearBit == ClearMode::DepthMode)
+			{
+				glEnable(GL_DEPTH_TEST);
+			}
+			m_drawMode = drawMode;
+			//  set draw mode
+			glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)m_drawMode);
+		}
+
+		void Window::Clear(util::Color color)
+		{
+			if (!isOpened)return;
+			glClearColor(color[0], color[1], color[2], color[3]);
+			if (m_clearBit == ClearMode::ColorMode)
+			{
+				glClear(GL_COLOR_BUFFER_BIT);
+			}
+			else if (m_clearBit == ClearMode::DepthMode)
+			{
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			}
+		}
+
+		void Window::Display()
+		{
+			if (!isOpened)return;
+			//  binary buffer swaping
+			glfwSwapBuffers(m_window);
+			event::Mouse::ResetMouseState();
+
+			//  deal events
+			glfwPollEvents();
+			system::Time::FrameDisplay();
+		}
+
+		void Window::SetCursorEnable(bool Enable)
+		{
+			if (!Enable)
+				glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			else
+				glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
 
 	}
 }

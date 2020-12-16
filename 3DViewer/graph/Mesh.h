@@ -23,7 +23,9 @@ namespace rtx
 		{
 		public:
 
-            Mesh() :verticesOffset(0) {}
+            Mesh()
+                :verticesOffset(0), VAO(0), VBO(0), EBO(0)
+            {}
 
         protected:
 

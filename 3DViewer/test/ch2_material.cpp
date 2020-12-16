@@ -24,7 +24,7 @@ int ch2_material_main()
 {
 	int width = 800, height = 600;
 
-	render::Window App(glm::vec2(width, height), "ch2_color", Window::ClearMode::DepthMode);
+	render::Window App(glm::vec2(width, height), "ch2_color", Window::ClearMode::DepthMode, false);
 
 	SphereMesh sphere;
 	sphere.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));

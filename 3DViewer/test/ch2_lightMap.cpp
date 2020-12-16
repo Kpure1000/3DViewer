@@ -18,8 +18,11 @@ void test_ch2_4_processInput(render::Window window);
 
 int ch2_lightMap_main()
 {
+	
 	int width = 800, height = 600;
-	Window App(glm::vec2(width, height), "LightMap", Window::ClearMode::DepthMode);
+	Window App(glm::vec2(width, height), "LightMap", Window::ClearMode::DepthMode, true);
+	width = (int)App.GetSize().x;
+	height = (int)App.GetSize().y;
 
 	glm::vec3 lightPosition(2.0f, 0.0f, 2.0f);
 	Color lightColor(0xFFFF66);
@@ -42,6 +45,7 @@ int ch2_lightMap_main()
 
 	Image specularImage;
 	specularImage.LoadFromFile("../data/texture/container2_specular.png");
+	//  Add colorful info to original specular image
 	specularImage.DealImage([](int w, int h, int ch, vector<unsigned char>& data)
 		{
 			Color cl;
@@ -53,19 +57,20 @@ int ch2_lightMap_main()
 					cl[0] = 255 * (1 - (float)i / w);
 					cl[1] = 255 * ((float)j / h);
 					data[j * w * ch + i * ch] = data[j * w * ch + i * ch] > 10 ?
-						(cl[0] + data[j * w * ch + i * ch]) / 2 : 0;
+						static_cast<int>((cl[0] + data[j * w * ch + i * ch]) / 2) : 0;
 					data[j * w * ch + i * ch + 1] = data[j * w * ch + i * ch + 1] > 10 ?
-						(cl[1] + data[j * w * ch + i * ch + 1]) / 2 : 0;
-					data[j * w * ch + i * ch + 2] = data[j * w * ch + i * ch + 2] > 10 ?
-						(cl[2] + data[j * w * ch + i * ch + 2]) / 2 : 0;
+						static_cast<int>((cl[1] + data[j * w * ch + i * ch + 1]) / 2) : 0;
+					data[j * w * ch + i * ch + 2] = static_cast<int>(cl[2]);
 				}
 			}
 		});
-
 	specularImage.SaveData("../data/texture/specularImage.png");
 
 	Texture specularTex;
 	specularTex.LoadFromImage(specularImage);
+
+	Texture emissionTex;
+	emissionTex.LoadFromFile("../data/texture/matrix.jpg");
 
 	objShader.Use();
 	//  _material:
@@ -73,6 +78,9 @@ int ch2_lightMap_main()
 	objShader.SetSampler2D("_material.diffuse", diffuseTex);
 	specularTex.Bind();
 	objShader.SetSampler2D("_material.specular", specularTex);
+	emissionTex.Bind();
+	objShader.SetSampler2D("_material.emission", emissionTex);
+
 	objShader.SetInt("_material.shininess", 32);
 	//  _light:
 	objShader.SetVector3("_lightPos", light.GetTransform().GetPosition());
@@ -83,7 +91,7 @@ int ch2_lightMap_main()
 	lightShader.Use();
 	lightShader.SetRGB("_lightColor", lightColor);
 
-	render::FPSCamera fpsCamera(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0),
+	render::FPSCamera fpsCamera(glm::vec3(0, -0.1f, 3.0f), glm::vec3(1.2f, 0.1f, 1.2f),
 		45.0f, (float)width / height, 0.01f, 100.0f, 5.0f);
 
 	App.DrawStart(Window::DrawMode::Fill);

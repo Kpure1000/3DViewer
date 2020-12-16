@@ -28,7 +28,7 @@ int ch2_color_main() {
 
 	int width = 800, height = 700;
 
-	render::Window App(glm::vec2(width, height), "ch2_color", render::Window::ClearMode::DepthMode);
+	render::Window App(glm::vec2(width, height), "ch2_color", render::Window::ClearMode::DepthMode, false);
 
 #pragma endregion
 

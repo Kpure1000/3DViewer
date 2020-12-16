@@ -10,9 +10,12 @@
 #include"../system/Time.h"
 #include"../graph/RenderTarget.h"
 
+#include<memory>
+
 using namespace rtx::util;
 using rtx::event::Mouse;
 using rtx::graph::RenderTarget;
+using std::shared_ptr;
 
 namespace rtx
 {
@@ -22,12 +25,18 @@ namespace rtx
 		{
 		public:
 
+			/// <summary>
+			/// Mode of clear
+			/// </summary>
 			enum class ClearMode
 			{
 				ColorMode = GL_COLOR_BUFFER_BIT,
 				DepthMode = GL_DEPTH_BUFFER_BIT
 			};
 
+			/// <summary>
+			/// Mode of draw vertices
+			/// </summary>
 			enum class DrawMode
 			{
 				Fill = GL_FILL,
@@ -36,72 +45,49 @@ namespace rtx
 			};
 
 			Window() :m_window(nullptr), m_size({ 0.0f,0.0f }),
-				m_title("Render Window"), isOpened(false)
+				m_title("Render Window"), isOpened(false), m_clearBit(ClearMode::ColorMode),
+				m_drawMode(DrawMode::Fill), m_pVideoMode()
 			{}
 
-			Window(glm::vec2 Size, std::string Title, Window::ClearMode ClearBit);
+			/// <summary>
+			/// Construct a window
+			/// </summary>
+			/// <param name="Size">Window size</param>
+			/// <param name="Title">Window title</param>
+			/// <param name="ClearBit">Clear Mode</param>
+			Window(glm::vec2 Size, std::string Title, Window::ClearMode ClearBit, bool isFullScreen);
 
-			~Window()
-			{
-				//glfwTerminate();
-			}
-
+			/// <summary>
+			/// Get window handle
+			/// </summary>
+			/// <returns></returns>
 			inline GLFWwindow* GetWindow()const { return m_window; }
 
-			void DrawStart(DrawMode drawMode)
-			{
-				//  release bind of vbo
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				//  release bind of vao
-				glBindVertexArray(0);
-				//  release bind of ebo
-				//  <ATTENTION!!!> DO NOT RELEASE EBO BEFORE VAO 
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			/// <summary>
+			/// Start draw, MUST use this before render loop!!!
+			/// </summary>
+			/// <param name="drawMode">Mode of draw</param>
+			void DrawStart(DrawMode drawMode);
 
-				//  set draw mode
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //  draw fill face
-				//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
-				//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
-				if (m_clearBit == ClearMode::DepthMode)
-				{
-					glEnable(GL_DEPTH_TEST);
-				}
-				m_drawMode = drawMode;
-				//  set draw mode
-				glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)m_drawMode);
+			/// <summary>
+			/// Set draw mode
+			/// </summary>
+			/// <param name="drawMode"></param>
+			inline void SetDrawMode(const DrawMode& drawMode)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)(m_drawMode = drawMode));
 			}
 
-			void SetDrawMode(const DrawMode& drawMode)
-			{
-				m_drawMode = drawMode;
-				glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)m_drawMode);
-			}
+			/// <summary>
+			/// Clear the canvas
+			/// </summary>
+			/// <param name="color"></param>
+			void Clear(util::Color color);
 
-			void Clear(util::Color color)
-			{
-				if (!isOpened)return;
-				glClearColor(color[0], color[1], color[2], color[3]);
-				if (m_clearBit == ClearMode::ColorMode)
-				{
-					glClear(GL_COLOR_BUFFER_BIT);
-				}
-				else if (m_clearBit == ClearMode::DepthMode)
-				{
-					glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-				}
-			}
-
-			void Display()
-			{
-				if (!isOpened)return;
-				//  binary buffer swaping
-				glfwSwapBuffers(m_window);
-				event::Mouse::ResetMouseState();
-
-				//  deal events
-				glfwPollEvents();
-				system::Time::FrameDisplay();
-			}
+			/// <summary>
+			/// Display to the screen, MUST call in the end of frame
+			/// </summary>
+			void Display();
 
 			inline bool isOpen()
 			{
@@ -126,12 +112,15 @@ namespace rtx
 
 			inline bool isFocus()const { return isFocused; }
 
-			inline void SetCursorEnable(bool Enable)
+			/// <summary>
+			/// Set if enable the cursor
+			/// </summary>
+			/// <param name="Enable"></param>
+			void SetCursorEnable(bool Enable);
+
+			inline glm::vec2 GetSize()
 			{
-				if (!Enable)
-					glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-				else
-					glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				return m_size;
 			}
 
 		private:
@@ -141,6 +130,16 @@ namespace rtx
 			ClearMode m_clearBit;
 
 			DrawMode m_drawMode;
+
+			/// <summary>
+			/// Video mode of primary monitor
+			/// </summary>
+			GLFWvidmode m_pVideoMode;
+
+			/// <summary>
+			/// Array of monitors connected
+			/// </summary>
+			vector<GLFWmonitor*> m_monitors;
 
 			glm::vec2 m_size;
 

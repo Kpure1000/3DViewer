@@ -20,15 +20,22 @@ namespace rtx
 				cameraFov(45),
 				cameraSpeed(CameraSpeed),
 				camera(LookFrom, LookAt, glm::vec3(0.0f, 1.0f, 0.0f), FoV, Aspect, Near, Far)
-			{				
-				pitch = asin(camera.GetDirection().y / camera.GetDirection().length());
-				yaw = -acos(camera.GetDirection().z / camera.GetDirection().length() *
-					camera.GetDirection().y / camera.GetDirection().length()) * 180 / Pi;
-				cameraDirection.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-				cameraDirection.y = sin(glm::radians(pitch));
-				cameraDirection.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-				cameraDirection = glm::normalize(cameraDirection);
+			{
 
+				cameraDirection = camera.GetDirection();
+				
+				pitch = cameraDirection.y > 0 ? -asin(cameraDirection.y) : asin(-cameraDirection.y);
+				yaw = cameraDirection.x > 0 ? Pi + asin(cameraDirection.z / cos(pitch)) : -asin(cameraDirection.z / cos(pitch));
+
+				cameraOrigin = camera.GetOrigin();
+				cameraUp = camera.GetCameraUp();
+				realSpeed = 0.0f;
+				lastPos = glm::vec2(0.0f);
+
+				camera.SetFoV(cameraFov);
+				camera.SetOrigin(cameraOrigin);
+				camera.SetTarget(cameraOrigin - cameraDirection);
+				camera.SetCameraUp(cameraUp);
 			}
 
 			inline Camera GetCamera() const { return camera; }
@@ -84,6 +91,7 @@ namespace rtx
 				}
 			}
 
+
 			void MouseController(Window const& window)
 			{
 				glm::vec2 mousePos = rtx::event::Mouse::GetPosition(window);
@@ -96,21 +104,21 @@ namespace rtx
 				float yoffset = lastPos.y - mousePos.y;
 				lastPos = mousePos;
 
-				float sensitivity = std::min(0.1f, system::Time::deltaTime() * cameraSpeed * 10.0f);
+				float sensitivity = std::min(0.1f, system::Time::deltaTime() * cameraSpeed * 0.014f);
 				xoffset *= sensitivity;
 				yoffset *= sensitivity;
 
 				yaw += xoffset;
 				pitch += yoffset;
 
-				if (pitch > 89.9f)
-					pitch = 89.9f;
-				else if (pitch < -89.9f)
-					pitch = -89.9f;
+				if (pitch > Pi / 2.0f - 0.01f)
+					pitch = Pi / 2.0f;
+				else if (pitch < -Pi / 2.0f + 0.01f)
+					pitch = -Pi / 2.0f;
 
-				cameraDirection.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-				cameraDirection.y = sin(glm::radians(pitch));
-				cameraDirection.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+				cameraDirection.x = cos(pitch) * cos(yaw);
+				cameraDirection.z = cos(pitch) * sin(yaw);
+				cameraDirection.y = sin(pitch);
 				cameraDirection = glm::normalize(cameraDirection);
 				isMouseMoved = true;
 			}

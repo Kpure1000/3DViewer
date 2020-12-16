@@ -16,7 +16,11 @@ namespace rtx
 		{
 		public:
 
-			Camera() {}
+			Camera()
+				: origin(glm::vec3(0.0f)), target(glm::vec3(1.0f)), direction(glm::vec3(1.0f)),
+				cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)), view(glm::mat4(1.0f)), projection(glm::mat4(1.0f)),
+				foV(45.0f), aspect(1.0f), near(0.01f), far(100.0f)
+			{}
 
 			/// <summary>
 			/// Create a camera
