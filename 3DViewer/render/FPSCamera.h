@@ -22,20 +22,14 @@ namespace rtx
 				camera(LookFrom, LookAt, glm::vec3(0.0f, 1.0f, 0.0f), FoV, Aspect, Near, Far)
 			{
 
-				cameraDirection = camera.GetDirection();
+				cameraDirection = -camera.GetDirection();
+				pitch = cameraDirection.y > 0 ? asin(cameraDirection.y) : -asin(-cameraDirection.y);
+				yaw = cameraDirection.x > 0 ? -asin(-cameraDirection.z / cos(pitch)) : Pi + asin(-cameraDirection.z / cos(pitch));
 				
-				pitch = cameraDirection.y > 0 ? -asin(cameraDirection.y) : asin(-cameraDirection.y);
-				yaw = cameraDirection.x > 0 ? Pi + asin(cameraDirection.z / cos(pitch)) : -asin(cameraDirection.z / cos(pitch));
-
 				cameraOrigin = camera.GetOrigin();
 				cameraUp = camera.GetCameraUp();
 				realSpeed = 0.0f;
 				lastPos = glm::vec2(0.0f);
-
-				camera.SetFoV(cameraFov);
-				camera.SetOrigin(cameraOrigin);
-				camera.SetTarget(cameraOrigin - cameraDirection);
-				camera.SetCameraUp(cameraUp);
 			}
 
 			inline Camera GetCamera() const { return camera; }

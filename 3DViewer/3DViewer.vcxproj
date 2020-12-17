@@ -169,6 +169,7 @@
     <ClCompile Include="test\ch1_transform.cpp" />
     <ClCompile Include="test\ch2_basiclight.cpp" />
     <ClCompile Include="test\ch2_color.cpp" />
+    <ClCompile Include="test\ch2_lightCaster.cpp" />
     <ClCompile Include="test\ch2_lightMap.cpp" />
     <ClCompile Include="test\ch2_material.cpp" />
     <ClCompile Include="test\raytracing.cpp" />

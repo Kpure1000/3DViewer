@@ -20,7 +20,7 @@ int ch2_lightMap_main()
 {
 	
 	int width = 800, height = 600;
-	Window App(glm::vec2(width, height), "LightMap", Window::ClearMode::DepthMode, true);
+	Window App(glm::vec2(width, height), "LightMap", Window::ClearMode::DepthMode, false);
 	width = (int)App.GetSize().x;
 	height = (int)App.GetSize().y;
 
@@ -104,8 +104,10 @@ int ch2_lightMap_main()
 
 		fpsCamera.Update(App);
 
-		/*light.GetTransform().RotateArround(box.GetTransform().GetPosition(),
-			glm::vec3(0.0f, 1.0f, 0.0f), 50.0f * system::Time::deltaTime());*/
+		box.GetTransform().Rotate(glm::vec3(1.0f, 0.5f, 1.0f), 30.0f * system::Time::deltaTime());
+
+		light.GetTransform().RotateArround(box.GetTransform().GetPosition(),
+			glm::vec3(0.0f, 1.0f, 0.0f), 50.0f * system::Time::deltaTime());
 
 		objShader.Use();
 		objShader.SetMatrix4("_view", fpsCamera.GetCamera().GetView());
