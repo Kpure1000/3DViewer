@@ -156,6 +156,12 @@
     <ClCompile Include="test\ch2_lightCaster.cpp">
       <Filter>源文件\test</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>源文件\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="test\ch2_model.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -268,6 +274,12 @@
     </ClInclude>
     <ClInclude Include="event\Event.h">
       <Filter>头文件\event</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\ModelMesh.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\Model.h">
+      <Filter>头文件\graph</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

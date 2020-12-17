@@ -15,6 +15,7 @@ namespace rtx
 {
 	namespace render
 	{
+
 		class Texture
 		{
 		public:
@@ -61,6 +62,12 @@ namespace rtx
 			/// <returns></returns>
 			unsigned int GetID()const;
 
+			[[deprecated("This constructor will be deleted")]]
+			void SetID(const unsigned int& id)
+			{
+				m_ID = id;
+			}
+
 		private:
 
 			/// <summary>
@@ -88,8 +95,41 @@ namespace rtx
 			/// </summary>
 			const static int MaxTextureIndices;
 
+		};
 
+//#define FOREACH_TEXTYPE(TEXTYPE) \
+//        TEXTYPE(_DiffuseTex)   \
+//        TEXTYPE(_SpecularTex)  
+//
+//#define GENERATE_ENUM(ENUM) ENUM,
+//#define GENERATE_STRING(STRING) #STRING,
+//
+//		enum class MeshTexType {
+//			FOREACH_TEXTYPE(GENERATE_ENUM)
+//		};
+//
+//		static const char* TEXTYPE_STR[] = {
+//			FOREACH_TEXTYPE(GENERATE_STRING)
+//		};
 
+		/// <summary>
+		/// Mesh Texture Type
+		/// </summary>
+		/*enum class MeshTexType
+		{
+			_DiffuseTex,
+			_SpecularTex
+		};*/
+
+		/// <summary>
+		/// Mesh Texture
+		/// </summary>
+		struct MeshTex
+		{
+			Texture texture;
+			//MeshTexType type;
+
+			std::string type;
 		};
 
 	}

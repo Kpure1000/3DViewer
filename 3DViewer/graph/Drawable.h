@@ -2,16 +2,19 @@
 #define DRAWABLE_H
 
 #include"../render/Transform.h"
-
+#include"../render/Shader.h"
 namespace rtx
 {
 
 	using render::Transform;
+	using render::Shader;
 
 	namespace graph
 	{
 
 		class RenderTarget;
+
+		class RenderStates;
 
 		class Drawable
 		{
@@ -49,7 +52,9 @@ namespace rtx
 
 			friend class RenderTarget;
 
-			virtual void Draw(RenderTarget target)const = 0;
+			friend class RenderStates;
+
+			virtual void Draw(const RenderTarget& target, RenderStates states)const = 0;
 
 		};
 	}

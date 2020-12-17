@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include"Mesh.h"
+#include"Model.h"
 #include"CubeMesh.h"
 #include"SphereMesh.h"
 

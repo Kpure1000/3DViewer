@@ -4,15 +4,15 @@
 #include"Drawable.h"
 #include"Vertex.h"
 #include<vector>
+#include"../render/Shader.h"
 
 using std::vector;
 
 namespace rtx
 {
+	using namespace render;
 	namespace graph
 	{
-
-		class Mesh;
 
 		class RenderTarget
 		{
@@ -20,7 +20,11 @@ namespace rtx
 
 			void Draw(const Drawable& drawable)const;
 
-			void Draw(vector<Vertex> vertices, unsigned int vao)const;
+			void Draw(const Drawable& drawable, Shader& shader)const;
+
+			void Draw(const vector<Vertex>& vertices, unsigned int vao)const;
+
+			void Draw(const vector<unsigned int>& indices, unsigned int vao)const;
 
 		};
 	}

@@ -75,7 +75,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>Reference\include;$(IncludePath)</IncludePath>
-    <LibraryPath>Reference\libs\glfw\debuglib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>Reference\libs\glfw\debuglib;Reference\libs\assimp\debugLib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -83,7 +83,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>Reference\include;$(IncludePath)</IncludePath>
-    <LibraryPath>Reference\libs\glfw\releaselib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>Reference\libs\glfw\releaselib;Reference\libs\assimp\releaseLib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -109,7 +109,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,7 +144,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -156,6 +156,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="test\ch2_lightCaster.cpp" />
     <ClCompile Include="test\ch2_lightMap.cpp" />
     <ClCompile Include="test\ch2_material.cpp" />
+    <ClCompile Include="test\ch2_model.cpp" />
     <ClCompile Include="test\raytracing.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -189,11 +191,13 @@
     <ClInclude Include="graph\Drawable.h" />
     <ClInclude Include="graph\Graph.h" />
     <ClInclude Include="graph\Mesh.h" />
+    <ClInclude Include="graph\Model.h" />
     <ClInclude Include="graph\RenderStates.h" />
     <ClInclude Include="graph\RenderTarget.h" />
     <ClInclude Include="graph\SphereMesh.h" />
     <ClInclude Include="graph\Vertex.h" />
     <ClInclude Include="graph\VertexArray.h" />
+    <ClInclude Include="graph\ModelMesh.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_internal.h" />

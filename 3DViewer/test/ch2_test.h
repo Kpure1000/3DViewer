@@ -6,10 +6,11 @@
 
 #pragma region Test Entrance
 
-#define _CH2_TEST_2 
-#define _CH2_TEST_3 
-#define _CH2_TEST_4 
+//#define _CH2_TEST_2 
+//#define _CH2_TEST_3 
+//#define _CH2_TEST_4 
 #define _CH2_TEST_5
+#define _CH2_TEST_6
 
 #ifdef _CH2_TEST_1
 int ch2_color_main();
@@ -30,6 +31,10 @@ int ch2_lightMap_main();
 #ifdef _CH2_TEST_5
 int ch2_lightCaster_main();
 #endif // !_CH2_TEST_5
+
+#ifdef _CH2_TEST_6
+int ch2_model_main();
+#endif // _CH2_TEST_6
 
 
 #pragma endregion

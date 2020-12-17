@@ -106,9 +106,9 @@ namespace rtx
 				pitch += yoffset;
 
 				if (pitch > Pi / 2.0f - 0.01f)
-					pitch = Pi / 2.0f;
+					pitch = Pi / 2.0f - 0.01f;
 				else if (pitch < -Pi / 2.0f + 0.01f)
-					pitch = -Pi / 2.0f;
+					pitch = -Pi / 2.0f + 0.01f;
 
 				cameraDirection.x = cos(pitch) * cos(yaw);
 				cameraDirection.z = cos(pitch) * sin(yaw);

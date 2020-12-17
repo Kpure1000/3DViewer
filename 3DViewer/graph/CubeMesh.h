@@ -93,24 +93,20 @@ namespace rtx
 				//  position
 				glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 				glEnableVertexAttribArray(0);
-				verticesOffset += 3;
 				//  normal
 				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 				glEnableVertexAttribArray(1);
-				verticesOffset += 3;
 				//  texcoords
 				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 				glEnableVertexAttribArray(2);
-				verticesOffset += 2;
 				//  color
 				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 				glEnableVertexAttribArray(3);
-				verticesOffset += 3;
 
 				glBindVertexArray(0);
 			}
 
-			virtual void Draw(RenderTarget target)const
+			virtual void Draw(const RenderTarget& target, RenderStates states)const
 			{
 				if (m_isActived)
 					target.Draw(vertices, VAO);

@@ -5,7 +5,7 @@
 
 #include"../render/Shader.h"
 #include"../render/Texture.h"
-
+#include"Drawable.h"
 #include<memory>
 
 using rtx::graph::Drawable;
@@ -22,8 +22,12 @@ namespace rtx
 
 			RenderStates();
 
-			shared_ptr<const Shader> shader;
-			shared_ptr<const Texture> texture;
+			RenderStates(Shader& theShader);
+
+			RenderStates(Texture& theTexture);
+
+			Shader* shader;
+			Texture* texture;
 
 		};
 	}
