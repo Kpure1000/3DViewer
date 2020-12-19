@@ -48,7 +48,9 @@ namespace rtx
 			/// <summary>
 			/// Bind current texture
 			/// </summary>
-			void Bind()const;
+			void Bind(const int& index)const;
+
+			void ReBind(const int& index)const;
 
 			/// <summary>
 			/// Get index of texture in GL
@@ -70,6 +72,8 @@ namespace rtx
 
 		private:
 
+			void Init();
+
 			/// <summary>
 			/// Texture id
 			/// </summary>
@@ -80,16 +84,6 @@ namespace rtx
 			/// </summary>
 			Image image;
 
-			/// <summary>
-			/// <ID,GL_TEXTUREn>
-			/// </summary>
-			static std::map<unsigned int, int>texture_indices;
-
-			/// <summary>
-			/// the highest index in GL
-			/// </summary>
-			static int currentTextureIndex;
-			
 			/// <summary>
 			/// Max texture numbers in GL
 			/// </summary>
@@ -130,6 +124,7 @@ namespace rtx
 			//MeshTexType type;
 
 			std::string type;
+			std::string path;
 		};
 
 	}

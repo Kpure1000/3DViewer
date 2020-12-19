@@ -170,6 +170,7 @@
     <ClCompile Include="test\ch1_transform.cpp" />
     <ClCompile Include="test\ch2_basiclight.cpp" />
     <ClCompile Include="test\ch2_color.cpp" />
+    <ClCompile Include="test\ch2_learnModel.cpp" />
     <ClCompile Include="test\ch2_lightCaster.cpp" />
     <ClCompile Include="test\ch2_lightMap.cpp" />
     <ClCompile Include="test\ch2_material.cpp" />
@@ -190,6 +191,8 @@
     <ClInclude Include="graph\CubeMesh.h" />
     <ClInclude Include="graph\Drawable.h" />
     <ClInclude Include="graph\Graph.h" />
+    <ClInclude Include="graph\LearnMesh.h" />
+    <ClInclude Include="graph\LearnModel.h" />
     <ClInclude Include="graph\Mesh.h" />
     <ClInclude Include="graph\Model.h" />
     <ClInclude Include="graph\RenderStates.h" />

@@ -17,7 +17,7 @@ void test_ch2_5_processInput(render::Window window);
 int ch2_lightCaster_main()
 {
 
-	Window App(glm::vec2(800, 600), "Chapter2: Test 5: Light Caster", Window::ClearMode::DepthMode, true);
+	Window App(glm::vec2(800, 600), "Chapter2: Test 5: Light Caster", Window::ClearMode::DepthMode, false);
 
 	glm::vec2 appSize = App.GetSize();
 
@@ -41,9 +41,9 @@ int ch2_lightCaster_main()
 	emissionTex.LoadFromFile("../data/texture/matrix.jpg");
 	Shader boxShader("../data/shader/ch2_lightCaster.vert", "../data/shader/ch2_lightCaster.frag");
 	boxShader.Use();
-	diffuseTex.Bind(); boxShader.SetSampler2D("_material.diffuse", diffuseTex);
-	specularTex.Bind(); boxShader.SetSampler2D("_material.specular", specularTex);
-	emissionTex.Bind(); boxShader.SetSampler2D("_material.emission", emissionTex);
+	diffuseTex.Bind(0); boxShader.SetSampler2D("_material.diffuse", 0);
+	specularTex.Bind(1); boxShader.SetSampler2D("_material.specular", 1);
+	emissionTex.Bind(2); boxShader.SetSampler2D("_material.emission", 2);
 	boxShader.SetInt("_material.shininess", 32);
 	//  _light:
 	boxShader.SetVector4("_lightLocate", glm::vec4(lightPosition, 0.0f));

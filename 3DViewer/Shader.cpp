@@ -176,9 +176,9 @@ namespace rtx
 			glUniformMatrix4fv(GetPropertyID(name), 1, GL_FALSE, glm::value_ptr(mat));
 		}
 
-		void Shader::SetSampler2D(const std::string& name, const Texture& texture) const
+		void Shader::SetSampler2D(const std::string& name, const int& index) const
 		{
-			glUniform1i(GetPropertyID(name), texture.GetIndex()); // 手动设置
+			glUniform1i(GetPropertyID(name),  GL_TEXTURE0 + index); // 手动设置
 		}
 
 		void Shader::SetArray(const std::string& name,const int& size, const float* data)const

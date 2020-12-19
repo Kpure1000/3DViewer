@@ -136,8 +136,8 @@ int ch1_camera_main() {
 	t2.LoadFromFile("../data/texture/awesomeface.png");
 
 	shader.Use();
-	shader.SetSampler2D("_texture1", t1);
-	shader.SetSampler2D("_texture2", t2);
+	shader.SetSampler2D("_texture1", 0);
+	shader.SetSampler2D("_texture2", 1);
 
 	render::FPSCamera fpsCamera(glm::vec3(0, 0, 10), glm::vec3(0, 0, 0),
 		45.0f, (float)width / height, 0.01f, 100.0f, 10.0f);
@@ -183,8 +183,8 @@ int ch1_camera_main() {
 		App.Clear(util::Color(0.1f, 0.2f, 0.3f, 1.0f));
 
 		//  texture render update
-		t1.Bind();
-		t2.Bind();
+		t1.Bind(0);
+		t2.Bind(1);
 
 		//  shader update
 		shader.Use();

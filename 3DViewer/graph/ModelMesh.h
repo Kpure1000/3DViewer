@@ -14,6 +14,12 @@ namespace rtx
 
 	namespace graph
 	{
+
+        /// <summary>
+        /// The mesh of a model, which may include more than one model mesh. 
+        /// So this might be contained in a vector or array. 
+        /// The Material will be added.
+        /// </summary>
         class ModelMesh : public Mesh
         {
         public:
@@ -21,17 +27,19 @@ namespace rtx
             ModelMesh()                
             {}
 
+            /// <summary>
+            /// Construct a Model Mesh (Used in Model function: 'processMesh')
+            /// </summary>
+            /// <param name="Vertices"></param>
+            /// <param name="Indices"></param>
+            /// <param name="Textures"></param>
             ModelMesh(vector<Vertex> Vertices, vector<unsigned int> Indices, vector<MeshTex> Textures)
                 : Mesh(Vertices, Indices, Textures)
             {
                 MeshInit();
+#ifdef _DEBUG
                 printf("Model Vertices: %zd, Indices: %zd, Textures: %zd.\n", vertices.size(), indices.size(), textures.size());
-            }
-
-            ~ModelMesh()
-            {
-                glDeleteVertexArrays(1, &VAO);
-                glDeleteBuffers(1, &VBO);
+#endif
             }
 
         private:
@@ -59,9 +67,12 @@ namespace rtx
                 //  texcoords
                 glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
                 glEnableVertexAttribArray(2);
-                //  color
-               /* glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-                glEnableVertexAttribArray(3);*/
+                // vertex tangent
+                glEnableVertexAttribArray(3);
+                glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+                // vertex bitangent
+                glEnableVertexAttribArray(4);
+                glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
 
                 glBindVertexArray(0);
             }
@@ -76,30 +87,23 @@ namespace rtx
                         unsigned int specularNr = 1;
                         unsigned int normalNr = 1;
                         unsigned int heightNr = 1;
-                        for (auto item = textures.begin(); item != textures.end(); item++)
+                        for (size_t i = 0; i < textures.size(); i++)
                         {
-                            item->texture.Bind();
                             std::string number;
-                            std::string name = item->type;
-                            if (name == "_DiffuseTex")
-                            {
+                            std::string name = textures[i].type;
+                            if (name == "texture_diffuse")
                                 number = std::to_string(diffuseNr++);
-                            }
-                            else if (name == "_SpecularTex")
-                            {
-                                number = std::to_string(specularNr++);
-                            }
+                            else if (name == "texture_specular")
+                                number = std::to_string(specularNr++); // transfer unsigned int to stream
                             else if (name == "texture_normal")
-                            {
-                                number = std::to_string(normalNr++);
-                            }
+                                number = std::to_string(normalNr++); // transfer unsigned int to stream
                             else if (name == "texture_height")
-                            {
-                                number = std::to_string(heightNr++);
-                            }
-                            states.shader->SetSampler2D("_metarial." + name + number, item->texture);
+                                number = std::to_string(heightNr++); // transfer unsigned int to stream
+
+                            textures[i].texture.ReBind((int)i);
+                            states.shader->Use();
+                            states.shader->SetSampler2D("_material" + name + number, (int)i);
                         }
-                        //target.Draw(indices, VAO);
                         target.Draw(vertices, VAO);
                     }
                 }

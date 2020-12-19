@@ -74,12 +74,12 @@ int ch2_lightMap_main()
 
 	objShader.Use();
 	//  _material:
-	diffuseTex.Bind();
-	objShader.SetSampler2D("_material.diffuse", diffuseTex);
-	specularTex.Bind();
-	objShader.SetSampler2D("_material.specular", specularTex);
-	emissionTex.Bind();
-	objShader.SetSampler2D("_material.emission", emissionTex);
+	diffuseTex.Bind(0);
+	objShader.SetSampler2D("_material.diffuse", 0);
+	specularTex.Bind(1);
+	objShader.SetSampler2D("_material.specular", 1);
+	emissionTex.Bind(2);
+	objShader.SetSampler2D("_material.emission", 2);
 
 	objShader.SetInt("_material.shininess", 32);
 	//  _light:

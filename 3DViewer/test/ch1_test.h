@@ -6,7 +6,7 @@
 
 #pragma region Test Entrance
 
-#define _CH1_TEST_0 1
+#define _CH1_TEST_2
 
 #ifdef _CH1_TEST_1
 /// <summary>

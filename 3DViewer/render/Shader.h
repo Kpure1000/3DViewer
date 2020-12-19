@@ -48,7 +48,7 @@ namespace rtx
 
 			void SetMatrix4(const std::string& name, const glm::mat4 mat)const;
 
-			void SetSampler2D(const std::string& name, const Texture& texture)const;
+			void SetSampler2D(const std::string& name, const int& index)const;
 
 			void SetArray(const std::string& name, const int& size, const float* data)const;
 

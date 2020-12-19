@@ -17,13 +17,14 @@ void test_ch2_6_processInput(render::Window window);
 int ch2_model_main()
 {
 
-	Window App(glm::vec2(800, 600), "Chapter2: Test 6: Model Loading", Window::ClearMode::DepthMode, false);
+	Window App(glm::vec2(800, 600), "Chapter2: Test 6: Model Loading",
+		Window::ClearMode::DepthMode, false);
 
 	glm::vec2 appSize = App.GetSize();
 
 	//  light:
-	glm::vec3 lightPosition(3.2f, 1.0f, 3.3f);
-	Color lightColor(0xFFFF66);
+	glm::vec3 lightPosition(0.8f, 0.0f, 1.1f);
+	Color lightColor(0xffffff);
 	SphereMesh light;
 	light.GetTransform().SetPosition(lightPosition);
 	light.GetTransform().SetScale(glm::vec3(0.3f));
@@ -33,14 +34,15 @@ int ch2_model_main()
 
 	//  box:
 	graph::Model model("../data/model/nanosuit/nanosuit.obj");
-	
+	model.GetTransform().SetScale(glm::vec3(0.1f));
+
 	Shader modelShader("../data/shader/ch2_model.vert", "../data/shader/ch2_model.frag");
 	modelShader.Use();
 	
 	modelShader.SetInt("_material.shininess", 32);
 	//  _light:
 	modelShader.SetVector4("_lightLocate", glm::vec4(lightPosition, 1.0f));
-	modelShader.SetRGB("_light.ambient", util::Color(0x0f0f0f));
+	modelShader.SetRGB("_light.ambient", util::Color(0x2f2f2f));
 	modelShader.SetRGB("_light.diffuse", lightColor);
 	modelShader.SetRGB("_light.specular", lightColor);
 
@@ -53,7 +55,7 @@ int ch2_model_main()
 	{
 		test_ch2_6_processInput(App);
 
-		App.Clear(util::Color(0x999999));
+		App.Clear(util::Color(0x123456));
 
 		camera.Update(App);
 

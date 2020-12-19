@@ -4,27 +4,13 @@ namespace rtx
 {
 	namespace render
 	{
-		int Texture::currentTextureIndex = 0;
-		const int Texture::MaxTextureIndices = GL_TEXTURE15 - GL_TEXTURE0;
-		std::map<unsigned int, int> Texture::texture_indices;
+		
+		const int Texture::MaxTextureIndices = GL_TEXTURE30 - GL_TEXTURE0;
+		
 
 		Texture::Texture() :m_ID(-1)
 		{
-			//  TODO: if numbers over Max, cancel?
-			if (currentTextureIndex < MaxTextureIndices)
-			{
-				glGenTextures(1, &m_ID);
-				texture_indices[m_ID] = GL_TEXTURE0 + currentTextureIndex++;
-				glBindTexture(GL_TEXTURE_2D, m_ID);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			}
-			else
-			{
-				std::cerr << "Textures out of range!\n";
-			}
+
 		}
 
 		Texture::~Texture()
@@ -34,37 +20,62 @@ namespace rtx
 
 		void Texture::LoadFromFile(const std::string& path)
 		{
+			Init();
 			image.LoadFromFile(path.c_str());
 		}
 
 		void Texture::LoadFromMemory(int w, int h, int ch, unsigned char* data)
 		{
+			Init();
 			image.LoadFromMemory(w, h, ch, data);
 		}
 
 		void Texture::LoadFromImage(const Image& image)
 		{
+			Init();
 			this->image = image;
 		}
 
-		void Texture::Bind()const
+		void Texture::Bind(const int& index)const
 		{
-			if (texture_indices.find(m_ID) != texture_indices.end())
+			if (index < MaxTextureIndices)
 			{
-				glActiveTexture(texture_indices[m_ID]);
+				glActiveTexture(index + GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, m_ID);
 				image.Use();
 			}
 		}
 
+		void Texture::ReBind(const int& index) const
+		{
+			if (index < MaxTextureIndices)
+			{
+				glActiveTexture(index + GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, m_ID);
+			}
+		}
+
+		/*[[deprecated("This GetIndex will be deleted")]]
 		int Texture::GetIndex()const
 		{
 			return texture_indices[m_ID] - GL_TEXTURE0;
-		}
+		}*/
 
 		unsigned int Texture::GetID()const
 		{
 			return m_ID;
+		}
+
+		void Texture::Init()
+		{
+
+			glGenTextures(1, &m_ID);
+			glBindTexture(GL_TEXTURE_2D, m_ID);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 		}
 
 	}

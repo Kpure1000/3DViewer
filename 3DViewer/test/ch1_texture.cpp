@@ -155,9 +155,11 @@ int ch1_texture_main() {
     t1.LoadFromFile("../data/texture/container.jpg");
     t2.LoadFromFile("../data/texture/awesomeface.png");
 
+    t1.Bind(0);
+    t2.Bind(1);
     shader.Use();
-    shader.SetSampler2D("_texture1", t1);
-    shader.SetSampler2D("_texture2", t2);
+    shader.SetSampler2D("_texture1", 0);
+    shader.SetSampler2D("_texture2", 1);
 
 #pragma region render loop
 
@@ -179,8 +181,8 @@ int ch1_texture_main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         //  texture render update
-        t1.Bind();
-        t2.Bind();
+        /*t1.Bind();
+        t2.Bind();*/
 
         //  shader update
         shader.Use();
