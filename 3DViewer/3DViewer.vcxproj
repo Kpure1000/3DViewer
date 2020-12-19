@@ -198,6 +198,7 @@
     <ClInclude Include="graph\RenderStates.h" />
     <ClInclude Include="graph\RenderTarget.h" />
     <ClInclude Include="graph\SphereMesh.h" />
+    <ClInclude Include="graph\Sprite.h" />
     <ClInclude Include="graph\Vertex.h" />
     <ClInclude Include="graph\VertexArray.h" />
     <ClInclude Include="graph\ModelMesh.h" />

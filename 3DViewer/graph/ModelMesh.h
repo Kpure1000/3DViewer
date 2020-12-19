@@ -37,9 +37,9 @@ namespace rtx
                 : Mesh(Vertices, Indices, Textures)
             {
                 MeshInit();
-#ifdef _DEBUG
+//#ifdef _DEBUG
                 printf("Model Vertices: %zd, Indices: %zd, Textures: %zd.\n", vertices.size(), indices.size(), textures.size());
-#endif
+//#endif
             }
 
         private:

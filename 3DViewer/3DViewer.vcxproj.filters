@@ -290,5 +290,8 @@
     <ClInclude Include="graph\LearnModel.h">
       <Filter>头文件\graph</Filter>
     </ClInclude>
+    <ClInclude Include="graph\Sprite.h">
+      <Filter>头文件\graph</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

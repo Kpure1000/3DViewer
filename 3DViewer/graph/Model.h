@@ -24,9 +24,9 @@ namespace rtx
                 :gammaCorrection(gamma)
             {
                 loadModel(path);
-#ifdef _DEBUG
+//#ifdef _DEBUG
                 printf("Model Load success: %zd models.\n", meshes.size());
-#endif
+//#endif
             }
 
         private:

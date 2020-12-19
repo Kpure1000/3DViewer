@@ -18,7 +18,7 @@ int ch2_model_main()
 {
 
 	Window App(glm::vec2(800, 600), "Chapter2: Test 6: Model Loading",
-		Window::ClearMode::DepthMode, false);
+		Window::ClearMode::DepthMode, true);
 
 	glm::vec2 appSize = App.GetSize();
 
@@ -33,8 +33,12 @@ int ch2_model_main()
 	lightShader.SetRGB("_lightColor", lightColor);
 
 	//  box:
-	graph::Model model("../data/model/nanosuit/nanosuit.obj");
-	model.GetTransform().SetScale(glm::vec3(0.1f));
+	graph::Model nanosuit("../data/model/nanosuit/nanosuit.obj");
+	nanosuit.GetTransform().SetScale(glm::vec3(0.1f));
+
+	graph::Model torus("../data/model/KizunaAi/KizunaAi.obj");
+	torus.GetTransform().SetPosition(glm::vec3(1.0f, -0.5f, 1.0f));
+	torus.GetTransform().SetScale(glm::vec3(0.2f));
 
 	Shader modelShader("../data/shader/ch2_model.vert", "../data/shader/ch2_model.frag");
 	modelShader.Use();
@@ -62,8 +66,14 @@ int ch2_model_main()
 		modelShader.Use();
 		modelShader.SetMatrix4("_view", camera.GetCamera().GetView());
 		modelShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
-		modelShader.SetMatrix4("_model", model.GetTransform().GetTransMat());
-		App.Draw(model, modelShader);
+		modelShader.SetMatrix4("_model", nanosuit.GetTransform().GetTransMat());
+		App.Draw(nanosuit, modelShader);
+
+		modelShader.Use();
+		modelShader.SetMatrix4("_view", camera.GetCamera().GetView());
+		modelShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
+		modelShader.SetMatrix4("_model", torus.GetTransform().GetTransMat());
+		App.Draw(torus, modelShader);
 
 		lightShader.Use();
 		lightShader.SetMatrix4("_view", camera.GetCamera().GetView());

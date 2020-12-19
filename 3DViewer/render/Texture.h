@@ -121,10 +121,8 @@ namespace rtx
 		struct MeshTex
 		{
 			Texture texture;
-			//MeshTexType type;
 
 			std::string type;
-			std::string path;
 		};
 
 	}
