@@ -9,7 +9,7 @@ namespace rtx
 {
 	namespace graph
 	{
-		class Sprite : Drawable
+		class Sprite : public Drawable
 		{
 		public:
 
@@ -127,9 +127,11 @@ namespace rtx
 
 			virtual void Draw(const RenderTarget& target, RenderStates states)const
 			{
-
+                if (states.shader == nullptr)
+                {
+                    target.Draw(indices, VAO);
+                }
 			}
-
 
             /**************************************************/
 

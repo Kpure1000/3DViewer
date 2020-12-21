@@ -6,7 +6,8 @@
 #include<sstream>
 #include<thread>
 
-#include"../render/Shader.h"
+#include"../graph/Graph.h"
+#include"../render/Render.h"
 #include"../render/Image.h"
 #include"../util/Color.h"
 #include"../render/Texture.h"
@@ -14,214 +15,84 @@
 using namespace rtx;
 using namespace std;
 
-void raytracing_processInput(GLFWwindow* window);
+void raytracing_processInput(Window window);
 
 int raytracing()
 {
 
-#pragma region some initializations
+    Window App(glm::vec2(800, 600), "Real-time Ray Tracing", Window::ClearMode::DepthMode, false);
+    glm::vec2 appSize = App.GetSize();
 
-    glfwInit(); // 初始化glfw
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    graph::Sprite canvas;
+    canvas.GetTransform().SetScale(glm::vec3(4.0f,3.0f,1.0f));
+    canvas.GetTransform().SetPosition(glm::vec3(-2.0f, -1.5f, 0.0f));
 
-#pragma endregion
-
-#pragma region create window
-
-    int win_width = 800;
-    int win_height = 600;
-
-    GLFWwindow* window = glfwCreateWindow(win_width, win_height, "LearnOpenGL", NULL, NULL);
-    if (window == NULL)
-    {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    glViewport(0, 0, win_width, win_height); // 设置视口大小
-
-     //  window resize call back
-    glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height)
-        {
-            glViewport(0, 0, width, height);
-        });
-
-    //  mouse scroll event call back
-    glfwSetScrollCallback(window, [](GLFWwindow* win, double offsetX, double offsetY)
-        {
-            // TODO
-            //printf("Offset: (%lf, %lf)\n", offsetX, offsetY);
-        });
-
-#pragma endregion
-
-#pragma region triangle initialization
-
-    //  create triangle
-    float vertices[] = {
-        //  triangle down
-        -1.0f,-1.0f,0.0f, //  left-bottom
-        0.5f,0.5f,0.5f,
-        0.0f,0.0f,
-
-        -1.0f,1.0f,0.0f, //  left-top
-        1.0f,0.0f,0.0f,
-        0.0f,1.0f,
-
-        1.0f,1.0f,0.0f, //  right-top
-        0.0f,1.0f,0.0f,
-        1.0f,1.0f,
-
-        1.0f,-1.0f,0.0f, //  right-bottom
-        0.0f,0.0f,1.0f,
-        1.0f,0.0f
-    };
-
-    int indices[] = {
-        0,1,2,
-        2,3,0
-    };
-
-    //  create vertices array object
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    //  bind vao
-    glBindVertexArray(VAO);
-
-    //  cerate vertices buffer object
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    //  bind vbo
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    //  copy vertices data to memory
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    //  bind ebo
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    //  copy element indices data to memory
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-#pragma endregion
-
-#pragma region set vertex atrribution
-
-    //  set the atrribution of vertices.position data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    //  apply the atrribution set before
-    glEnableVertexAttribArray(0);
-
-    //  set the atrribution of vertices.color data
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    //  apply the atrribution set before
-    glEnableVertexAttribArray(1);
-
-    //  set the atrribution of vertices.color data
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    //  apply the atrribution set before
-    glEnableVertexAttribArray(2);
-
-#pragma endregion
-
-#pragma region some setting or source releasing before render
-
-    //  release bind of vbo
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //  release bind of vao
-    glBindVertexArray(0);
-    //  release bind of ebo
-    //  <ATTENTION!!!> DO NOT RELEASE EBO BEFORE VAO 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    //  set draw mode
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //  draw fill face
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
-
-#pragma endregion
+    FPSCamera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f),
+        45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 10.0f);
 
     render::Shader shader("../data/shader/raytracing.vert",
         "../data/shader/raytracing.frag");
 
+    glm::vec3 leftButtom, horizontal, vertical;
+
     shader.Use();
-    shader.SetVector2("_screen_size", glm::vec2(win_width, win_height));
+    shader.SetVector2("_screen_size", appSize);
+    shader.SetMatrix4("_view", camera.GetCamera().GetView());
+    shader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
+    shader.SetMatrix4("_model", canvas.GetTransform().GetTransMat());
 
-#pragma region render loop
+    camera.GetCamera().SetOrigin(glm::vec3(0.0f, 0.0f, 2.0f));
+    camera.GetCamera().SetTarget(glm::vec3(-2.0f, -1.0f, -1.0f));
 
-    util::Color color;
+    camera.Update(App);
 
-    bool isImage1 = true;
+    shader.SetVector3("ca_lookFrom", camera.GetCamera().GetOrigin());
+    camera.GetCamera().GetLeftBottom(leftButtom, horizontal, vertical);
+    shader.SetVector3("ca_left_buttom", leftButtom);
+    shader.SetVector3("ca_horizontal", horizontal);
+    shader.SetVector3("ca_vertical", vertical);
 
-    time_t startTime = clock();
-    time_t curTime = startTime;
-    int i = 0;
+    App.DrawStart(Window::DrawMode::Fill);
+
     float randSeed[4];
     util::RayMath::Srand48((unsigned int)time(NULL));
-
-    //  if window has not been closed yet
-    while (!glfwWindowShouldClose(window))
+    while (App.isOpen())
     {
-        //  input dealing
-        raytracing_processInput(window);
+        raytracing_processInput(App);
 
-        //  redner setting
-        glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+        App.Clear(0x123456);
 
-		//  shader update
-		shader.Use();
+        camera.Update(App);
 
-		glfwGetWindowSize(window, &win_width, &win_height);
-		shader.SetVector2("_screen_size", glm::vec2(win_width, win_height));
-		for (size_t i = 0; i < 4; i++)
-			randSeed[i] = static_cast<float>(util::RayMath::Drand48());
-		shader.SetArray("_rdSeed", 4, randSeed);
-		float horizontal_ca = 4.0f;
-		shader.SetVector3("ca_lookFrom", glm::vec3(0.0f, 0.0f, 2.0f));
-		shader.SetVector3("ca_left_buttom", glm::vec3(-2.0f, -1.0f, -1.0f));
-		shader.SetVector3("ca_horizontal", glm::vec3(horizontal_ca, 0.0f, 0.0f));
-		shader.SetVector3("ca_vertical", glm::vec3(0.0f, horizontal_ca * win_height / win_width, 0.0f));
+        for (size_t i = 0; i < 4; i++)
+            randSeed[i] = static_cast<float>(util::RayMath::Drand48());
+        shader.Use();
+        shader.SetVector2("_screen_size", appSize);
+        shader.SetArray("_rdSeed", 4, randSeed);
+        /*shader.SetVector3("ca_lookFrom", glm::vec3(0.0f, 0.0f, 2.0f));
+        shader.SetVector3("ca_left_buttom", glm::vec3(-2.0f, -1.0f, -1.0f));
+        float horizontal_ca = 4.0f;
+        shader.SetVector3("ca_horizontal", glm::vec3(horizontal_ca, 0.0f, 0.0f));
+        shader.SetVector3("ca_vertical", glm::vec3(0.0f, horizontal_ca * appSize.y / appSize.x, 0.0f));*/
 
-		//  bind vao
-		glBindVertexArray(VAO);
-        //  draw vertices from memory        
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        shader.SetVector3("ca_lookFrom", camera.GetCamera().GetOrigin());
+        camera.GetCamera().GetLeftBottom(leftButtom, horizontal, vertical);
+        shader.SetVector3("ca_left_buttom", leftButtom);
+        shader.SetVector3("ca_horizontal", horizontal);
+        shader.SetVector3("ca_vertical", vertical);
+        App.Draw(canvas);
 
-        //  binary buffer swaping
-        glfwSwapBuffers(window);
-        //  deal events
-        glfwPollEvents();
+        App.Display();
     }
 
-#pragma endregion
-
-#pragma region release all resouces of gl
-
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
     glfwTerminate();
-
-#pragma endregion
 
     return EXIT_SUCCESS;
 }
 
-void raytracing_processInput(GLFWwindow* window)
+void raytracing_processInput(Window window)
 {
     //  press ESC to close window and exit
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window.GetWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window.GetWindow(), true);
 }

@@ -64,6 +64,8 @@ namespace rtx
 
 			float GetFoV()const;
 
+			void GetLeftBottom(glm::vec3& leftBottom, glm::vec3& hor, glm::vec3& ver)const;
+
 			void SetOrigin(glm::vec3 LookFrom);
 
 			void SetTarget(glm::vec3 LookAt);

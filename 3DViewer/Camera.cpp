@@ -82,6 +82,19 @@ namespace rtx
 			return foV;
 		}
 
+		void Camera::GetLeftBottom(glm::vec3& leftBottom,glm::vec3 &hor,glm::vec3& ver)const
+		{
+			float theta = glm::radians(foV);
+			float height = 2 * tan(theta / 2);
+			float width = aspect * height;
+			glm::vec3 front = glm::normalize(target - origin);
+			glm::vec3 right = glm::normalize(glm::cross(cameraUp, -front));
+			glm::vec3 up = cameraUp;
+			leftBottom = origin + front - width / 2 * right - height / 2 * up;
+			hor = width * right;
+			ver = height * up;
+		}
+
 		void Camera::SetOrigin(glm::vec3 LookFrom)
 		{
 			origin = LookFrom;
