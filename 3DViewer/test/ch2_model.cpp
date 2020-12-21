@@ -18,7 +18,7 @@ int ch2_model_main()
 {
 
 	Window App(glm::vec2(800, 600), "Chapter2: Test 6: Model Loading",
-		Window::ClearMode::DepthMode, true);
+		Window::ClearMode::DepthMode, false);
 
 	glm::vec2 appSize = App.GetSize();
 

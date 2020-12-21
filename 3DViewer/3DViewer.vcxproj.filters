@@ -165,6 +165,15 @@
     <ClCompile Include="test\ch2_learnModel.cpp">
       <Filter>源文件\test</Filter>
     </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_glfw.cpp">
+      <Filter>源文件\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
+      <Filter>源文件\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="test\ch3_depthTest.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="graph\Vertex.h">
@@ -192,9 +201,6 @@
       <Filter>头文件\render</Filter>
     </ClInclude>
     <ClInclude Include="test\ch1_test.h">
-      <Filter>头文件\test</Filter>
-    </ClInclude>
-    <ClInclude Include="test\test_total.h">
       <Filter>头文件\test</Filter>
     </ClInclude>
     <ClInclude Include="render\Image.h">
@@ -292,6 +298,18 @@
     </ClInclude>
     <ClInclude Include="graph\Sprite.h">
       <Filter>头文件\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_glfw.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>头文件\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="test\ch3_test.h">
+      <Filter>头文件\test</Filter>
+    </ClInclude>
+    <ClInclude Include="test\test_total.h">
+      <Filter>头文件\test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

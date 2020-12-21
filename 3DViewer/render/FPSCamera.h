@@ -38,8 +38,13 @@ namespace rtx
 
 			void Update(Window const& window)
 			{
+				//  TODO this resize setting should move into window callback
+				//  Btw, don't resize aspect in ray-tracing camera, though I don't know why
+				//  Maybe I need a ray-tracing camera ?
+				//camera.SetAspect(window.GetSize().x / window.GetSize().y);
 				isMouseMoved = false;
 				cameraOrigin = camera.GetOrigin();
+				cameraDirection = -camera.GetDirection();
 				cameraUp = camera.GetCameraUp();
 				realSpeed = system::Time::deltaTime() * cameraSpeed; // adjust accordingly
 				KeyContoller(window);
@@ -50,7 +55,6 @@ namespace rtx
 					camera.SetFoV(cameraFov);
 					camera.SetOrigin(cameraOrigin);
 					camera.SetTarget(cameraOrigin + cameraDirection);
-					camera.SetCameraUp(cameraUp);
 					isMouseMoved = false;
 				}
 			}

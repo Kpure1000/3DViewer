@@ -118,9 +118,12 @@ namespace rtx
 			/// <param name="Enable"></param>
 			void SetCursorEnable(bool Enable);
 
-			inline glm::vec2 GetSize()
+			inline glm::vec2 GetSize()const
 			{
-				return m_size;
+				int w, h;
+				glfwGetWindowSize(m_window, &w, &h);
+				//m_size.x = static_cast<float>(w), m_size.y = static_cast<float>(h);
+				return glm::vec2(static_cast<float>(w), static_cast<float>(h));
 			}
 
 		private:

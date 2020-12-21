@@ -2,7 +2,5 @@
 
 int main()
 {
-	//return ch2_model_main();
-	return raytracing();
-	//return ch2_learnModel_main();
+	return ch3_depthTest_main();
 }

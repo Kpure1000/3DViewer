@@ -13,7 +13,7 @@ namespace rtx
 			: m_size(Size), m_title(Title), m_clearBit(ClearBit),
 			m_drawMode(DrawMode::Fill), m_pVideoMode()
 		{
-			glfwInit(); // 初始化glfw
+			glfwInit(); // init glfw
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // 
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -52,7 +52,7 @@ namespace rtx
 				std::cerr << "Failed to initialize GLAD" << std::endl;
 			}
 
-			glViewport(0, 0, (int)m_size.x, (int)m_size.y); // 设置视口大小
+			glViewport(0, 0, (int)m_size.x, (int)m_size.y); 
 
 			// CallBack Setting:
 
@@ -113,6 +113,8 @@ namespace rtx
 		void Window::Clear(util::Color color)
 		{
 			if (!isOpened)return;
+			//  deal events
+			glfwPollEvents();
 			glClearColor(color[0], color[1], color[2], color[3]);
 			if (m_clearBit == ClearMode::ColorMode)
 			{
@@ -130,9 +132,6 @@ namespace rtx
 			//  binary buffer swaping
 			glfwSwapBuffers(m_window);
 			event::Mouse::ResetMouseState();
-
-			//  deal events
-			glfwPollEvents();
 			system::Time::FrameDisplay();
 		}
 

@@ -95,6 +95,20 @@ namespace rtx
 				return r0 + (1 - r0) * powf((1 - cosine), 5);
 			}
 
+			static std::string ToString(glm::vec3 vector3)
+			{
+				char str[32];
+				sprintf_s(str, "(%.3f, %.3f, %.3f)", vector3.x, vector3.y, vector3.z);
+				return std::string(str);
+			}
+
+			static std::string ToString(glm::vec2 vector2)
+			{
+				char str[32];
+				sprintf_s(str, "(%.3f, %.3f)", vector2.x, vector2.y);
+				return std::string(str);
+			}
+
 		private:
 
 			static unsigned long long seed;

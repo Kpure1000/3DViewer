@@ -138,26 +138,18 @@ void NormalColor(inout vec3 Color)
 }
 void main()
 {
-    int sampleTimes=10;
-    vec3 lt = vec3(-2.0,-1.0,-1.0);
-    float hor = 4.0;
-    float ver = hor * _screen_size.y / _screen_size.x;
-    vec3 horizontal = vec3(hor,0.0,0.0);
-    vec3 vertical = vec3(0.0,ver,0.0);
-
     Sphere sphere1 = Sphere_Con(vec3(0,0,-1.5),0.5);
     Sphere sphere2 = Sphere_Con(vec3(0,-1000.0,-1.0),1000.0);
-
 
     vec2 uv;
     uv.x = (gl_FragCoord.x) / _screen_size.x;
     uv.y = (gl_FragCoord.y) / _screen_size.y;
 
     Ray ray = Ray_Con(ca_lookFrom,
-     ca_left_buttom + uv.x * horizontal + uv.y * vertical - ca_lookFrom);
+     ca_left_buttom + uv.x * ca_horizontal + uv.y * ca_vertical - ca_lookFrom);
 
     vec3 color;
-    color = Irradiance(ray,sphere1);
+    color = Irradiance(ray, sphere1);
     
     NormalColor(color);
 
