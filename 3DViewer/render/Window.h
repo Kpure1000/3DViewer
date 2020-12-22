@@ -82,7 +82,13 @@ namespace rtx
 			/// Clear the canvas
 			/// </summary>
 			/// <param name="color"></param>
-			void Clear(util::Color color);
+			void Clear(util::Color&& color);
+
+			/// <summary>
+			/// Clear the canvas
+			/// </summary>
+			/// <param name="color"></param>
+			void Clear(const util::Color& color);
 
 			/// <summary>
 			/// Display to the screen, MUST call in the end of frame
@@ -127,6 +133,12 @@ namespace rtx
 			}
 
 		private:
+
+			/// <summary>
+			/// Is OpenGL initialized?
+			/// </summary>
+			[[maybe_unused]]
+			static bool isInitialized;
 
 			GLFWwindow* m_window;
 

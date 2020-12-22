@@ -81,7 +81,7 @@ namespace rtx
             {
                 if (m_isActived)
                 {
-                    if (states.shader != nullptr)
+                    if (nullptr != states.GetShader())
                     {
                         unsigned int diffuseNr = 1;
                         unsigned int specularNr = 1;
@@ -101,8 +101,8 @@ namespace rtx
                                 number = std::to_string(heightNr++); // transfer unsigned int to stream
 
                             textures[i].texture.ReBind((int)i);
-                            states.shader->Use();
-                            states.shader->SetSampler2D("_material" + name + number, (int)i);
+                            states.GetShader()->Use();
+                            states.GetShader()->SetSampler2D("_material" + name + number, (int)i);
                         }
                         target.Draw(vertices, VAO);
                     }

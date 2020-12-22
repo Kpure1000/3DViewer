@@ -26,6 +26,18 @@ namespace rtx
 
 			RenderStates(Texture& theTexture);
 
+			Shader* GetShader()
+			{
+				return shader;
+			}
+
+			Texture* GetTexture()
+			{
+				return texture;
+			}
+
+		private:
+
 			Shader* shader;
 			Texture* texture;
 

@@ -122,7 +122,7 @@ namespace rtx
 			/// Deal image data with imageDealCallBack
 			/// </summary>
 			/// <param name="imageDealCallBack">The dealing method defined by user</param>
-			void DealImage(function<void(int, int, int, vector<unsigned char>&)>imageDealCallBack)
+			void DealImage(function<void(int, int, int, vector<unsigned char>&)>&& imageDealCallBack)
 			{
 				imageDealCallBack(width, height, channel, imageData);
 			}

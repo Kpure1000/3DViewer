@@ -127,10 +127,11 @@ namespace rtx
 
 			virtual void Draw(const RenderTarget& target, RenderStates states)const
 			{
-                if (states.shader == nullptr)
+                if (nullptr == states.GetShader())
                 {
                     target.Draw(indices, VAO);
                 }
+                // TODO: if shader not null
 			}
 
             /**************************************************/

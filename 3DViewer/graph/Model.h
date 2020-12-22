@@ -35,7 +35,7 @@ namespace rtx
             {
                 for (size_t i = 0; i < meshes.size(); i++)
                 {
-                    target.Draw(meshes[i], *states.shader);
+                    target.Draw(meshes[i], *states.GetShader());
                 }
             }
 

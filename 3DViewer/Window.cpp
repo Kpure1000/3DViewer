@@ -6,6 +6,7 @@ namespace rtx
 {
 	namespace render
 	{
+		bool Window::isInitialized = false;
 
 		bool Window::isFocused = false;
 
@@ -32,12 +33,13 @@ namespace rtx
 			{
 				m_size.x = (float)m_pVideoMode.width;
 				m_size.y = (float)m_pVideoMode.height;
+				//  Use the size of primary monitor
 				m_window = glfwCreateWindow(m_pVideoMode.width, m_pVideoMode.height, Title.c_str(),
 					m_monitors[0], NULL);
 			}
 			else
 			{
-				m_window = glfwCreateWindow((int)m_size.x,(int)m_size.y, Title.c_str(), NULL, NULL);
+				m_window = glfwCreateWindow((int)m_size.x, (int)m_size.y, Title.c_str(), NULL, NULL);
 			}
 
 			if (m_window == NULL)
@@ -52,7 +54,7 @@ namespace rtx
 				std::cerr << "Failed to initialize GLAD" << std::endl;
 			}
 
-			glViewport(0, 0, (int)m_size.x, (int)m_size.y); 
+			glViewport(0, 0, (int)m_size.x, (int)m_size.y);
 
 			// CallBack Setting:
 
@@ -110,7 +112,23 @@ namespace rtx
 			glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)m_drawMode);
 		}
 
-		void Window::Clear(util::Color color)
+		void Window::Clear(util::Color&& color)
+		{
+			if (!isOpened)return;
+			//  deal events
+			glfwPollEvents();
+			glClearColor(color[0], color[1], color[2], color[3]);
+			if (m_clearBit == ClearMode::ColorMode)
+			{
+				glClear(GL_COLOR_BUFFER_BIT);
+			}
+			else if (m_clearBit == ClearMode::DepthMode)
+			{
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			}
+		}
+
+		void Window::Clear(const util::Color& color)
 		{
 			if (!isOpened)return;
 			//  deal events
