@@ -2,5 +2,5 @@
 
 int main()
 {
-	return ch3_depthTest_main();
+	return ch2_lightCaster_main();
 }

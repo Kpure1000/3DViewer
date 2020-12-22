@@ -216,6 +216,7 @@
     <ClInclude Include="render\Camera.h" />
     <ClInclude Include="render\FPSCamera.h" />
     <ClInclude Include="render\Image.h" />
+    <ClInclude Include="render\Light.h" />
     <ClInclude Include="render\Render.h" />
     <ClInclude Include="render\Shader.h" />
     <ClInclude Include="render\Texture.h" />

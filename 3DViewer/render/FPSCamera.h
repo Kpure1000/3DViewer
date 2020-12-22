@@ -5,6 +5,7 @@
 #include"Window.h"
 #include"../event/Mouse.h"
 #include"../system/Time.h"
+#include"../util/RtxMath.h"
 namespace rtx
 {
 	namespace render
@@ -21,11 +22,12 @@ namespace rtx
 				cameraSpeed(CameraSpeed),
 				camera(LookFrom, LookAt, glm::vec3(0.0f, 1.0f, 0.0f), FoV, Aspect, Near, Far)
 			{
-
 				cameraDirection = -camera.GetDirection();
 				pitch = cameraDirection.y > 0 ? asin(cameraDirection.y) : -asin(-cameraDirection.y);
-				yaw = cameraDirection.x > 0 ? -asin(-cameraDirection.z / cos(pitch)) : Pi + asin(-cameraDirection.z / cos(pitch));
-				
+				//  Must clamp before this asin, or it may cause NaN(ind)
+				yaw = cameraDirection.x > 0 ? -asin(glm::clamp(-cameraDirection.z / cos(pitch), -1.0f, 1.0f))
+					: Pi + asin(glm::clamp(-cameraDirection.z / cos(pitch), -1.0f, 1.0f));
+
 				cameraOrigin = camera.GetOrigin();
 				cameraUp = camera.GetCameraUp();
 				realSpeed = 0.0f;

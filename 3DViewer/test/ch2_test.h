@@ -6,8 +6,9 @@
 
 #pragma region Test Entrance
 
+#define _CH2_TEST_4
+#define _CH2_TEST_5
 #define _CH2_TEST_6
-#define _CH2_TEST_7
 
 #ifdef _CH2_TEST_1
 /// <summary>

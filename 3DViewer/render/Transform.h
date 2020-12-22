@@ -23,9 +23,10 @@ namespace rtx
 			/// Trasform
 			/// </summary>
 			Transform()
-				: m_position(glm::vec3(0.0f, 0.0f, 0.0f)),
+				: m_position(glm::vec3(0.0f)),
+				m_origin(glm::vec3(0.0f)),
 				m_rotation(glm::vec3(0.0f, 0.0f, 1.0f)), m_angle(0.0f),
-				m_scale(glm::vec3(1.0f, 1.0f, 1.0f)),
+				m_scale(glm::vec3(1.0f)),
 				m_trans(glm::mat4(1.0f)),
 				isUpdated(false)
 			{}
@@ -33,6 +34,11 @@ namespace rtx
 			inline glm::vec3 GetPosition()const
 			{
 				return m_position;
+			}
+
+			inline glm::vec3 GetOrigin()const
+			{
+				return m_origin;
 			}
 
 			inline glm::vec3 GetRotateion()const
@@ -55,7 +61,24 @@ namespace rtx
 			{
 				isUpdated = true;
 				m_position = position;
-				
+			}
+
+			inline void SetPosition(glm::vec3&& position)
+			{
+				isUpdated = true;
+				m_position = std::move(position);
+			}
+
+			inline void SetOrigin(const glm::vec3& origin)
+			{
+				isUpdated = true;
+				m_origin = origin;
+			}
+
+			inline void SetOrigin(glm::vec3&& origin)
+			{
+				isUpdated = true;
+				m_origin = std::move(origin);
 			}
 
 			/// <summary>
@@ -67,7 +90,13 @@ namespace rtx
 				isUpdated = true;
 				m_rotation = rotation;
 				m_angle = angle;
-				
+			}
+
+			inline void SetRotation(glm::vec3&& rotation, const float& angle)
+			{
+				isUpdated = true;
+				m_rotation = std::move(rotation);
+				m_angle = angle;
 			}
 
 			/// <summary>
@@ -78,7 +107,12 @@ namespace rtx
 			{
 				isUpdated = true;
 				m_scale = scale;
-				
+			}
+
+			inline void SetScale(glm::vec3&& scale)
+			{
+				isUpdated = true;
+				m_scale = std::move(scale);
 			}
 
 			/// <summary>
@@ -100,6 +134,8 @@ namespace rtx
 		private:
 
 			glm::vec3 m_position;
+
+			glm::vec3 m_origin;
 
 			//  TODO: Might replace by quaternion
 			glm::vec3 m_rotation;

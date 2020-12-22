@@ -40,7 +40,7 @@ namespace rtx
 		{
 			if (index < MaxTextureIndices)
 			{
-				glActiveTexture(index + GL_TEXTURE0);
+				glActiveTexture(GL_TEXTURE0 + index);
 				glBindTexture(GL_TEXTURE_2D, m_ID);
 				image.Use();
 			}
@@ -50,7 +50,7 @@ namespace rtx
 		{
 			if (index < MaxTextureIndices)
 			{
-				glActiveTexture(index + GL_TEXTURE0);
+				glActiveTexture(GL_TEXTURE0 + index);
 				glBindTexture(GL_TEXTURE_2D, m_ID);
 			}
 		}

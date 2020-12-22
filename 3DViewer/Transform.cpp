@@ -12,6 +12,7 @@ namespace rtx
 				m_trans = glm::translate(m_trans, m_position);
 				m_trans = glm::rotate(m_trans, (float)glm::radians(m_angle), m_rotation);
 				m_trans = glm::scale(m_trans, m_scale);
+				m_trans = glm::translate(m_trans, -m_origin);
 				isUpdated = false;
 			}
 			return m_trans;

@@ -311,5 +311,8 @@
     <ClInclude Include="test\test_total.h">
       <Filter>头文件\test</Filter>
     </ClInclude>
+    <ClInclude Include="render\Light.h">
+      <Filter>头文件\render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -97,14 +97,14 @@ namespace rtx
 
 			static std::string ToString(glm::vec3 vector3)
 			{
-				char str[32];
+				char str[64];
 				sprintf_s(str, "(%.3f, %.3f, %.3f)", vector3.x, vector3.y, vector3.z);
 				return std::string(str);
 			}
 
 			static std::string ToString(glm::vec2 vector2)
 			{
-				char str[32];
+				char str[64];
 				sprintf_s(str, "(%.3f, %.3f)", vector2.x, vector2.y);
 				return std::string(str);
 			}

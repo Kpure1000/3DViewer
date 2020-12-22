@@ -6,6 +6,10 @@
 #include"../system/System.h"
 #include"../util/Util.h"
 
+#include "../imgui/imgui.h"
+#include"../imgui/imgui_impl_glfw.h"
+#include "../imgui/imgui_impl_opengl3.h"
+
 using namespace rtx;
 using namespace std;
 using render::Window;
@@ -22,14 +26,12 @@ int ch2_lightCaster_main()
 	glm::vec2 appSize = App.GetSize();
 
 	//  light:
-	glm::vec3 lightPosition(0.2f, 1.0f, 0.3f);
-	Color lightColor(0xFFFF66);
-	SphereMesh light;
-	light.GetTransform().SetPosition(lightPosition);
+	Light light(make_shared<SphereMesh>(), glm::vec3(0.2f, 0.3f, 1.5f), 0xffffff);
+	light.SetLightType(Light::LightType::Point);
 	light.GetTransform().SetScale(glm::vec3(0.3f));
 	Shader lightShader("../data/shader/ch2_lightCaster.vert", "../data/shader/ch2_lightCaster_light.frag");
 	lightShader.Use();
-	lightShader.SetRGB("_lightColor", lightColor);
+	lightShader.SetRGB("_lightColor", light.GetColor());
 
 	//  box:
 	CubeMesh box;
@@ -46,15 +48,13 @@ int ch2_lightCaster_main()
 	emissionTex.Bind(2); boxShader.SetSampler2D("_material.emission", 2);
 	boxShader.SetInt("_material.shininess", 32);
 	//  _light:
-	boxShader.SetVector4("_lightLocate", glm::vec4(lightPosition, 0.0f));
+	boxShader.SetVector4("_lightLocate", light.GetLightLocation());
 	boxShader.SetRGB("_light.ambient", util::Color(0x0f0f0f));
-	boxShader.SetRGB("_light.diffuse", lightColor);
-	boxShader.SetRGB("_light.specular", lightColor);
+	boxShader.SetRGB("_light.diffuse", light.GetColor());
+	boxShader.SetRGB("_light.specular", light.GetColor());
 
-	FPSCamera camera(glm::vec3(0.0f, 0.0f, 3.0f), lightPosition,
+	FPSCamera camera(glm::vec3(0.0f, 0.0f, 4.0f), light.GetTransform().GetPosition(),
 		45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 5.0f);
-
-	App.DrawStart(Window::DrawMode::Fill);
 
 	glm::vec3 cubePositions[] = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
@@ -69,10 +69,32 @@ int ch2_lightCaster_main()
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
 
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui_ImplGlfw_InitForOpenGL(App.GetWindow(), true);
+	ImGui_ImplOpenGL3_Init("#version 330 core");
+	ImGui::StyleColorsClassic();
+	bool show_demo_window = true;
+
+	App.DrawStart(Window::DrawMode::Fill);
+
 	while (App.isOpen())
 	{
 		test_ch2_5_processInput(App);
+		std::string outStr = "";
+		outStr = "Camera Information\nOrigin: " + RayMath::ToString(camera.GetCamera().GetOrigin())
+			+ "\nTarget: " + RayMath::ToString(camera.GetCamera().GetTarget()) + "\n";	
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
+		ImGui::Begin("Another Window", &show_demo_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+		ImGui::Text(outStr.c_str());
+		if (ImGui::Button("Close Me"))
+			glfwSetWindowShouldClose(App.GetWindow(), true);
+		ImGui::End();
+
+		ImGui::Render();
 		App.Clear(util::Color(0x060a23ff));
 
 		camera.Update(App);
@@ -95,10 +117,14 @@ int ch2_lightCaster_main()
 		lightShader.SetMatrix4("_model", light.GetTransform().GetTransMat());
 		App.Draw(light);
 
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		App.Display();
 
 	}
 
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	return 0;
 }
 void test_ch2_5_processInput(render::Window window)

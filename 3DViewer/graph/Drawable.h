@@ -39,11 +39,6 @@ namespace rtx
 
 		protected:
 
-			inline glm::mat4 GetTransMat()
-			{
-				return m_trans.GetTransMat();
-			}
-
 			bool m_isActived;
 
 			Transform m_trans;

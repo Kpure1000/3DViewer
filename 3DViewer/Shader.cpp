@@ -178,7 +178,7 @@ namespace rtx
 
 		void Shader::SetSampler2D(const std::string& name, const int& index) const
 		{
-			glUniform1i(GetPropertyID(name),  GL_TEXTURE0 + index); //  ÷∂Ø…Ë÷√
+			glUniform1i(GetPropertyID(name),  index);
 		}
 
 		void Shader::SetArray(const std::string& name,const int& size, const float* data)const

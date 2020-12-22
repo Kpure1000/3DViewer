@@ -22,7 +22,7 @@ int ch3_depthTest_main()
 
 	glm::vec2 appSize = App.GetSize();
 
-	CubeMesh boxA;
+	SphereMesh sphA;
 
 	App.DrawStart(Window::DrawMode::Fill);
 
@@ -33,6 +33,8 @@ int ch3_depthTest_main()
 		test_ch3_1_processInput(App);
 
 		App.Clear(clearColor);
+
+		App.Draw(sphA);
 
 		App.Display();
 	}

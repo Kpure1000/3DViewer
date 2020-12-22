@@ -13,9 +13,22 @@ namespace rtx
 		public:
 
 			SphereMesh()
-				:radius(1.0f), lerpNum(100)
+				:m_lerpNum(50)
 			{
-				int latitu = lerpNum, longitu = lerpNum;
+				MeshInit();
+			}
+
+			~SphereMesh()
+			{
+				glDeleteVertexArrays(1, &VAO);
+				glDeleteBuffers(1, &VBO);
+			}
+
+		private:
+
+			virtual void MeshInit()
+			{
+				int latitu = m_lerpNum, longitu = m_lerpNum;
 
 				float rz1, rz2, rxy1, rxy2;
 				Vertex va, vb, vc, vd;
@@ -28,10 +41,10 @@ namespace rtx
 						rz2 = (Pi * (j + 1) / latitu);
 						rxy1 = 2 * Pi * i / longitu;
 						rxy2 = 2 * Pi * (i + 1) / longitu;
-						va.position = { radius * sin(rz1) * cos(rxy1),radius * sin(rz1) * sin(rxy1),radius * cos(rz1) };
-						vb.position = { radius * sin(rz2) * cos(rxy1),radius * sin(rz2) * sin(rxy1),radius * cos(rz2) };
-						vc.position = { radius * sin(rz2) * cos(rxy2),radius * sin(rz2) * sin(rxy2),radius * cos(rz2) };
-						vd.position = { radius * sin(rz1) * cos(rxy2),radius * sin(rz1) * sin(rxy2),radius * cos(rz1) };
+						va.position = { sin(rz1) * cos(rxy1), sin(rz1) * sin(rxy1), cos(rz1) };
+						vb.position = { sin(rz2) * cos(rxy1), sin(rz2) * sin(rxy1), cos(rz2) };
+						vc.position = { sin(rz2) * cos(rxy2), sin(rz2) * sin(rxy2), cos(rz2) };
+						vd.position = { sin(rz1) * cos(rxy2), sin(rz1) * sin(rxy2), cos(rz1) };
 
 						normal = glm::normalize(glm::cross(vd.position - vb.position, va.position - vc.position));
 						va.normal = vb.normal = vc.normal = vd.normal = normal;
@@ -46,20 +59,6 @@ namespace rtx
 					}
 				}
 
-				MeshInit();
-
-			}
-
-			~SphereMesh()
-			{
-				glDeleteVertexArrays(1, &VAO);
-				glDeleteBuffers(1, &VBO);
-			}
-
-		private:
-
-			virtual void MeshInit()
-			{
 				glGenVertexArrays(1, &VAO);
 				glGenBuffers(1, &VBO);
 
@@ -77,7 +76,6 @@ namespace rtx
 				//  texcoords
 				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 				glEnableVertexAttribArray(2);
-				
 
 				glBindVertexArray(0);
 			}
@@ -88,9 +86,7 @@ namespace rtx
 					target.Draw(vertices, VAO);
 			}
 
-			float radius;
-
-			int lerpNum;
+			int m_lerpNum;
 
 		};
 	}
