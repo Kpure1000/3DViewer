@@ -31,7 +31,7 @@ namespace rtx
 
         private:
 
-            virtual void Draw(const RenderTarget& target, RenderStates states)const
+            virtual void Draw(const RenderTarget& target, RenderStates&& states)const
             {
                 for (size_t i = 0; i < meshes.size(); i++)
                 {

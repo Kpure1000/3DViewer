@@ -37,7 +37,7 @@ namespace rtx
 
             virtual void MeshInit() = 0;
 
-            virtual void Draw(const RenderTarget& target, RenderStates states)const = 0;
+            virtual void Draw(const RenderTarget& target, RenderStates&& states)const = 0;
 
             /**************************************************/
 

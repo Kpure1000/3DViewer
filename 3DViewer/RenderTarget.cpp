@@ -8,14 +8,12 @@ namespace rtx
 	{
 		void RenderTarget::Draw(const Drawable& drawable)const
 		{
-			RenderStates rts;
-			drawable.Draw(*this, rts);
+			drawable.Draw(*this, RenderStates());
 		}
 
 		void RenderTarget::Draw(const Drawable& drawable, Shader& shader) const
 		{
-			RenderStates rts(shader);
-			drawable.Draw(*this, rts);
+			drawable.Draw(*this, RenderStates(shader));
 		}
 
 		void RenderTarget::Draw(const vector<Vertex>& vertices, unsigned int vao)const

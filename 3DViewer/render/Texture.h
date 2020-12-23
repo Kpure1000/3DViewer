@@ -53,12 +53,6 @@ namespace rtx
 			void ReBind(const int& index)const;
 
 			/// <summary>
-			/// Get index of texture in GL
-			/// </summary>
-			/// <returns></returns>
-			int GetIndex()const;
-
-			/// <summary>
 			/// Get id of texture
 			/// </summary>
 			/// <returns></returns>

@@ -56,7 +56,7 @@ namespace rtx
 
         private:
 
-            virtual void Draw(const RenderTarget& target, RenderStates states)const
+            virtual void Draw(const RenderTarget& target, RenderStates&& states)const
             {
 
             }

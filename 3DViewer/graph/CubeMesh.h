@@ -104,7 +104,7 @@ namespace rtx
 				glBindVertexArray(0);
 			}
 
-			virtual void Draw(const RenderTarget& target, RenderStates states)const
+			virtual void Draw(const RenderTarget& target, RenderStates&& states)const
 			{
 				if (m_isActived)
 					target.Draw(vertices, VAO);

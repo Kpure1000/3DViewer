@@ -49,7 +49,7 @@ namespace rtx
 
 			friend class RenderStates;
 
-			virtual void Draw(const RenderTarget& target, RenderStates states)const = 0;
+			virtual void Draw(const RenderTarget& target, RenderStates&& states)const = 0;
 
 		};
 	}

@@ -103,7 +103,7 @@ namespace rtx
 				switch (m_lightType)
 				{
 				case LightType::Directional:
-					return glm::vec4(GetTransform().GetPosition(), 0.1f);
+					return glm::vec4(glm::normalize(GetTransform().GetPosition()), 0.1f);
 					break;
 				case LightType::Point:
 					return glm::vec4(GetTransform().GetPosition(), 1.0f);
@@ -134,7 +134,7 @@ namespace rtx
 
 		private:
 
-			virtual void Draw(const RenderTarget& target, RenderStates states)const
+			virtual void Draw(const RenderTarget& target, RenderStates&& states)const
 			{
 				target.Draw((*m_mesh));
 			}

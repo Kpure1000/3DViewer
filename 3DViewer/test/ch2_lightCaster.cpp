@@ -21,7 +21,8 @@ void test_ch2_5_processInput(render::Window window);
 int ch2_lightCaster_main()
 {
 
-	Window App(glm::vec2(800, 600), "Chapter2: Test 5: Light Caster", Window::ClearMode::DepthMode, false);
+	Window App(glm::vec2(800, 600), "Chapter2: Test 5: Light Caster",
+		Window::ClearMode::DepthMode, false);
 
 	glm::vec2 appSize = App.GetSize();
 
@@ -32,6 +33,9 @@ int ch2_lightCaster_main()
 	Shader lightShader("../data/shader/ch2_lightCaster.vert", "../data/shader/ch2_lightCaster_light.frag");
 	lightShader.Use();
 	lightShader.SetRGB("_lightColor", light.GetColor());
+	
+	FPSCamera camera(glm::vec3(0.0f, 0.0f, 4.0f), light.GetTransform().GetPosition(),
+		45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 5.0f);
 
 	//  box:
 	CubeMesh box;
@@ -43,18 +47,23 @@ int ch2_lightCaster_main()
 	emissionTex.LoadFromFile("../data/texture/matrix.jpg");
 	Shader boxShader("../data/shader/ch2_lightCaster.vert", "../data/shader/ch2_lightCaster.frag");
 	boxShader.Use();
-	diffuseTex.Bind(0); boxShader.SetSampler2D("_material.diffuse", 0);
-	specularTex.Bind(1); boxShader.SetSampler2D("_material.specular", 1);
-	emissionTex.Bind(2); boxShader.SetSampler2D("_material.emission", 2);
+	//  _material
+	diffuseTex.Bind(0); 
+	boxShader.SetSampler2D("_material.diffuse", 0);
+	specularTex.Bind(1); 
+	boxShader.SetSampler2D("_material.specular", 1);
+	emissionTex.Bind(2); 
+	//boxShader.SetSampler2D("_material.emission", 2);
 	boxShader.SetInt("_material.shininess", 32);
 	//  _light:
-	boxShader.SetVector4("_lightLocate", light.GetLightLocation());
+	boxShader.SetVector4("_light.position", light.GetLightLocation());
+	boxShader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
 	boxShader.SetRGB("_light.ambient", util::Color(0x0f0f0f));
 	boxShader.SetRGB("_light.diffuse", light.GetColor());
 	boxShader.SetRGB("_light.specular", light.GetColor());
-
-	FPSCamera camera(glm::vec3(0.0f, 0.0f, 4.0f), light.GetTransform().GetPosition(),
-		45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 5.0f);
+	boxShader.SetFloat("_light.constant", 1.0f);
+	boxShader.SetFloat("_light.linear", 0.09f);
+	boxShader.SetFloat("_light.quadratic", 0.032f);
 
 	glm::vec3 cubePositions[] = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
@@ -78,6 +87,8 @@ int ch2_lightCaster_main()
 
 	App.DrawStart(Window::DrawMode::Fill);
 
+	glm::vec3 lightPos = light.GetTransform().GetPosition();
+
 	while (App.isOpen())
 	{
 		test_ch2_5_processInput(App);
@@ -90,12 +101,14 @@ int ch2_lightCaster_main()
 
 		ImGui::Begin("Another Window", &show_demo_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 		ImGui::Text(outStr.c_str());
+		ImGui::SliderFloat3("Light Pos", glm::value_ptr(lightPos), -5.0f, 5.0f, "%.3f", 1.0f);
 		if (ImGui::Button("Close Me"))
 			glfwSetWindowShouldClose(App.GetWindow(), true);
 		ImGui::End();
-
 		ImGui::Render();
 		App.Clear(util::Color(0x060a23ff));
+
+		light.GetTransform().SetPosition(lightPos);
 
 		camera.Update(App);
 
@@ -108,6 +121,8 @@ int ch2_lightCaster_main()
 			boxShader.SetMatrix4("_view", camera.GetCamera().GetView());
 			boxShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
 			boxShader.SetMatrix4("_model", box.GetTransform().GetTransMat());
+			boxShader.SetVector4("_light.position", light.GetLightLocation());
+			boxShader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
 			App.Draw(box);
 		}
 

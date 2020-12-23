@@ -6,7 +6,6 @@ layout (location = 2) in vec2 aTexCooord;
 out vec3 FragPos;
 out vec3 Normal;
 out vec2 TexCoord;
-out vec3 LightDir;
 
 uniform vec4 _lightLocate;
 
@@ -16,18 +15,8 @@ uniform mat4 _projection;
 
 void main()
 {
-    FragPos = vec3(_view * _model * vec4(aPos, 1.0));
-    Normal = mat3(transpose(inverse(_view * _model))) * aNormal;
+    FragPos = vec3(_model * vec4(aPos, 1.0));
+    Normal = mat3(transpose(inverse(_model))) * aNormal;
     TexCoord = aTexCooord;
-    
-    if(_lightLocate.w < 0.9)
-    {
-        LightDir = normalize(-_lightLocate.xyz);
-    }
-    else
-    {
-        LightDir = normalize(vec3(_view * vec4(_lightLocate.xyz,1.0)) - FragPos);
-    }
-
     gl_Position = _projection * _view * _model * vec4(aPos, 1.0);
 }
