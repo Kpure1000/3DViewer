@@ -63,6 +63,6 @@ void main()
     vec3 specular = _light.specular * spec * vec3(texture(_material.specular, TexCoord));
 
     vec3 result = attenuation*(ambient + diffuse + specular) ;
-    // result += vec3(texture(_material.emission,TexCoord)); //  emission
+    result += vec3(texture(_material.emission,TexCoord)); //  emission
     FragColor = vec4(result, 1.0);
 }

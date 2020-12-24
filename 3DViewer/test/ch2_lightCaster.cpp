@@ -53,7 +53,7 @@ int ch2_lightCaster_main()
 	specularTex.Bind(1); 
 	boxShader.SetSampler2D("_material.specular", 1);
 	emissionTex.Bind(2); 
-	//boxShader.SetSampler2D("_material.emission", 2);
+	boxShader.SetSampler2D("_material.emission", 2);
 	boxShader.SetInt("_material.shininess", 32);
 	//  _light:
 	boxShader.SetVector4("_light.position", light.GetLightLocation());
@@ -82,7 +82,7 @@ int ch2_lightCaster_main()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui_ImplGlfw_InitForOpenGL(App.GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 330 core");
-	ImGui::StyleColorsClassic();
+	ImGui::StyleColorsDark();
 	bool show_demo_window = true;
 
 	App.DrawStart(Window::DrawMode::Fill);
