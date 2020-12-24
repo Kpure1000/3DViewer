@@ -62,8 +62,8 @@ int ch2_lightCaster_main()
 	boxShader.SetRGB("_light.diffuse", light.GetColor());
 	boxShader.SetRGB("_light.specular", light.GetColor());
 	boxShader.SetFloat("_light.constant", 1.0f);
-	boxShader.SetFloat("_light.linear", 0.09f);
-	boxShader.SetFloat("_light.quadratic", 0.032f);
+	boxShader.SetFloat("_light.linear", 0.07f);
+	boxShader.SetFloat("_light.quadratic", 0.017f);
 
 	glm::vec3 cubePositions[] = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
@@ -88,7 +88,9 @@ int ch2_lightCaster_main()
 	App.DrawStart(Window::DrawMode::Fill);
 
 	glm::vec3 lightPos = light.GetTransform().GetPosition();
-
+	glm::vec3 lightScale = light.GetTransform().GetScale();
+	int currentItem = 0;
+	const char* itemStr = "Fill\0Line\0Point\0";
 	while (App.isOpen())
 	{
 		test_ch2_5_processInput(App);
@@ -99,9 +101,27 @@ int ch2_lightCaster_main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::Begin("Another Window", &show_demo_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+		ImGui::Begin("Propertis Window", &show_demo_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 		ImGui::Text(outStr.c_str());
-		ImGui::SliderFloat3("Light Pos", glm::value_ptr(lightPos), -5.0f, 5.0f, "%.3f", 1.0f);
+		ImGui::SliderFloat3("Light Position", glm::value_ptr(lightPos), -5.0f, 5.0f, "%.3f", 1.0f);
+		ImGui::SliderFloat3("Light Scale", glm::value_ptr(lightScale), -3.0f, 3.0f, "%.3f", 1.0f);
+		if (ImGui::Combo("Draw Mode", &currentItem, itemStr))
+		{
+			switch (currentItem)
+			{
+			case 0:
+				App.SetDrawMode(Window::DrawMode::Fill);
+				break;
+			case 1:
+				App.SetDrawMode(Window::DrawMode::Line);
+				break;
+			case 2:
+				App.SetDrawMode(Window::DrawMode::Point);
+				break;
+			default:
+				break;
+			}
+		}
 		if (ImGui::Button("Close Me"))
 			glfwSetWindowShouldClose(App.GetWindow(), true);
 		ImGui::End();
@@ -109,6 +129,7 @@ int ch2_lightCaster_main()
 		App.Clear(util::Color(0x060a23ff));
 
 		light.GetTransform().SetPosition(lightPos);
+		light.GetTransform().SetScale(lightScale);
 
 		camera.Update(App);
 
@@ -142,6 +163,7 @@ int ch2_lightCaster_main()
 	ImGui::DestroyContext();
 	return 0;
 }
+
 void test_ch2_5_processInput(render::Window window)
 {
 	//  press ESC to close window and exit

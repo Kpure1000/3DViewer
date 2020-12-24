@@ -7,8 +7,6 @@ out vec3 FragPos;
 out vec3 Normal;
 out vec2 TexCoord;
 
-uniform vec4 _lightLocate;
-
 uniform mat4 _model;
 uniform mat4 _view;
 uniform mat4 _projection;

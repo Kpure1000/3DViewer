@@ -1,7 +1,32 @@
 #version 430 core
 
-in vec2 _texCoord;
-out vec4 _frag_out;
+in vec3 FragPos;
+in vec3 Normal;
+in vec2 TexCoord;
+out vec4 FragColor;
+/*********************/
+/*  Light Properties */
+uniform vec3 viewPos;
+struct Material {
+    sampler2D diffuse;
+    sampler2D specular;
+    sampler2D emission;
+    int shininess;
+}; 
+uniform Material _material;
+struct Light {
+    vec4 position;
+    
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
+};
+uniform Light _light;
+/*********************/
 
 /*uniform*/
 /*get screen size*/
@@ -25,8 +50,8 @@ float RandXY(float x, float y){
      return fract(cos(x * (12.9898) + y * (4.1414)) * 43758.5453);
 }
 float Rand(){
-    float a = RandXY(_texCoord.x, _rdSeed[0]);
-    float b = RandXY(_rdSeed[1], _texCoord.y);
+    float a = RandXY(TexCoord.x, _rdSeed[0]);
+    float b = RandXY(_rdSeed[1], TexCoord.y);
     float c = RandXY(rdCount++, _rdSeed[2]);
     float d = RandXY(_rdSeed[3], a);
     float e = RandXY(b, c);
@@ -141,7 +166,43 @@ void NormalColor(inout vec3 Color)
     Color.y = min(1.0, max(0.0, Color.y));
     Color.z = min(1.0, max(0.0, Color.z));
 }
-void main()
+
+vec3 LightFrag()
+{
+    vec3 lightDir;
+    float attenuation;
+    if(_light.position.w < 0.9) //  Directional lighta
+    {
+        lightDir = normalize(-_light.position.xyz);
+        attenuation=1.0;
+    }
+    else //  point light
+    {
+        vec3 lightDis=_light.position.xyz - FragPos;
+        float distance = length(lightDis);
+        attenuation = 1.0 / (_light.constant + _light.linear * distance
+            + _light.quadratic * (distance * distance));
+        lightDir = normalize(lightDis);
+    }
+    
+    vec3 ambient = _light.ambient * vec3(texture(_material.diffuse, TexCoord));
+
+    //  Diffuse
+    vec3 norm = normalize(Normal);
+
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = _light.diffuse * diff * vec3(texture(_material.diffuse, TexCoord));
+
+    //  Specular
+    vec3 viewDir = normalize(viewPos-FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);  
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), _material.shininess);
+    vec3 specular = _light.specular * spec * vec3(texture(_material.specular, TexCoord));
+
+    return attenuation*(ambient + diffuse + specular);
+}
+
+vec3 RayTracingFrag()
 {
     Sphere sphere1 = Sphere_Con(vec3(0,0,-1.5),0.5);
     Sphere sphere2 = Sphere_Con(vec3(0,-1000.0,-1.0),1000.0);
@@ -164,7 +225,15 @@ void main()
     }
     color /= maxSampeler;
     NormalColor(color);
+    return color;
+}
 
-    _frag_out = vec4(color,1);
-
+void main()
+{
+    vec3 color;
+    color = 0.5 * LightFrag();
+    //  raytracing render as the emission texture
+    color += RayTracingFrag();
+    NormalColor(color);
+    FragColor = vec4(color,1);
 }

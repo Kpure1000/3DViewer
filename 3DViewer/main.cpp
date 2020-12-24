@@ -2,5 +2,6 @@
 
 int main()
 {
-	return ch2_lightCaster_main();
+	//return ch2_lightCaster_main();
+	return raytracing();
 }
