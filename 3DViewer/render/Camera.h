@@ -17,9 +17,9 @@ namespace rtx
 		public:
 
 			Camera()
-				: origin(glm::vec3(0.0f)), target(glm::vec3(1.0f)), direction(glm::vec3(1.0f)),
-				cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)), view(glm::mat4(1.0f)), projection(glm::mat4(1.0f)),
-				foV(45.0f), aspect(1.0f), near(0.01f), far(100.0f)
+				: m_origin(glm::vec3(0.0f)), m_target(glm::vec3(1.0f)), m_direction(glm::vec3(1.0f)),
+				m_cameraUp(glm::vec3(0.0f, 1.0f, 0.0f)), m_view(glm::mat4(1.0f)), m_projection(glm::mat4(1.0f)),
+				m_foV(45.0f), m_aspect(1.0f), m_near(0.01f), m_far(100.0f)
 			{}
 
 			/// <summary>
@@ -82,23 +82,23 @@ namespace rtx
 
 			Transform m_trans;
 
-			glm::vec3 origin;
+			glm::vec3 m_origin;
 
-			glm::vec3 target;
+			glm::vec3 m_target;
 
-			glm::vec3 direction;
+			glm::vec3 m_direction;
 
-			glm::vec3 cameraUp;
+			glm::vec3 m_cameraUp;
 
-			glm::mat4 view;
+			glm::mat4 m_view;
 
-			glm::mat4 projection;
+			glm::mat4 m_projection;
 
-			float foV;
+			float m_foV;
 
-			float aspect;
+			float m_aspect;
 
-			float near, far;
+			float m_near, m_far;
 		};
 
 	}

@@ -17,7 +17,7 @@
 #endif // !RAND_A
 
 #ifndef Pi
-#define Pi (acosf(-1.0f))
+#define Pi (glm::pi<float>())
 #endif // !Pi
 
 

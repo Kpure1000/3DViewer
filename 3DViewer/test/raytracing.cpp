@@ -33,19 +33,19 @@ int raytracing()
 		45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 5.0f);
 
 	//  Light
-	Light light(make_shared<graph::SphereMesh>(), glm::vec3(0.0f, 0.0f, 1.8f), util::Color(0xffffff));
+	Light light(make_shared<graph::SphereMesh>(), glm::vec3(0.0f, 0.0f, 3.0f), util::Color(0xffffff));
 	light.GetTransform().SetScale(glm::vec3(0.3f));
 	Shader lightShader("../data/shader/ch2_lightCaster.vert", "../data/shader/ch2_lightCaster_light.frag");
 	lightShader.Use();
 	lightShader.SetRGB("_lightColor", light.GetColor());
 
 	//  Raytracing render target 
-	graph::CubeMesh canvas;
-	/*canvas.GetTransform().SetScale(glm::vec3(4.0f, 3.0f, 1.0f));
-	canvas.GetTransform().SetPosition(glm::vec3(-2.0f, -1.5f, 0.0f));*/
-	canvas.GetTransform().SetScale(glm::vec3(3.0f, 3.0f, 3.0f));
+	graph::Sprite canvas;
+	canvas.GetTransform().SetScale(glm::vec3(4.0f, 3.0f, 1.0f));
+	canvas.GetTransform().SetOrigin(glm::vec3(0.5f, 0.5f, 0.0f));
+	/*canvas.GetTransform().SetScale(glm::vec3(3.0f, 3.0f, 3.0f));
 	canvas.GetTransform().SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	canvas.GetTransform().SetOrigin(glm::vec3(0.0f, 0.0f, 0.5f));
+	canvas.GetTransform().SetOrigin(glm::vec3(0.0f, 0.0f, 0.5f));*/
 	render::Shader shader("../data/shader/raytracingPlus.vert",
 		"../data/shader/raytracingPlus.frag");
 	//  texture (material)
@@ -73,9 +73,9 @@ int raytracing()
 	shader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
 	shader.SetMatrix4("_model", canvas.GetTransform().GetTransMat());
 	//  reset the fpsCamera to the raytracing camera 
-	camera.GetCamera().SetOrigin(glm::vec3(0.0f, 0.0f, 2.0f));
+	/*camera.GetCamera().SetOrigin(glm::vec3(0.0f, 0.0f, 2.0f));
 	camera.GetCamera().SetTarget(glm::vec3(0.0f, 0.0f, -1.0f));
-	camera.Update(App);
+	camera.Update(App);*/
 	shader.SetVector3("_camera.lookFrom", camera.GetCamera().GetOrigin());
 	glm::vec3 leftButtom(0.0f), horizontal(0.0f), vertical(0.0f);
 	camera.GetCamera().GetLeftBottom(leftButtom, horizontal, vertical);
@@ -110,7 +110,8 @@ int raytracing()
 		outStr += "Horizontal: " + RayMath::ToString(horizontal) + "\n";
 		outStr += "Vertical: " + RayMath::ToString(vertical) + "\n";
 		outStr += "FoV: " + to_string(camera.GetCamera().GetFoV()) + "\n";
-		outStr += "Aspect: " + to_string(camera.GetCamera().GetAspect());
+		outStr += "Aspect: " + to_string(camera.GetCamera().GetAspect())+ "\n";
+		outStr += "Screen Size: " + RayMath::ToString(App.GetSize());
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -153,7 +154,7 @@ int raytracing()
 		for (size_t i = 0; i < 4; i++)
 			randSeed[i] = static_cast<float>(util::RayMath::Drand48());
 		shader.Use();
-		shader.SetVector2("_screen_size", appSize);
+		shader.SetVector2("_screen_size", App.GetSize());
 		shader.SetArray("_rdSeed", 4, randSeed);
 		shader.SetVector3("_camera.lookFrom", camera.GetCamera().GetOrigin());
 		camera.GetCamera().GetLeftBottom(leftButtom, horizontal, vertical);
@@ -161,20 +162,20 @@ int raytracing()
 		shader.SetVector3("_camera.horizontal", horizontal);
 		shader.SetVector3("_camera.vertical", vertical);
 		//  Don't move the render sprite
-		shader.SetMatrix4("_view", camera.GetCamera().GetView());
+		/*shader.SetMatrix4("_view", camera.GetCamera().GetView());
 		shader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
-		shader.SetMatrix4("_model", canvas.GetTransform().GetTransMat());
+		shader.SetMatrix4("_model", canvas.GetTransform().GetTransMat());*/
 		//  light setting in object shader
 		shader.SetVector4("_light.position", light.GetLightLocation());
 		shader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
 		App.Draw(canvas);
 
 		//  draw light
-		lightShader.Use();
+		/*lightShader.Use();
 		lightShader.SetMatrix4("_view", camera.GetCamera().GetView());
 		lightShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
 		lightShader.SetMatrix4("_model", light.GetTransform().GetTransMat());
-		App.Draw(light);
+		App.Draw(light);*/
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		App.Display();

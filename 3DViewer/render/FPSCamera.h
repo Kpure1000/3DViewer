@@ -40,10 +40,8 @@ namespace rtx
 
 			void Update(Window const& window)
 			{
-				//  TODO this resize setting should move into window callback
-				//  Btw, don't resize aspect in ray-tracing camera, though I don't know why
-				//  Maybe I need a ray-tracing camera ?
-				//camera.SetAspect(window.GetSize().x / window.GetSize().y);
+				//  TODO: this resize setting should move into window callback
+				camera.SetAspect(window.GetSize().x / window.GetSize().y);
 				isMouseMoved = false;
 				cameraOrigin = camera.GetOrigin();
 				cameraDirection = -camera.GetDirection();
@@ -127,12 +125,12 @@ namespace rtx
 			{
 				if (!event::Mouse::isWheelScrolled())return;
 
-				if (cameraFov >= 20.0f && cameraFov <= 90.0f)
+				if (cameraFov >= MinFov && cameraFov <= MaxFov)
 					cameraFov -= event::Mouse::GetScrollOffset(window).y;
-				if (cameraFov <= 20.0f)
-					cameraFov = 20.0f;
-				if (cameraFov >= 90.0f)
-					cameraFov = 90.0f;
+				if (cameraFov <= MinFov)
+					cameraFov = MinFov;
+				if (cameraFov >= MaxFov)
+					cameraFov = MaxFov;
 
 				isMouseMoved = true;
 			}
@@ -158,6 +156,7 @@ namespace rtx
 			bool isMouseMoved;
 
 			float cameraFov;
+			const float MinFov = 20.0f, MaxFov = 90.0f;
 
 			float yaw, pitch;
 
