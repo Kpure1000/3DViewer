@@ -189,11 +189,12 @@ float Schlick(float cosine, float refRate)
 vec3 random_in_unit_ball()
 {
     vec3 random_in_unit_ball_re;
+    // float lengthOfBall;
     do
     {
-        random_in_unit_ball_re = 2.0f * vec3(Rand(),Rand(),Rand()) - vec3(1.0, 1.0, 1.0);
-    } while (length(random_in_unit_ball_re) > 1.0f);
-    return random_in_unit_ball_re;
+        random_in_unit_ball_re = vec3(Rand(),Rand(),Rand()) - vec3(0.5);
+    } while (length(random_in_unit_ball_re) >= 0.5);
+    return 2*random_in_unit_ball_re;
 }
 bool Scatter_Lambertian(Material_Ray material_ray,Ray rayIn, HitRecord rec, out vec3 attenuation, out Ray scattered)
 {
@@ -292,7 +293,7 @@ vec3 Irradiance(Ray ray, Sphere sp, int depth)
 }
 vec3 Irradiance_List(Ray ray, Sphere sp[20], int spSize, int depth)
 {
-    vec3 reColor = vec3(1.0,1.0,1.0);
+    vec3 reColor = vec3(1.0);
     while(0 < depth--)
     {
         HitRecord rec;
@@ -304,10 +305,10 @@ vec3 Irradiance_List(Ray ray, Sphere sp[20], int spSize, int depth)
             switch(rec.material_ray.materialType)
             {
                 case 0:
-                    isScatter=Scatter_Lambertian(rec.material_ray, ray, rec, attenuation, scatterRay);
+                    isScatter = Scatter_Lambertian(rec.material_ray, ray, rec, attenuation, scatterRay);
                     break;
                 case 1:
-                    isScatter=Scatter_Metal(rec.material_ray, ray, rec, attenuation, scatterRay);
+                    isScatter = Scatter_Metal(rec.material_ray, ray, rec, attenuation, scatterRay);
                     break;
                 case 2:
                     isScatter = Scatter_Dielectric(rec.material_ray, ray, rec, attenuation, scatterRay);
@@ -323,9 +324,7 @@ vec3 Irradiance_List(Ray ray, Sphere sp[20], int spSize, int depth)
             }
             else
             {
-                vec3 nor = ray.direction;
-                float t = 0.5 + 0.5 * nor.y;
-                reColor *= (1-t)*vec3(1.0,1.0,1.0)+t*vec3(0.5,0.7,1.0);
+                reColor *= vec3(0.5);
                 break;
             }
         }
@@ -380,14 +379,13 @@ vec3 RayTracingFrag()
     int maxSampeler = _maxSampeler;
     while(i < maxSampeler)
     {
-        vec2 randVec = vec2(Rand(),Rand());
-        uv.x = (gl_FragCoord.x+randVec.x) / _screen_size.x;
-        uv.y = (gl_FragCoord.y+randVec.y) / _screen_size.y;
+        uv.x = (gl_FragCoord.x+Rand()) / _screen_size.x;
+        uv.y = (gl_FragCoord.y+Rand()) / _screen_size.y;
         ray = Ray_Con(_camera.lookFrom,
-            _camera.left_buttom + (uv.x) * _camera.horizontal 
-            + (uv.y) * _camera.vertical - _camera.lookFrom);
+            _camera.left_buttom + uv.x * _camera.horizontal 
+            + uv.y * _camera.vertical - _camera.lookFrom);
         // color += Irradiance(ray, sphere1, 3);
-        color += Irradiance_List(ray, sphereList, 4, 6);
+        color += Irradiance_List(ray, sphereList, 4, 10);
         i++;
     }
     color /= maxSampeler;
@@ -437,6 +435,5 @@ void main()
     // color = 0.5 * LightFrag();
     //  raytracing render as the emission texture
     color += RayTracingFrag();
-    NormalColor(color);
     FragColor = vec4(color,1);
 }
