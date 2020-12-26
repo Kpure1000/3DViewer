@@ -32,7 +32,7 @@ uniform Light _light;
 /*get screen size*/
 uniform vec2 _screen_size;
 uniform float _rdSeed[4];
-
+uniform int _maxSampeler;
 /*Camera Data*/
 struct Camera
 {
@@ -377,7 +377,7 @@ vec3 RayTracingFrag()
     vec3 color;
     Ray ray;
     int i=0;
-    int maxSampeler = 20;
+    int maxSampeler = _maxSampeler;
     while(i < maxSampeler)
     {
         vec2 randVec = vec2(Rand(),Rand());

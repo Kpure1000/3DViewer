@@ -16,7 +16,7 @@ namespace rtx
 
 			FPSCamera(glm::vec3 LookFrom, glm::vec3 LookAt,
 				float FoV, float Aspect, float Near, float Far, float CameraSpeed)
-				: isMouseMoved(false),
+				: isMoved(false),
 				yaw(0.0f), pitch(0.0f),
 				cameraFov(45),
 				cameraSpeed(CameraSpeed),
@@ -42,7 +42,7 @@ namespace rtx
 			{
 				//  TODO: this resize setting should move into window callback
 				camera.SetAspect(window.GetSize().x / window.GetSize().y);
-				isMouseMoved = false;
+				isMoved = false;
 				cameraOrigin = camera.GetOrigin();
 				cameraDirection = -camera.GetDirection();
 				cameraUp = camera.GetCameraUp();
@@ -50,12 +50,12 @@ namespace rtx
 				KeyContoller(window);
 				MouseController(window);
 				WheelController(window);
-				if (isMouseMoved)
+				if (isMoved)
 				{
 					camera.SetFoV(cameraFov);
 					camera.SetOrigin(cameraOrigin);
 					camera.SetTarget(cameraOrigin + cameraDirection);
-					isMouseMoved = false;
+					isMoved = false;
 				}
 			}
 
@@ -66,26 +66,26 @@ namespace rtx
 				if (glfwGetKey(window.GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
 				{
 					cameraOrigin += realSpeed * cameraDirection;
-					isMouseMoved = true;
+					isMoved = true;
 				}
 				if (glfwGetKey(window.GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
 				{
 					cameraOrigin -= realSpeed * cameraDirection;
-					isMouseMoved = true;
+					isMoved = true;
 				}
 				if (glfwGetKey(window.GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
 				{
 					cameraOrigin -= glm::normalize(
 						glm::cross(cameraDirection, cameraUp)
 					) * realSpeed;
-					isMouseMoved = true;
+					isMoved = true;
 				}
 				if (glfwGetKey(window.GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
 				{
 					cameraOrigin += glm::normalize(
 						glm::cross(cameraDirection, cameraUp)
 					) * realSpeed;
-					isMouseMoved = true;
+					isMoved = true;
 				}
 			}
 
@@ -118,7 +118,7 @@ namespace rtx
 				cameraDirection.z = cos(pitch) * sin(yaw);
 				cameraDirection.y = sin(pitch);
 				cameraDirection = glm::normalize(cameraDirection);
-				isMouseMoved = true;
+				isMoved = true;
 			}
 
 			void WheelController(Window const& window)
@@ -132,7 +132,7 @@ namespace rtx
 				if (cameraFov >= MaxFov)
 					cameraFov = MaxFov;
 
-				isMouseMoved = true;
+				isMoved = true;
 			}
 
 			Camera camera;
@@ -153,7 +153,7 @@ namespace rtx
 
 			float cameraSpeed;
 
-			bool isMouseMoved;
+			bool isMoved;
 
 			float cameraFov;
 			const float MinFov = 20.0f, MaxFov = 90.0f;
