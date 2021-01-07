@@ -22,7 +22,7 @@ int ch2_lightCaster_main()
 {
 
 	Window App(glm::vec2(800, 600), "Chapter2: Test 5: Light Caster",
-		Window::ClearMode::DepthMode, false);
+		Window::ClearMode::DepthMode, true);
 
 	glm::vec2 appSize = App.GetSize();
 
