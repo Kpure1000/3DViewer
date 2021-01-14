@@ -56,8 +56,14 @@ int ch2_lightCaster_main()
 	boxShader.SetSampler2D("_material.emission", 2);
 	boxShader.SetInt("_material.shininess", 32);
 	//  _light:
-	boxShader.SetVector4("_light.position", light.GetLightLocation());
+	glm::vec3 spot_direction(-1.0f, 0.0f, 0.5f);
+	float cutOff = 12.5f;
+	float outerCutOff = 17.5;
 	boxShader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
+	boxShader.SetVector4("_light.position", light.GetLightLocation());
+	boxShader.SetVector3("_light.direction", spot_direction);
+	boxShader.SetFloat("_light.cutOff", glm::cos(glm::radians(cutOff)));
+	boxShader.SetFloat("_light.outerCutOff", glm::cos(glm::radians(outerCutOff)));
 	boxShader.SetRGB("_light.ambient", util::Color(0x0f0f0f));
 	boxShader.SetRGB("_light.diffuse", light.GetColor());
 	boxShader.SetRGB("_light.specular", light.GetColor());
@@ -105,6 +111,10 @@ int ch2_lightCaster_main()
 		ImGui::Text(outStr.c_str());
 		ImGui::SliderFloat3("Light Position", glm::value_ptr(lightPos), -5.0f, 5.0f, "%.3f", 1.0f);
 		ImGui::SliderFloat3("Light Scale", glm::value_ptr(lightScale), -3.0f, 3.0f, "%.3f", 1.0f);
+		ImGui::SliderFloat3("Light Direction", glm::value_ptr(spot_direction), -1.0f, 1.0f, "%.3f", 1.0f);
+		ImGui::SliderFloat("Light Cut Off", &cutOff, 0.5f, outerCutOff, "%.3f", 1.0f);
+		ImGui::SliderFloat("Light Outer Cut Off", &outerCutOff, cutOff, 180.0f, "%.3f", 1.0f);
+		
 		if (ImGui::Combo("Draw Mode", &currentItem, itemStr))
 		{
 			switch (currentItem)
@@ -132,7 +142,12 @@ int ch2_lightCaster_main()
 		light.GetTransform().SetScale(lightScale);
 
 		camera.Update(App);
-
+		boxShader.Use();
+		boxShader.SetVector4("_light.position", light.GetLightLocation());
+		boxShader.SetVector3("_light.direction", spot_direction);
+		boxShader.SetFloat("_light.cutOff", glm::cos(glm::radians(cutOff)));
+		boxShader.SetFloat("_light.outerCutOff", glm::cos(glm::radians(outerCutOff)));
+		boxShader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
 		for (size_t i = 0; i < 10; i++)
 		{
 			box.GetTransform().SetPosition(cubePositions[i]);
@@ -142,8 +157,6 @@ int ch2_lightCaster_main()
 			boxShader.SetMatrix4("_view", camera.GetCamera().GetView());
 			boxShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
 			boxShader.SetMatrix4("_model", box.GetTransform().GetTransMat());
-			boxShader.SetVector4("_light.position", light.GetLightLocation());
-			boxShader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
 			App.Draw(box);
 		}
 
