@@ -27,8 +27,10 @@ int ch2_lightCaster_main()
 	glm::vec2 appSize = App.GetSize();
 
 	//  light:
-	Light light(make_shared<SphereMesh>(), glm::vec3(0.2f, 0.3f, 1.5f), 0xffffff);
-	light.SetLightType(Light::LightType::Point);
+	Light light(make_shared<SphereMesh>(),  Light::LightType::Spot);
+	light.SetColor(0xe9de4a);
+	light.SetPosition(glm::vec3(0.2f, 0.3f, 1.5f));
+	light.SetLightType(Light::LightType::Spot);
 	light.GetTransform().SetScale(glm::vec3(0.3f));
 	Shader lightShader("../data/shader/ch2_lightCaster.vert", "../data/shader/ch2_lightCaster_light.frag");
 	lightShader.Use();
@@ -59,19 +61,14 @@ int ch2_lightCaster_main()
 	glm::vec3 spot_direction(-1.0f, 0.0f, 0.5f);
 	float cutOff = 12.5f;
 	float outerCutOff = 17.5;
-	boxShader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
-	boxShader.SetVector4("_light.position", light.GetLightLocation());
-	boxShader.SetVector3("_light.direction", spot_direction);
-	boxShader.SetFloat("_light.cutOff", glm::cos(glm::radians(cutOff)));
-	boxShader.SetFloat("_light.outerCutOff", glm::cos(glm::radians(outerCutOff)));
-	boxShader.SetRGB("_light.ambient", util::Color(0x0f0f0f));
-	boxShader.SetRGB("_light.diffuse", light.GetColor());
-	boxShader.SetRGB("_light.specular", light.GetColor());
-	boxShader.SetFloat("_light.constant", 1.0f);
-	boxShader.SetFloat("_light.linear", 0.07f);
-	boxShader.SetFloat("_light.quadratic", 0.017f);
+	boxShader.SetInt("_lightsNumber", 1);
+	boxShader.SetVector3("_eyePos", camera.GetCamera().GetOrigin());
+	light.SetInnerCutOff(cutOff);
+	light.SetOuterCutOff(outerCutOff);
+	light.SetSpotDirection(spot_direction);
+	light.LightInShader(boxShader, 0);
 
-	glm::vec3 cubePositions[] = {
+	array<glm::vec3, 10> cubePositions = {
 	glm::vec3(0.0f,  0.0f,  0.0f),
 	glm::vec3(2.0f,  5.0f, -15.0f),
 	glm::vec3(-1.5f, -2.2f, -2.5f),
@@ -136,18 +133,22 @@ int ch2_lightCaster_main()
 			glfwSetWindowShouldClose(App.GetWindow(), true);
 		ImGui::End();
 		ImGui::Render();
+		App.pollEvents();
+
+		camera.Update(App);
+
 		App.Clear(util::Color(0x060a23ff));
 
 		light.GetTransform().SetPosition(lightPos);
 		light.GetTransform().SetScale(lightScale);
+		light.SetInnerCutOff(cutOff);
+		light.SetOuterCutOff(outerCutOff);
+		light.SetSpotDirection(spot_direction);
 
-		camera.Update(App);
 		boxShader.Use();
-		boxShader.SetVector4("_light.position", light.GetLightLocation());
-		boxShader.SetVector3("_light.direction", spot_direction);
-		boxShader.SetFloat("_light.cutOff", glm::cos(glm::radians(cutOff)));
-		boxShader.SetFloat("_light.outerCutOff", glm::cos(glm::radians(outerCutOff)));
-		boxShader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
+		boxShader.SetVector3("_eyePos", camera.GetCamera().GetOrigin());
+		light.LightInShader(boxShader, 0);
+
 		for (size_t i = 0; i < 10; i++)
 		{
 			box.GetTransform().SetPosition(cubePositions[i]);

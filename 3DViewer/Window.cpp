@@ -114,9 +114,7 @@ namespace rtx
 
 		void Window::Clear(util::Color&& color)
 		{
-			if (!isOpened)return;
-			//  deal events
-			glfwPollEvents();
+			if (!isOpened)return;			
 			glClearColor(color[0], color[1], color[2], color[3]);
 			if (m_clearBit == ClearMode::ColorMode)
 			{
@@ -131,8 +129,6 @@ namespace rtx
 		void Window::Clear(const util::Color& color)
 		{
 			if (!isOpened)return;
-			//  deal events
-			glfwPollEvents();
 			glClearColor(color[0], color[1], color[2], color[3]);
 			if (m_clearBit == ClearMode::ColorMode)
 			{

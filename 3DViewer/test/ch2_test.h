@@ -6,9 +6,9 @@
 
 #pragma region Test Entrance
 
-#define _CH2_TEST_4
 #define _CH2_TEST_5
-#define _CH2_TEST_6
+
+#define _CH2_TEST_8
 
 #ifdef _CH2_TEST_1
 /// <summary>
@@ -68,6 +68,13 @@ int ch2_model_main();
 int ch2_learnModel_main();
 #endif
 
+#ifdef _CH2_TEST_8
+/// <summary>
+/// The multiple lights test
+/// </summary>
+/// <returns></returns>
+int ch2_multiLights_main();
+#endif // _CH2_TEST_8
 
 #pragma endregion
 

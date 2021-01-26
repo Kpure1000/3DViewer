@@ -32,13 +32,6 @@ int raytracing()
 	FPSCamera camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f),
 		45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 5.0f);
 
-	//  Light
-	Light light(make_shared<graph::SphereMesh>(), glm::vec3(0.0f, 0.0f, 3.0f), util::Color(0xffffff));
-	light.GetTransform().SetScale(glm::vec3(0.3f));
-	Shader lightShader("../data/shader/ch2_lightCaster.vert", "../data/shader/ch2_lightCaster_light.frag");
-	lightShader.Use();
-	lightShader.SetRGB("_lightColor", light.GetColor());
-
 	//  Raytracing render target 
 	graph::Sprite canvas;
 	canvas.GetTransform().SetScale(glm::vec3(4.0f, 3.0f, 1.0f));
@@ -59,15 +52,7 @@ int raytracing()
 	specularTex.Bind(1);
 	shader.SetSampler2D("_material.specular", 1);
 	shader.SetInt("_material.shininess", 32);
-	//  _light:
-	shader.SetVector4("_light.position", light.GetLightLocation());
-	shader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
-	shader.SetRGB("_light.ambient", util::Color(0x0f0f0f));
-	shader.SetRGB("_light.diffuse", light.GetColor());
-	shader.SetRGB("_light.specular", light.GetColor());
-	shader.SetFloat("_light.constant", 1.0f);
-	shader.SetFloat("_light.linear", 0.07f);
-	shader.SetFloat("_light.quadratic", 0.017f);
+	
 	//  transform
 	shader.SetMatrix4("_view", camera.GetCamera().GetView());
 	shader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
@@ -94,7 +79,6 @@ int raytracing()
 	bool show_demo_window = true;
 	int currentItem = 0;
 	const char* itemStr = "Fill\0Line\0Point\0";
-	glm::vec3 lightPos = light.GetTransform().GetPosition();
 
 	//  tracing shader rand seed
 	float randSeed[4];
@@ -142,8 +126,6 @@ int raytracing()
 
 		raytracing_processInput(App);
 
-		light.GetTransform().SetPosition(lightPos);
-
 		App.Clear(0x123456);
 
 		camera.Update(App);
@@ -173,17 +155,8 @@ int raytracing()
 		/*shader.SetMatrix4("_view", camera.GetCamera().GetView());
 		shader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
 		shader.SetMatrix4("_model", canvas.GetTransform().GetTransMat());*/
-		//  light setting in object shader
-		shader.SetVector4("_light.position", light.GetLightLocation());
-		shader.SetVector3("viewPos", camera.GetCamera().GetOrigin());
-		App.Draw(canvas);
 
-		//  draw light
-		/*lightShader.Use();
-		lightShader.SetMatrix4("_view", camera.GetCamera().GetView());
-		lightShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
-		lightShader.SetMatrix4("_model", light.GetTransform().GetTransMat());
-		App.Draw(light);*/
+		App.Draw(canvas);
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		App.Display();

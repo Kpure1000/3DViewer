@@ -2,8 +2,10 @@
 #define LIGHT_H
 #include"../graph/Mesh.h"
 #include<memory>
+#include<array>
 using std::shared_ptr;
 using std::make_shared;
+using std::array;
 namespace rtx
 {
 	using graph::Mesh;
@@ -18,45 +20,87 @@ namespace rtx
 
 			enum class LightType
 			{
-				Directional,
-				Point,
-				Spot
+				Directional = 0,
+				Point = 1,
+				Spot = 2
 			};
 
 			Light()
-				:m_mesh(nullptr)
-			{}
-
-			Light(const shared_ptr<Mesh>& mesh)
-				:m_mesh(mesh), m_color(0xffffff), m_lightType(LightType::Point)
-			{}
-
-			Light(const shared_ptr<Mesh>& mesh, const glm::vec3& position)
-				:m_mesh(mesh), m_color(0xffffff), m_lightType(LightType::Point)
+				:m_mesh(nullptr), m_color(0xffffff), m_lightType(LightType::Point)
 			{
-				m_mesh->GetTransform().SetPosition(position);
+				m_color = Color();
+				m_innerCutOff = 0.0f;
+				m_outerCutOff = 0.0f;
+				m_spotDirection = glm::vec3(1.0f);
+				m_attenuation[0] = 1.0f;
+				m_attenuation[1] = 0.07f;
+				m_attenuation[2] = 0.017f;
 			}
 
-			Light(const shared_ptr<Mesh>& mesh, const glm::vec3& position, const Color& color)
-				:m_mesh(mesh), m_color(color), m_lightType(LightType::Point)
+			Light(const shared_ptr<Mesh>& mesh, const LightType& type)
+				:m_mesh(mesh), m_lightType(type)
 			{
-				m_mesh->GetTransform().SetPosition(position);
+				m_color = Color();
+				m_innerCutOff = 0.0f;
+				m_outerCutOff = 0.0f;
+				m_spotDirection = glm::vec3(1.0f);
+				m_attenuation[0] = 1.0f;
+				m_attenuation[1] = 0.07f;
+				m_attenuation[2] = 0.017f;
 			}
 
-			Light(shared_ptr<Mesh>&& mesh)
-				:m_mesh(mesh), m_color(0xffffff), m_lightType(LightType::Point)
-			{}
-
-			Light(shared_ptr<Mesh>&& mesh, const glm::vec3& position)
-				:m_mesh(mesh), m_color(0xffffff), m_lightType(LightType::Point)
+			Light(shared_ptr<Mesh>&& mesh, const LightType& type)
+				:m_mesh(mesh), m_lightType(type)
 			{
-				m_mesh->GetTransform().SetPosition(position);
+				m_color = Color();
+				m_innerCutOff = 0.0f;
+				m_outerCutOff = 0.0f;
+				m_spotDirection = glm::vec3(1.0f);
+				m_attenuation[0] = 1.0f;
+				m_attenuation[1] = 0.07f;
+				m_attenuation[2] = 0.017f;
 			}
 
-			Light(shared_ptr<Mesh>&& mesh, const glm::vec3& position, const Color& color)
-				:m_mesh(mesh), m_color(color), m_lightType(LightType::Point)
+			/// <summary>
+			/// Get mesh of light
+			/// </summary>
+			/// <returns></returns>
+			inline shared_ptr<Mesh> GetMesh()const
 			{
-				m_mesh->GetTransform().SetPosition(position);
+				return m_mesh;
+			}
+
+			/// <summary>
+			/// Get light position
+			/// </summary>
+			/// <returns></returns>
+			inline glm::vec3 GetPosition()const
+			{
+				return GetTransform().GetPosition();
+			}
+
+			Transform GetTransform()const;
+
+			Transform& GetTransform();
+
+			inline Color GetColor()const
+			{
+				return m_color;
+			}
+
+			inline float GetInnerCutOff()const
+			{
+				return m_innerCutOff;
+			}
+
+			inline float GetOuterCutOff()const
+			{
+				return m_outerCutOff;
+			}
+
+			inline glm::vec3 GetSpotDirection()const
+			{
+				return m_spotDirection;
 			}
 
 			inline LightType GetLightType()const
@@ -64,62 +108,15 @@ namespace rtx
 				return m_lightType;
 			}
 
-			inline Color GetColor()const
-			{
-				return m_color;
-			}
+			/********************************************************/
 
-			/*inline Color& GetColor()
+			/// <summary>
+			/// Set light position
+			/// </summary>
+			/// <param name="position"></param>
+			inline void SetPosition(glm::vec3 position)
 			{
-				return m_color;
-			}*/
-
-			Transform& GetTransform()
-			{
-				if (m_mesh)
-				{
-					return m_mesh->GetTransform();
-				}
-				else
-				{
-					throw std::exception("ERROR: Light: Mesh is null.\n");
-				}
-			}
-
-			Transform GetTransform()const
-			{
-				if (m_mesh)
-				{
-					return static_cast<shared_ptr<const Mesh>>(m_mesh)->GetTransform();
-				}
-				else
-				{
-					throw std::exception("ERROR: Light: Mesh is null.\n");
-				}
-			}
-
-			glm::vec4 GetLightLocation()const
-			{
-				switch (m_lightType)
-				{
-				case LightType::Directional:
-					return glm::vec4(glm::normalize(GetTransform().GetPosition()), 0.1f);
-					break;
-				case LightType::Point:
-					return glm::vec4(GetTransform().GetPosition(), 1.0f);
-					break;
-				case LightType::Spot:
-					return glm::vec4(GetTransform().GetPosition(), 1.0f);
-					break;
-				default:
-					return glm::vec4(GetTransform().GetPosition(), 1.0f);
-					break;
-				}
-			}
-
-			inline void SetLightType(LightType lightType)
-			{
-				m_lightType = lightType;
+				m_mesh->GetTransform().SetPosition(position);
 			}
 
 			inline void SetColor(const Color& color)
@@ -131,6 +128,34 @@ namespace rtx
 			{
 				m_color = std::move(color);
 			}
+
+			inline void SetInnerCutOff(float const& inner)
+			{
+				m_innerCutOff = glm::cos(glm::radians(inner));
+			}
+
+			inline void SetOuterCutOff(float const& outer)
+			{
+				m_outerCutOff = glm::cos(glm::radians(outer));
+			}
+
+			inline void SetSpotDirection(glm::vec3 spotDiretion)
+			{
+				m_spotDirection = spotDiretion;
+			}
+
+			inline void SetLightType(LightType lightType)
+			{
+				m_lightType = lightType;
+			}
+
+			/********************************************************/
+
+			/// <summary>
+			/// Light to material shader
+			/// </summary>
+			/// <param name="shader"></param>
+			void LightInShader(Shader& shader, int index)const;
 
 		private:
 
@@ -148,6 +173,23 @@ namespace rtx
 			/// Light emission color
 			/// </summary>
 			Color m_color;
+
+			array<float, 3> m_attenuation;
+
+			/// <summary>
+			/// Inner cut off (only spot light)
+			/// </summary>
+			float m_innerCutOff;
+
+			/// <summary>
+			/// Outer cut off (only spot light)
+			/// </summary>
+			float m_outerCutOff;
+
+			/// <summary>
+			/// Direction of spot light (only spot light)
+			/// </summary>
+			glm::vec3 m_spotDirection;
 
 			LightType m_lightType;
 

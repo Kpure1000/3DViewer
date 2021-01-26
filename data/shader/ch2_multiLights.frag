@@ -8,13 +8,17 @@ out vec4 FragColor;
 
 /*********************/
 /*  Light Properties */
+//  the camera view position (eye)
 uniform vec3 _eyePos;
+
+/*material structure*/
 struct Material {
     sampler2D diffuse;
     sampler2D specular;
     sampler2D emission;
     int shininess;
 }; 
+//  material
 uniform Material _material;
 /*light structure*/
 struct Light {
@@ -45,6 +49,7 @@ struct Light {
 uniform Light _lights[MaxLightNumbers];
 //  real light count
 uniform int _lightsNumber;
+
 /*********************/
 
 void lightInit_(Light param_light, out vec3 lightDir_out, out float attenuation_out)
@@ -77,7 +82,7 @@ vec3 specular_(Light param_light, vec3 norm_para, vec3 lightDir_para, vec3 viewD
     return param_light.specular * spec * vec3(texture(_material.specular, inTexCoord));
 }
 
-float intensity_(Light param_light, vec3 curDir, vec3 spotDir)
+float intensity_(Light param_light, vec3 curDir,vec3 spotDir)
 {
     if(param_light.lightType == 2) //  spot light
     {
@@ -90,6 +95,12 @@ float intensity_(Light param_light, vec3 curDir, vec3 spotDir)
         return 1.0f;
     }
 }
+void NormalColor(inout vec3 Color)
+{
+    Color.x = min(1.0, max(0.0, Color.x));
+    Color.y = min(1.0, max(0.0, Color.y));
+    Color.z = min(1.0, max(0.0, Color.z));
+}
 void main()
 {
     vec3 cur_light_dir;
@@ -98,7 +109,7 @@ void main()
     vec3 eyeDir = normalize(_eyePos - inFragPos);
     vec3 result;
     
-    for(int i = 0; i < _lightsNumber && i < MaxLightNumbers; i++)
+    for(int i = 0; i < _lightsNumber && i < MaxLightNumbers; i++ )
     {
         lightInit_(_lights[i],cur_light_dir, attenuation);
 
@@ -112,7 +123,7 @@ void main()
         vec3 specular = specular_(_lights[i], norm, cur_light_dir, eyeDir);
         
         //  Intensity
-        float intensity = intensity_(_lights[i], cur_light_dir, _lights[i].direction);
+        float intensity = intensity_(_lights[i], cur_light_dir,_lights[i].direction);
 
         //  Result
         result += attenuation * (ambient + intensity * (diffuse + specular));

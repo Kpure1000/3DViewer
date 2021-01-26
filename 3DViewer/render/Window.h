@@ -78,6 +78,11 @@ namespace rtx
 				glPolygonMode(GL_FRONT_AND_BACK, (unsigned int)(m_drawMode = drawMode));
 			}
 
+			void pollEvents()
+			{
+				glfwPollEvents();
+			}
+
 			/// <summary>
 			/// Clear the canvas
 			/// </summary>
