@@ -177,6 +177,7 @@
     <ClCompile Include="test\ch2_lightCaster.cpp" />
     <ClCompile Include="test\ch2_lightMap.cpp" />
     <ClCompile Include="test\ch2_material.cpp" />
+    <ClCompile Include="test\ch2_materialTest.cpp" />
     <ClCompile Include="test\ch2_model.cpp" />
     <ClCompile Include="test\ch2_multiLights.cpp" />
     <ClCompile Include="test\ch3_depthTest.cpp" />

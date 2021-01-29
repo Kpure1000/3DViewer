@@ -64,6 +64,11 @@ namespace rtx
 				m_ID = id;
 			}
 
+			void DealImage(function<void(int, int, int, vector<unsigned char>&)>&& imageDealCallBack)
+			{
+				image.DealImage(std::move(imageDealCallBack));
+			}
+
 		private:
 
 			void Init();

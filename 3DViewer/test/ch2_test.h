@@ -9,6 +9,7 @@
 #define _CH2_TEST_5
 
 #define _CH2_TEST_8
+#define _CH2_TEST_9
 
 #ifdef _CH2_TEST_1
 /// <summary>
@@ -75,6 +76,11 @@ int ch2_learnModel_main();
 /// <returns></returns>
 int ch2_multiLights_main();
 #endif // _CH2_TEST_8
+
+#ifdef _CH2_TEST_9
+int ch2_materialTest_main();
+#endif // _CH2_TEST_9
+
 
 #pragma endregion
 
