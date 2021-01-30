@@ -6,12 +6,12 @@ in vec2 inTexCoord;
 
 out vec4 FragColor;
 
-/*********************/
-/*  Light Properties */
-//  the camera view position (eye)
+//  -- uniform data -----------------------
+//  -- the camera view position (eye)
 uniform vec3 _eyePos;
 
-/*material structure*/
+//  --material data---------
+//  -- material structure
 struct Material {
     sampler2D diffuse;
     sampler2D normal;
@@ -19,15 +19,16 @@ struct Material {
     sampler2D emission;
     int shininess;
 }; 
-//  material
+//  material data
 uniform Material _material;
-/*light structure*/
+//  --light data------------
+//  -- light structure
 struct Light {
     //  type of light
-    int lightType; 
+    int lightType;
     
     //  position of light source
-    vec3 position;  
+    vec3 position;
     
     //  normal light attribute
     vec3 ambient;
@@ -40,9 +41,12 @@ struct Light {
     float quadratic;
     
     //  spot light special param
-    vec3 direction;         //  direction of the spoting cone
-    float innerCutOff;      //  inner cut off  
-    float outerCutOff;      //  outer cut off
+    //  direction of the spoting cone
+    vec3 direction;
+    //  inner cut off  
+    float innerCutOff;
+    //  outer cut off
+    float outerCutOff;
 };
 //  max numbers of lights
 #define MaxLightNumbers 20
@@ -51,7 +55,7 @@ uniform Light _lights[MaxLightNumbers];
 //  real light count
 uniform int _lightsNumber;
 
-/*********************/
+// -- function -----------------------
 
 void lightInit_(Light param_light, out vec3 lightDir_out, out float attenuation_out)
 {
@@ -104,35 +108,43 @@ void NormalColor(inout vec3 Color)
 }
 void main()
 {
+    //  -- direction of current light
     vec3 cur_light_dir;
+    //  -- attenuation
     float attenuation;
-    // vec3 norm = normalize(inNormal); 
+    //  -- normal texture -- 
     vec3 normalRGB = texture(_material.normal, inTexCoord).rgb;
+    //  -- normal
     vec3 norm = normalize(normalRGB * 2.0 - 1.0);
+    //  -- direction of viewer' eyes
     vec3 eyeDir = normalize(_eyePos - inFragPos);
+    //  -- fragment output result
     vec3 result;
     
+    //  -- traverse lights
     for(int i = 0; i < _lightsNumber && i < MaxLightNumbers; i++ )
     {
-        lightInit_(_lights[i],cur_light_dir, attenuation);
+        //  -- initialize light parameter
+        lightInit_(_lights[i], cur_light_dir, attenuation);
 
-        // Ambient
+        //  -- Ambient
         vec3 ambient = _lights[i].ambient * vec3(texture(_material.diffuse, inTexCoord));
 
-        //  Diffuse
-        vec3 diffuse = diffuse_(_lights[i], norm,cur_light_dir);
+        //  -- Diffuse
+        vec3 diffuse = diffuse_(_lights[i], norm, cur_light_dir);
 
-        //  Specular
+        //  -- Specular
         vec3 specular = specular_(_lights[i], norm, cur_light_dir, eyeDir);
         
-        //  Intensity
-        float intensity = intensity_(_lights[i], cur_light_dir,_lights[i].direction);
+        //  -- Intensity
+        float intensity = intensity_(_lights[i], cur_light_dir, _lights[i].direction);
 
-        //  Result
+        //  -- Result
         result += attenuation * (ambient + intensity * (diffuse + specular));
     }
 
-    // result += vec3(texture(_material.emission, inTexCoord)); //  emission
+    //  -- Emission
+    // result += texture(_material.emission, inTexCoord).rgb;
 
     FragColor = vec4(result, 1.0);
 }
