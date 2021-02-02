@@ -99,10 +99,6 @@ namespace rtx
 			//  <ATTENTION!!!> DO NOT RELEASE EBO BEFORE VAO 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			//  set draw mode
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //  draw fill face
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //  only draw line
-			//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT); //  only draw vertices
 			if (m_clearBit == ClearMode::DepthMode)
 			{
 				glEnable(GL_DEPTH_TEST);

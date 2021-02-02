@@ -27,7 +27,7 @@ int ch2_lightCaster_main()
 	glm::vec2 appSize = App.GetSize();
 
 	//  light:
-	Light light(make_shared<SphereMesh>(),  Light::LightType::Spot);
+	Light light(make_shared<SphereMesh>(),  Light::LightType::Point);
 	light.SetColor(0xe9de4a);
 	light.SetPosition(glm::vec3(0.2f, 0.3f, 1.5f));
 	light.SetLightType(Light::LightType::Spot);

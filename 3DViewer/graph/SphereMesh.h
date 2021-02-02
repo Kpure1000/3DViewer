@@ -49,6 +49,18 @@ namespace rtx
 						normal = glm::normalize(glm::cross(vd.position - vb.position, va.position - vc.position));
 						va.normal = vb.normal = vc.normal = vd.normal = normal;
 
+						va.texCoords.x = (float)i / longitu;
+						va.texCoords.y = (float)j / longitu;
+
+						vb.texCoords.x = (float)i / longitu;
+						vb.texCoords.y = (float)(j + 1) / longitu;
+
+						vc.texCoords.x = (float)(i + 1) / longitu;
+						vc.texCoords.y = (float)(j + 1) / longitu;
+
+						vd.texCoords.x = (float)(i + 1) / longitu;
+						vd.texCoords.y = (float)j / longitu;
+
 						vertices.push_back(va);
 						vertices.push_back(vb);
 						vertices.push_back(vd);

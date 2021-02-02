@@ -7,7 +7,7 @@
 #pragma region Test Entrance
 
 #define _CH2_TEST_5
-
+#define _CH2_TEST_4
 #define _CH2_TEST_8
 #define _CH2_TEST_9
 

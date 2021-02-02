@@ -99,7 +99,7 @@ int ch2_lightMap_main()
 	while (App.isOpen())
 	{
 		test_ch2_4_processInput(App);
-
+		App.pollEvents();
 		App.Clear(util::Color(0x112234ff));
 
 		fpsCamera.Update(App);

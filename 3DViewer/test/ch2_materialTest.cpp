@@ -37,7 +37,7 @@ int ch2_materialTest_main()
 	FPSCamera camera(glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f),
 		45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 5.0f);
 
-	CubeMesh box;
+	SphereMesh box;
 	Texture diffuseTex;
 	diffuseTex.LoadFromFile("../data/texture/brickwall.jpg");
 	Texture normalTex;
@@ -124,12 +124,14 @@ int ch2_materialTest_main()
 
 		App.Clear(0x060a23);
 
+		boxShader.Use();
+		boxShader.SetVector3("_eyePos", camera.GetCamera().GetOrigin());
+
 		for (size_t i = 0; i < cubePositions.size(); i++)
 		{
 			box.GetTransform().SetPosition(cubePositions[i]);
 			float angle = 20.0f * i;
 			box.GetTransform().SetRotation(glm::vec3(1.0f, 0.3f, 0.5f), angle);
-			boxShader.Use();
 			boxShader.SetMatrix4("_view", camera.GetCamera().GetView());
 			boxShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
 			boxShader.SetMatrix4("_model", box.GetTransform().GetTransMat());
