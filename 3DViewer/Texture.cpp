@@ -20,20 +20,23 @@ namespace rtx
 
 		void Texture::LoadFromFile(const std::string& path)
 		{
-			Init();
+			InitBeforeLoad();
 			image.LoadFromFile(path.c_str());
+			BindAfterLoad();
 		}
 
 		void Texture::LoadFromMemory(int w, int h, int ch, unsigned char* data)
 		{
-			Init();
+			InitBeforeLoad();
 			image.LoadFromMemory(w, h, ch, data);
+			BindAfterLoad();
 		}
 
 		void Texture::LoadFromImage(const Image& image)
 		{
-			Init();
+			InitBeforeLoad();
 			this->image = image;
+			BindAfterLoad();
 		}
 
 		void Texture::Bind(const int& index)const
@@ -42,31 +45,10 @@ namespace rtx
 			{
 				glActiveTexture(GL_TEXTURE0 + index);
 				glBindTexture(GL_TEXTURE_2D, m_ID);
-				image.Use();
 			}
 		}
 
-		void Texture::ReBind(const int& index) const
-		{
-			if (index < MaxTextureIndices)
-			{
-				glActiveTexture(GL_TEXTURE0 + index);
-				glBindTexture(GL_TEXTURE_2D, m_ID);
-			}
-		}
-
-		/*[[deprecated("This GetIndex will be deleted")]]
-		int Texture::GetIndex()const
-		{
-			return texture_indices[m_ID] - GL_TEXTURE0;
-		}*/
-
-		unsigned int Texture::GetID()const
-		{
-			return m_ID;
-		}
-
-		void Texture::Init()
+		void Texture::InitBeforeLoad()
 		{
 			glGenTextures(1, &m_ID);
 			glBindTexture(GL_TEXTURE_2D, m_ID);
@@ -77,6 +59,11 @@ namespace rtx
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			//  Anisotropic Filtering
 			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, GL_LINEAR_MIPMAP_LINEAR);
+		}
+
+		void Texture::BindAfterLoad()
+		{
+			image.Use();
 		}
 
 	}

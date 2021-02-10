@@ -1,8 +1,8 @@
 #version 330 core
 
 in vec3 inFragPos;
-in vec3 inNormal;
 in vec2 inTexCoord;
+in mat3 inTBN;
 
 out vec4 FragColor;
 
@@ -61,14 +61,14 @@ void lightInit_(Light param_light, out vec3 lightDir_out, out float attenuation_
 {
     if(param_light.lightType == 0) //  Directional light
     {
-        lightDir_out = normalize(-param_light.position);
+        lightDir_out = inTBN * normalize(-param_light.position);
         attenuation_out = 1.0;
     }
     else //  Point light or Spot light
     {
         vec3 lightDis = param_light.position - inFragPos;
         float distance = length(lightDis);
-        lightDir_out = normalize(lightDis);
+        lightDir_out = inTBN * normalize(lightDis);
         attenuation_out = 1.0 / (param_light.constant + param_light.linear * distance
             + param_light.quadratic * (distance * distance));
     }
@@ -117,7 +117,7 @@ void main()
     //  -- normal
     vec3 norm = normalize(normalRGB * 2.0 - 1.0);
     //  -- direction of viewer' eyes
-    vec3 eyeDir = normalize(_eyePos - inFragPos);
+    vec3 eyeDir = inTBN * normalize(_eyePos - inFragPos);
     //  -- fragment output result
     vec3 result;
     

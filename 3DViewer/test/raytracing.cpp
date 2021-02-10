@@ -126,6 +126,8 @@ int raytracing()
 
 		raytracing_processInput(App);
 
+		App.pollEvents();
+
 		App.Clear(0x123456);
 
 		camera.Update(App);

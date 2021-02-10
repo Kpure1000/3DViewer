@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="graph\QuadMesh.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="graph\LearnModel.h" />
     <ClInclude Include="graph\Mesh.h" />
     <ClInclude Include="graph\Model.h" />
+    <ClInclude Include="graph\QuadMesh.h" />
     <ClInclude Include="graph\RenderStates.h" />
     <ClInclude Include="graph\RenderTarget.h" />
     <ClInclude Include="graph\SphereMesh.h" />

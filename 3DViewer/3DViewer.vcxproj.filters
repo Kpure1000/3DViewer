@@ -181,6 +181,9 @@
       <Filter>源文件\render</Filter>
     </ClCompile>
     <ClCompile Include="test\ch2_materialTest.cpp">
+      <Filter>源文件\test</Filter>
+    </ClCompile>
+    <ClCompile Include="graph\QuadMesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="render\Light.h">
       <Filter>头文件\render</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\QuadMesh.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

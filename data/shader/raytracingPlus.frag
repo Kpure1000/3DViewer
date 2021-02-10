@@ -384,6 +384,9 @@ vec3 RayTracingFrag()
     uv.x = (gl_FragCoord.x) / _screen_size.x;
     uv.y = (gl_FragCoord.y) / _screen_size.y;
 
+    vec3 orthDir = _camera.left_buttom + _camera.horizontal / 2 + _camera.vertical - _camera.lookFrom;
+    vec3 perspectDir = _camera.left_buttom + uv.x * _camera.horizontal + uv.y * _camera.vertical - _camera.lookFrom;
+
     vec3 color;
     Ray ray;
     int i=0;
@@ -392,9 +395,11 @@ vec3 RayTracingFrag()
     {
         uv.x = (gl_FragCoord.x+Rand()) / _screen_size.x;
         uv.y = (gl_FragCoord.y+Rand()) / _screen_size.y;
-        ray = Ray_Con(_camera.lookFrom,
-            _camera.left_buttom + uv.x * _camera.horizontal 
-            + uv.y * _camera.vertical - _camera.lookFrom);
+        ray = Ray_Con(_camera.lookFrom, 
+         _camera.left_buttom + uv.x * _camera.horizontal + uv.y * _camera.vertical
+          - _camera.lookFrom);
+        // ray = Ray_Con(_camera.left_buttom + uv.x * _camera.horizontal + uv.y * _camera.vertical,
+        // orthDir);
         // color += Irradiance(ray, sphere1, 3);
         color += Irradiance_List(ray, sphereList, 4, 10);
         i++;

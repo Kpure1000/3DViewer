@@ -111,7 +111,7 @@ int ch2_multiLights_main()
 		App.Display();
 
 	}
-
+	return 0;
 }
 
 void lightInit(Light* lights, int size)

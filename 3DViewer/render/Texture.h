@@ -50,14 +50,6 @@ namespace rtx
 			/// </summary>
 			void Bind(const int& index)const;
 
-			void ReBind(const int& index)const;
-
-			/// <summary>
-			/// Get id of texture
-			/// </summary>
-			/// <returns></returns>
-			unsigned int GetID()const;
-
 			[[deprecated("This constructor will be deleted")]]
 			void SetID(const unsigned int& id)
 			{
@@ -71,7 +63,9 @@ namespace rtx
 
 		private:
 
-			void Init();
+			void InitBeforeLoad();
+
+			void BindAfterLoad();
 
 			/// <summary>
 			/// Texture id

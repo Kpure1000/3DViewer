@@ -13,6 +13,24 @@ namespace rtx
 
 			CubeMesh() 
 			{
+				//  Cube
+				//        /H/--------/G/
+				//	      /|         /|
+				//     /E/--------/F/ |
+				//      |  |       |  |
+				//      | /D/------|-/C/
+				//      | /        | /
+				//     /A/--------/B/
+				//  Cool!
+				glm::vec3 va(-0.5f, -0.5f, -0.5f);
+				glm::vec3 vb(0.5f, -0.5f, -0.5f);
+				glm::vec3 vc(0.5f, -0.5f, 0.5f);
+				glm::vec3 vd(-0.5f, -0.5f, 0.5f);
+				glm::vec3 ve(-0.5f, 0.5f,-0.5f);
+				glm::vec3 vf(0.5f, 0.5f, -0.5f);
+				glm::vec3 vg(0.5f, 0.5f, 0.5f);
+				glm::vec3 vh(-0.5f, 0.5f, 0.5f);
+
 				//  create 
 				float vert[] = {
 					// positions          // normals           // texture coords
@@ -99,7 +117,12 @@ namespace rtx
 				//  texcoords
 				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 				glEnableVertexAttribArray(2);
-				
+				//  tangent
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+				glEnableVertexAttribArray(3);
+				//  bitangent
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
+				glEnableVertexAttribArray(4);
 
 				glBindVertexArray(0);
 			}

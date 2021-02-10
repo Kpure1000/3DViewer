@@ -18,11 +18,12 @@ using namespace std;
 using render::Window;
 using graph::CubeMesh;
 using graph::SphereMesh;
+using graph::QuadMesh;
 
 int ch2_materialTest_main()
 {
 	Window App(glm::vec2(800, 600), "Chapter2: Test 9: Material Test",
-		Window::ClearMode::DepthMode, true);
+		Window::ClearMode::DepthMode, false);
 
 	glm::vec2 appSize = App.GetSize();
 
@@ -60,7 +61,7 @@ int ch2_materialTest_main()
 		});
 	Texture emissionTex;
 	emissionTex.LoadFromFile("../data/texture/matrix.jpg");
-	Shader boxShader("../data/shader/ch2_multiLights.vert",
+	Shader boxShader("../data/shader/ch2_materialTest.vert",
 		"../data/shader/ch2_materialTest.frag");
 	boxShader.Use();
 	//  _light

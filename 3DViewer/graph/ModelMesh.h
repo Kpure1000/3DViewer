@@ -100,7 +100,7 @@ namespace rtx
                             else if (name == "texture_height")
                                 number = std::to_string(heightNr++); // transfer unsigned int to stream
 
-                            textures[i].texture.ReBind((int)i);
+                            textures[i].texture.Bind((int)i);
                             states.GetShader()->Use();
                             states.GetShader()->SetSampler2D("_material" + name + number, (int)i);
                         }

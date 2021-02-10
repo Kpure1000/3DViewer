@@ -5,6 +5,7 @@
 #include"Model.h"
 #include"CubeMesh.h"
 #include"SphereMesh.h"
+#include"QuadMesh.h"
 #include"Sprite.h"
 
 #include"Drawable.h"
