@@ -52,12 +52,12 @@ int ch2_model_main()
 	lightShader.Use();
 	lightShader.SetRGB("_lightColor", lightColor);
 
-	unsigned char whiteData[4] = { 0x45,0x8d ,0xdf ,0x19 };
-	stbi_write_png("202.png", 1, 1, 4, whiteData, 0);
+	//unsigned char whiteData[4] = { 0x45,0x8d ,0xdf ,0x19 };
+	//stbi_write_png("202.png", 1, 1, 4, whiteData, 0);
 
 	//  box:
 	graph::Model nanosuit("../data/model/mary/Marry.obj");
-	nanosuit.GetTransform().SetScale(glm::vec3(0.2f));
+	nanosuit.GetTransform().SetScale(glm::vec3(1.2f));
 	//nanosuit.GetTransform().SetRotation({ 1.0f,0.0f,0.0f }, -90.0f);
 
 	Shader modelShader("../data/shader/ch2_materialTest.vert", "../data/shader/ch2_cartoon.frag");

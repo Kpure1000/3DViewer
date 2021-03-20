@@ -176,6 +176,6 @@ void main()
     //  -- Emission
     // result += texture(_material.emission, inTexCoord).rgb;
 
-    // FragColor = vec4(result, pow(0.48, 2.2));
-    FragColor = vec4(texture(_material.texture_diffuse1, inTexCoord));
+    FragColor = vec4(result, pow(0.48, 2.2));
+    // FragColor = vec4(texture(_material.texture_diffuse1, inTexCoord));
 }
