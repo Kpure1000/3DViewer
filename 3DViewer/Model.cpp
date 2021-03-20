@@ -69,7 +69,7 @@ namespace rtx
 					// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
 					// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
 					vec.x = mesh->mTextureCoords[0][i].x;
-					vec.y = mesh->mTextureCoords[0][i].y;
+					vec.y = -mesh->mTextureCoords[0][i].y;
 					vertex.texCoords = vec;
 					// tangent
 					vector.x = mesh->mTangents[i].x;
@@ -103,13 +103,15 @@ namespace rtx
 			vector<MeshTex> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 			// 2. specular maps
-			vector<MeshTex> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+			// It seems like that Assimp doesn't like specular tex in most format
+			// So use aiTextureType_AMBIENT to replace the aiTextureType_SPECULAR
+			vector<MeshTex> specularMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_specular");
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 			// 3. normal maps
-			std::vector<MeshTex> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+			std::vector<MeshTex> normalMaps = loadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
 			textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 			// 4. height maps
-			std::vector<MeshTex> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+			std::vector<MeshTex> heightMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height");
 			textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 			return ModelMesh(vertices, indices, textures);
@@ -130,6 +132,7 @@ namespace rtx
 		        aiString str;
 		        mat->GetTexture(type, i, &str);
 		        std::string filename = directory + '/' + str.C_Str();
+				std::cout << "Texture: " << filename << ", type: " << typeName << std::endl;
 		        //  If path not find in tex pool, it should be loaded
 		        MeshTex meshTex;
 		        if (texturesLoadPool.find(filename) == texturesLoadPool.end())

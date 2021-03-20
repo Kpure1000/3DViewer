@@ -6,6 +6,7 @@ layout (location = 3) in vec3 aTangent;
 layout (location = 4) in vec3 aBitangent;
 
 out vec3 inFragPos;
+out vec3 inNormal;
 out vec2 inTexCoord;
 out mat3 inTBN;
 
@@ -22,6 +23,7 @@ void main()
 
     inFragPos = vec3(_model * vec4(aPos, 1.0));
     inTexCoord = aTexCooord;
+    inNormal = aNormal;
     gl_Position = _projection * _view * _model * vec4(aPos, 1.0);
 
 }

@@ -38,7 +38,8 @@ int ch2_materialTest_main()
 	FPSCamera camera(glm::vec3(0.0f, 0.0f, 4.0f), glm::vec3(0.0f),
 		45.0f, appSize.x / appSize.y, 0.01f, 100.0f, 5.0f);
 
-	SphereMesh box;
+	QuadMesh box;
+	box.GetTransform().SetScale({ 2.5f,1.25f,1.0f });
 	Texture diffuseTex;
 	diffuseTex.LoadFromFile("../data/texture/brickwall.jpg");
 	Texture normalTex;

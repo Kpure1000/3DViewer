@@ -68,8 +68,8 @@ namespace rtx
                 glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
                 glEnableVertexAttribArray(2);
                 // vertex tangent
-                glEnableVertexAttribArray(3);
                 glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tangent));
+                glEnableVertexAttribArray(3);
                 // vertex bitangent
                 glEnableVertexAttribArray(4);
                 glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, bitangent));
@@ -87,6 +87,7 @@ namespace rtx
                         unsigned int specularNr = 1;
                         unsigned int normalNr = 1;
                         unsigned int heightNr = 1;
+                        states.GetShader()->Use();
                         for (size_t i = 0; i < textures.size(); i++)
                         {
                             std::string number;
@@ -101,10 +102,9 @@ namespace rtx
                                 number = std::to_string(heightNr++); // transfer unsigned int to stream
 
                             textures[i].texture.Bind((int)i);
-                            states.GetShader()->Use();
-                            states.GetShader()->SetSampler2D("_material" + name + number, (int)i);
+                            states.GetShader()->SetSampler2D("_material." + name + number, (int)i);
                         }
-                        target.Draw(vertices, VAO);
+                        target.Draw(indices, VAO);
                     }
                 }
             }

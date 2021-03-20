@@ -182,6 +182,7 @@
     <ClCompile Include="test\ch2_model.cpp" />
     <ClCompile Include="test\ch2_multiLights.cpp" />
     <ClCompile Include="test\ch3_depthTest.cpp" />
+    <ClCompile Include="test\ch3_frameBuffer.cpp" />
     <ClCompile Include="test\raytracing.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />

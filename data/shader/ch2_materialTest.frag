@@ -134,7 +134,7 @@ void main()
         vec3 diffuse = diffuse_(_lights[i], norm, cur_light_dir);
 
         //  -- Specular
-        vec3 specular = specular_(_lights[i], norm, cur_light_dir, eyeDir);
+        vec3 specular = 0.9 * specular_(_lights[i], norm, cur_light_dir, eyeDir);
         
         //  -- Intensity
         float intensity = intensity_(_lights[i], cur_light_dir, _lights[i].direction);
