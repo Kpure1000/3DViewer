@@ -56,9 +56,13 @@ int ch2_model_main()
 	//stbi_write_png("202.png", 1, 1, 4, whiteData, 0);
 
 	//  box:
-	graph::Model nanosuit("../data/model/mary/Marry.obj");
-	nanosuit.GetTransform().SetScale(glm::vec3(1.2f));
+	graph::Model nanosuit("../data/model/peco/peco.obj");
+	nanosuit.GetTransform().SetScale(glm::vec3(0.2f));
 	//nanosuit.GetTransform().SetRotation({ 1.0f,0.0f,0.0f }, -90.0f);
+
+	graph::CubeMesh modelOrigin;
+	modelOrigin.GetTransform().SetScale(glm::vec3(0.2f));
+	modelOrigin.GetTransform().SetPosition(nanosuit.GetTransform().GetPosition());
 
 	Shader modelShader("../data/shader/ch2_materialTest.vert", "../data/shader/ch2_cartoon.frag");
 
@@ -89,6 +93,8 @@ int ch2_model_main()
 	bool show_demo_window = true;
 
 	glEnable(GL_BLEND);
+	glfwSwapInterval(1);
+
 	while (App.isOpen())
 	{
 		test_ch2_6_processInput(App);
@@ -107,15 +113,30 @@ int ch2_model_main()
 		ImGui::End();
 		ImGui::Render();
 
+		auto timer = clock() * 0.00025f;
+		lightPos[0] = {
+			std::sin(timer * 6) * (2.0f + nanosuit.GetTransform().GetPosition().x),
+			std::cos(timer * 4) * (4.0f + nanosuit.GetTransform().GetPosition().y),
+			std::cos(timer * 2) * (2.0f + nanosuit.GetTransform().GetPosition().z)
+		};
+
 		for (int i = 0; i < lights.size(); i++)
 			lights[i].SetPosition(lightPos[i]);
 
 		App.pollEvents();
 
+		//glEnable(GL_DEPTH_TEST);
+
 		App.Clear(clearColor);
 
 		camera.Update(App);
 
+		lightShader.Use();
+		lightShader.SetRGB("_lightColor", util::Color(0xffffffff));
+		lightShader.SetMatrix4("_view", camera.GetCamera().GetView());
+		lightShader.SetMatrix4("_projection", camera.GetCamera().GetProjection());
+		lightShader.SetMatrix4("_model", modelOrigin.GetTransform().GetTransMat());
+		App.Draw(modelOrigin);
 		App.Draw(nanosuit, modelShader);
 
 		for (int i = 0; i < lights.size(); i++)
@@ -138,6 +159,8 @@ int ch2_model_main()
 				App.Draw(lights[i]);
 			}
 		}
+
+		//glDisable(GL_DEPTH_TEST);
 
 
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
